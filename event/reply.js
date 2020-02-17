@@ -7,25 +7,12 @@ var friend = null
 var friendId = null
 
 const set = async (replyToken, message) => {
-  console.log('[-] botEvent.reply.set', message)
   if (!message) return false
   if (message.type !== 'text') return false
+  console.log('[-] botEvent.reply.set', message)
   const line = await tool.line.getClient(process.env.LINE_CHANNEL_ACCESS_TOKEN)
   if (replyMode === 0) {
     console.debug('replyMode = 0')
-    if (!message.text.startsWith(env.messageEvent.reply)) return false
-    console.debug(
-      'env.messageEvent.reply.length',
-      env.messageEvent.reply.length
-    )
-    console.debug('message.text.length', message.text.length)
-    console.debug(
-      'displayName:',
-      message.text.substring(
-        env.messageEvent.reply.length + 1,
-        message.text.length - 1
-      )
-    )
     const displayName = message.text.substring(
       env.messageEvent.reply.length + 1,
       message.text.length - 1

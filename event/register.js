@@ -5,10 +5,10 @@ const tool = require('../tool')
 moment.locale('th')
 
 const get = async (replyToken, message) => {
-  console.debug('[-] botEvent.register.get')
   if (!message) return false
   if (message.type !== 'text') return false
   if (message.text !== env.messageEvent.register.get) return false
+  console.log('[-] botEvent.register.get')
   let rows = await tool.db('setting').where({ option: 'REGISTER_CODE' })
   if (rows.length != 1) return false
   const line = await tool.line.getClient(process.env.LINE_CHANNEL_ACCESS_TOKEN)
@@ -22,11 +22,10 @@ const get = async (replyToken, message) => {
 }
 
 const prompt = async (replyToken, message, friend) => {
-  console.log('[-] botEvent.register.prompt')
-  console.debug('friend', friend)
   if (!message) return false
   if (message.type !== 'text') return false
   if (message.text !== env.messageEvent.register.prompt) return false
+  console.log('[-] botEvent.register.prompt')
   let contents = null
   if (friend.groupCode === env.messageGroup.vipFriend) {
     contents = [
@@ -85,15 +84,15 @@ const prompt = async (replyToken, message, friend) => {
 }
 
 const random = async (replyToken, message) => {
-  console.log('[-] botEvent.register.random')
   if (!message) return false
   if (message.type !== 'text') return false
   if (message.text !== env.messageEvent.register.random) return false
+  console.log('[-] botEvent.register.random')
   const code = Math.floor(100000 + Math.random() * 900000).toString()
-  let result = await tool.db('setting')
+  let result = await tool
+    .db('setting')
     .where({ option: 'REGISTER_CODE' })
     .update({ value: code })
-  console.debug('result', result)
   const line = await tool.line.getClient(process.env.LINE_CHANNEL_ACCESS_TOKEN)
   await line.replyMessage(replyToken, [
     {
@@ -109,11 +108,10 @@ const random = async (replyToken, message) => {
 }
 
 const set = async (replyToken, message, friend) => {
-  console.log('[-] botEvent.register.set')
-  console.debug('friend', friend)
   if (!message) return false
   if (message.type !== 'text') return false
   if (!/^([0-9]{6})$/.test(message.text)) return false
+  console.log('[-] botEvent.register.set')
   let rows = await tool.db('setting').where({
     option: 'REGISTER_CODE',
     value: message.text
@@ -133,7 +131,8 @@ const set = async (replyToken, message, friend) => {
   }
   let expiredAt = new Date()
   expiredAt.setDate(expiredAt.getDate() + 1 + parseInt(activeDate, 10))
-  await tool.db('friend')
+  await tool
+    .db('friend')
     .where('friend_id', friend.friendId)
     .update({
       group_code:
@@ -143,7 +142,7 @@ const set = async (replyToken, message, friend) => {
       expired_at: expiredAt.toISOString().substr(0, 10),
       updated_at: tool.db.fn.now()
     })
-    const line = await tool.line.getClient(process.env.LINE_CHANNEL_ACCESS_TOKEN)
+  const line = await tool.line.getClient(process.env.LINE_CHANNEL_ACCESS_TOKEN)
   await line.replyMessage(replyToken, [
     {
       type: 'text',
