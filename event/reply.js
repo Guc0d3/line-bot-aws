@@ -40,6 +40,7 @@ const set = async (replyToken, message) => {
     replyMode = 1
   } else if (replyMode === 1) {
     console.debug('replyMode = 1')
+    console.debug('friend', JSON.stringify(friend))
     await line.pushMessage(friend.friendId, [
       {
         type: 'text',
