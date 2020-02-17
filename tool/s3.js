@@ -11,9 +11,8 @@ const uploadBuffer = async (
   buffer,
   acl = 'public-read'
 ) => {
-  console.debug('[-] tool.s3.uploadBuffer')
+  console.log('[-] tool.s3.uploadBuffer')
   let fileMime = await fileType.fromBuffer(buffer)
-  console.debug('fileMime', fileMime)
   if (fileMime == null) {
     console.error('the string supplied is not a file type')
     return null
@@ -21,7 +20,6 @@ const uploadBuffer = async (
   let now = moment().format('YYYY-MM-DD HH:mm:ss')
   let filePath = 'files/' + moment(now).format('YYYY-MM-DD') + '/'
   let fileName = moment(now).unix() + '.' + fileMime.ext
-  console.debug('key', filePath + fileName)
   let params = {
     ACL: acl,
     Body: buffer,
@@ -34,7 +32,6 @@ const uploadBuffer = async (
       secretAccessKey
     })
     let res = await s3.upload(params).promise()
-    console.debug('url:', res.Location)
     return res.Location
   } catch (error) {
     console.error(error)
