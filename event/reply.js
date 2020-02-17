@@ -4,6 +4,7 @@ const tool = require('../tool')
 
 var replyMode = 0
 var friend = null
+var friendId = null
 
 const set = async (replyToken, message) => {
   console.log('[-] botEvent.reply.set', message)
@@ -30,7 +31,9 @@ const set = async (replyToken, message) => {
       message.text.length - 1
     )
     friend = logic.line.getFriendProfileByDisplayName(displayName)
+    friendId = friend.friendId
     console.debug('friend', JSON.stringify(friend))
+    console.debug('friendId', friendId)
     await line.replyMessage(replyToken, [
       {
         type: 'text',
@@ -41,6 +44,7 @@ const set = async (replyToken, message) => {
   } else if (replyMode === 1) {
     console.debug('replyMode = 1')
     console.debug('friend', JSON.stringify(friend))
+    console.debug('friendId', friendId)
     await line.pushMessage(friend.friendId, [
       {
         type: 'text',
