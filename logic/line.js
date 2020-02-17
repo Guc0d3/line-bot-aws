@@ -1,3 +1,4 @@
+const lodash = require('lodash')
 const env = require('../env')
 const tool = require('../tool')
 
@@ -29,7 +30,8 @@ const getFriendProfile = async friendId => {
   } else {
     console.debug('update friend')
     friend.expiredAt = new Date(rows[0].expired_at)
-    await tool.db('friend')
+    await tool
+      .db('friend')
       .where('friend_id', friendId)
       .update({
         display_name: friend.displayName,
@@ -44,6 +46,17 @@ const getFriendProfile = async friendId => {
   return friend
 }
 
+const getFriendProfileBydisplayName = async displayName => {
+  console.debug('[-] getFriendProfileBydisplayName')
+  let rows = await tool
+    .db('friend')
+    .where('display_name', displayName)
+    .orderBy(updated_at, 'desc')
+  const friend = lodash.mapKeys(rows[0], (v, k) => lodash.camelCase(k))
+  return friend
+}
+
 module.exports = {
-  getFriendProfile
+  getFriendProfile,
+  getFriendProfileBydisplayName
 }
