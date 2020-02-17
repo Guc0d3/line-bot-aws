@@ -42,7 +42,6 @@ const getFriendProfile = async friendId => {
     friend.groupCode = rows[0].group_code
   }
   console.debug('friend:', JSON.stringify(friend))
-  console.debug('friend:', JSON.stringify(friend))
   return friend
 }
 
