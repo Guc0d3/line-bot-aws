@@ -31,6 +31,7 @@ KnexQueryBuilder.prototype.selectPagination = function({
   }
   return this
 }
+
 KnexQueryBuilder.prototype.selectSearch = function(columns, search) {
   if (search && search.trim().length > 0) {
     this.where(builder => {
@@ -45,7 +46,9 @@ KnexQueryBuilder.prototype.selectSearch = function(columns, search) {
   }
   return this
 }
+
 const db = require('knex')({
+  acquireConnectionTimeout: 300000,
   client: 'pg',
   connection: {
     host: process.env.POSTGRESQL_HOST,
@@ -54,8 +57,17 @@ const db = require('knex')({
     database: process.env.POSTGRESQL_DATABASE
   },
   pool: { min: 2, max: 20 },
-  acquireConnectionTimeout: 300000
+  postProcessResponse: (result, queryContext) => {
+    if (Array.isArray(result)) {
+      return result.map(row =>
+        lodash.mapKeys(row, (v, k) => lodash.camelCase(k))
+      )
+    } else {
+      return lodash.mapKeys(result, (v, k) => lodash.camelCase(k))
+    }
+  }
 })
+
 db.queryBuilder = function() {
   return new KnexQueryBuilder(db.client)
 }

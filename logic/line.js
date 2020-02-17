@@ -48,12 +48,12 @@ const getFriendProfile = async friendId => {
 const getFriendProfileByDisplayName = async displayName => {
   console.debug('[-] getFriendProfileByDisplayName')
   let rows = await tool
-    .db('friend')
+    .select('id', 'friend_id as friendId')
+    .from('friend')
     .where('display_name', displayName)
     .orderBy('updated_at', 'desc')
-  const friend = lodash.mapKeys(rows[0], (v, k) => lodash.camelCase(k))
-  console.debug('friend:', JSON.stringify(friend))
-  return friend
+  console.debug('rows:', JSON.stringify(rows))
+  return rows[0]
 }
 
 module.exports = {
