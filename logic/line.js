@@ -48,8 +48,7 @@ const getFriendProfile = async friendId => {
 const getFriendProfileByDisplayName = async displayName => {
   console.debug('[-] getFriendProfileByDisplayName')
   let rows = await tool
-    .select('id', 'friend_id as friendId')
-    .from('friend')
+    .db('friend')
     .where('display_name', displayName)
     .orderBy('updated_at', 'desc')
   console.debug('rows:', JSON.stringify(rows))
