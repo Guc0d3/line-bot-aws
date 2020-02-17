@@ -50,7 +50,7 @@ const getFriendProfileByDisplayName = async displayName => {
   let rows = await tool
     .db('friend')
     .where('display_name', displayName)
-    .orderBy(updated_at, 'desc')
+    .orderBy('updated_at', 'desc')
   const friend = lodash.mapKeys(rows[0], (v, k) => lodash.camelCase(k))
   console.debug('friend:', JSON.stringify(friend))
   return friend
