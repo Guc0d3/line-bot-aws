@@ -5,10 +5,10 @@ exports.handler = async event => {
   const friendId = event.events[0].source.userId
   const message = event.events[0].message
   const replyToken = event.events[0].replyToken
-  console.debug('[-] botEvent')
-  console.debug('friendId:', friendId)
-  console.debug('message:', message)
-  console.debug('replyToken:', replyToken)
+  console.log('[-] botEvent')
+  // console.debug('friendId:', friendId)
+  // console.debug('message:', message)
+  // console.debug('replyToken:', replyToken)
 
   const friend = await logic.line.getFriendProfile(friendId)
 

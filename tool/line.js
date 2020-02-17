@@ -1,14 +1,14 @@
 const lineBotSdk = require('@line/bot-sdk')
 
 const getClient = async channelAccessToken => {
-  console.log('[-] tool.line.getClient')
+  // console.log('[-] tool.line.getClient')
   return new lineBotSdk.Client({
     channelAccessToken
   })
 }
 
 const getMessageContent = async (line, messageId) => {
-  console.log('[-] tool.line.getMessageContent')
+  // console.log('[-] tool.line.getMessageContent')
   return new Promise((resolve, reject) => {
     line.getMessageContent(messageId).then(stream => {
       var content = []

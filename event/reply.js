@@ -9,7 +9,7 @@ var friendId = null
 const set = async (replyToken, message) => {
   if (!message) return false
   if (message.type !== 'text') return false
-  console.log('[-] botEvent.reply.set', message)
+  // console.log('[-] botEvent.reply.set', message)
   const line = await tool.line.getClient(process.env.LINE_CHANNEL_ACCESS_TOKEN)
   if (replyMode === 0) {
     console.debug('replyMode = 0')
@@ -17,6 +17,7 @@ const set = async (replyToken, message) => {
       env.messageEvent.reply.length + 1,
       message.text.length - 1
     )
+    console.debug('displayName', displayName)
     friend = logic.line.getFriendProfileByDisplayName(displayName)
     friendId = friend.friendId
     console.debug('friend', JSON.stringify(friend))

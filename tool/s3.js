@@ -11,7 +11,7 @@ const uploadBuffer = async (
   buffer,
   acl = 'public-read'
 ) => {
-  console.log('[-] tool.s3.uploadBuffer')
+  // console.log('[-] tool.s3.uploadBuffer')
   let fileMime = await fileType.fromBuffer(buffer)
   if (fileMime == null) {
     console.error('the string supplied is not a file type')

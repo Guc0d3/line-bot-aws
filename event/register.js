@@ -8,7 +8,7 @@ const get = async (replyToken, message) => {
   if (!message) return false
   if (message.type !== 'text') return false
   if (message.text !== env.messageEvent.register.get) return false
-  console.log('[-] botEvent.register.get')
+  // console.log('[-] botEvent.register.get')
   let rows = await tool.db('setting').where({ option: 'REGISTER_CODE' })
   if (rows.length != 1) return false
   const line = await tool.line.getClient(process.env.LINE_CHANNEL_ACCESS_TOKEN)
@@ -25,7 +25,7 @@ const prompt = async (replyToken, message, friend) => {
   if (!message) return false
   if (message.type !== 'text') return false
   if (message.text !== env.messageEvent.register.prompt) return false
-  console.log('[-] botEvent.register.prompt')
+  // console.log('[-] botEvent.register.prompt')
   let contents = null
   if (friend.groupCode === env.messageGroup.vipFriend) {
     contents = [
@@ -87,7 +87,7 @@ const random = async (replyToken, message) => {
   if (!message) return false
   if (message.type !== 'text') return false
   if (message.text !== env.messageEvent.register.random) return false
-  console.log('[-] botEvent.register.random')
+  // console.log('[-] botEvent.register.random')
   const code = Math.floor(100000 + Math.random() * 900000).toString()
   let result = await tool
     .db('setting')
@@ -111,7 +111,7 @@ const set = async (replyToken, message, friend) => {
   if (!message) return false
   if (message.type !== 'text') return false
   if (!/^([0-9]{6})$/.test(message.text)) return false
-  console.log('[-] botEvent.register.set')
+  // console.log('[-] botEvent.register.set')
   let rows = await tool.db('setting').where({
     option: 'REGISTER_CODE',
     value: message.text

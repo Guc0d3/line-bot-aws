@@ -3,7 +3,7 @@ const env = require('../env')
 const tool = require('../tool')
 
 const getFriendProfile = async friendId => {
-  console.log('[-] logic.line.getFriendProfile')
+  // console.log('[-] logic.line.getFriendProfile')
   const line = await tool.line.getClient(process.env.LINE_CHANNEL_ACCESS_TOKEN)
   let friend = await line.getProfile(friendId)
   friend.friendId = friend.userId
@@ -43,7 +43,7 @@ const getFriendProfile = async friendId => {
 }
 
 const getFriendProfileByDisplayName = async displayName => {
-  console.log('[-] logic.line.getFriendProfileByDisplayName')
+  // console.log('[-] logic.line.getFriendProfileByDisplayName')
   let rows = await tool
     .db('friend')
     .where('display_name', displayName)

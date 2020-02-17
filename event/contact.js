@@ -5,7 +5,7 @@ const get = async (replyToken, message) => {
   if (!message) return false
   if (message.type !== 'text') return false
   if (message.text !== env.messageEvent.contact) return false
-  console.log('[-] botEvent.contect.get')
+  // console.log('[-] botEvent.contect.get')
   let rows = await tool
     .db('setting')
     .where('option', 'CONTACT_IMAGE')

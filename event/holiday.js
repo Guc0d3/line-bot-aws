@@ -5,7 +5,7 @@ const get = async (replyToken, message) => {
   if (!message) return false
   if (message.type !== 'text') return false
   if (message.text !== env.messageEvent.holiday) return false
-  console.log('[-] botEvent.holiday.get')
+  // console.log('[-] botEvent.holiday.get')
   let rows = await tool
     .db('setting')
     .where('option', 'HOLIDAY_IMAGE')

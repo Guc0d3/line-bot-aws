@@ -2,7 +2,7 @@ const env = require('../env')
 const tool = require('../tool')
 
 const noEvent = async (replyToken, message, friend) => {
-  console.log('[-] botEvent.noEvent')
+  // console.log('[-] botEvent.noEvent')
   const line = await tool.line.getClient(process.env.LINE_CHANNEL_ACCESS_TOKEN)
   await line.replyMessage(replyToken, [
     {

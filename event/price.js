@@ -5,10 +5,10 @@ const get = async (replyToken, message, friend) => {
   if (!message) return false
   if (message.type !== 'text') return false
   if (message.text !== env.messageEvent.price) return false
-  console.log('[-] botEvent.price.get')
+  // console.log('[-] botEvent.price.get')
   const line = await tool.line.getClient(process.env.LINE_CHANNEL_ACCESS_TOKEN)
   if (friend.groupCode === env.messageGroup.banFriend) {
-    console.log('This friend is baned:', JSON.stringify(friend))
+    // console.log('This friend is baned:', JSON.stringify(friend))
     await line.replyMessage(replyToken, [
       {
         type: 'text',
