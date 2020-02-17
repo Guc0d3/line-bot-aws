@@ -56,16 +56,7 @@ const db = require('knex')({
     password: process.env.POSTGRESQL_PASSWORD,
     database: process.env.POSTGRESQL_DATABASE
   },
-  pool: { min: 2, max: 20 },
-  postProcessResponse: (result, queryContext) => {
-    if (Array.isArray(result)) {
-      return result.map(row =>
-        lodash.mapKeys(row, (v, k) => lodash.camelCase(k))
-      )
-    } else {
-      return lodash.mapKeys(result, (v, k) => lodash.camelCase(k))
-    }
-  }
+  pool: { min: 2, max: 20 }
 })
 
 db.queryBuilder = function() {
