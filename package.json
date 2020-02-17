@@ -1,0 +1,21 @@
+{
+  "author": "guc0d3",
+  "description": "guc0d3 line bot",
+  "license": "ISC",
+  "main": "index.js",
+  "name": "line-bot",
+  "private": true,
+  "version": "1.0.0",
+  "dependencies": {
+    "@line/bot-sdk": "^6.8.4",
+    "aws-sdk": "^2.615.0",
+    "file-type": "^14.1.1",
+    "knex": "^0.19.1",
+    "lodash": "^4.17.15",
+    "moment": "^2.24.0",
+    "pg": "^7.12.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
