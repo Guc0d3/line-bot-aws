@@ -45,8 +45,8 @@ const getFriendProfile = async friendId => {
   return friend
 }
 
-const getFriendProfileBydisplayName = async displayName => {
-  console.debug('[-] getFriendProfileBydisplayName')
+const getFriendProfileByDisplayName = async displayName => {
+  console.debug('[-] getFriendProfileByDisplayName')
   let rows = await tool
     .db('friend')
     .where('display_name', displayName)
@@ -57,5 +57,5 @@ const getFriendProfileBydisplayName = async displayName => {
 
 module.exports = {
   getFriendProfile,
-  getFriendProfileBydisplayName
+  getFriendProfileByDisplayName
 }
