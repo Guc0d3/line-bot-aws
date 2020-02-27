@@ -4,6 +4,11 @@ const logic = require('./logic')
 if (process.env.APP_ENV === 'production') {
   console.log = () => {}
   console.debug = () => {}
+} else if (process.env.APP_ENV === 'debug') {
+  // no redirect console.log && console.debug
+} else {
+  // 'test'
+  console.debug = () => {}
 }
 
 exports.handler = async event => {
