@@ -43,11 +43,19 @@ const getFriendProfile = async friendId => {
 }
 
 const getFriendProfileByDisplayName = async displayName => {
-  // console.log('[-] logic.line.getFriendProfileByDisplayName')
+  console.log('[-] logic.line.getFriendProfileByDisplayName')
+  console.debug(
+    tool
+      .db('friend')
+      .where('display_name', displayName)
+      .orderBy('updated_at', 'desc')
+      .toString()
+  )
   let rows = await tool
     .db('friend')
     .where('display_name', displayName)
     .orderBy('updated_at', 'desc')
+  console.debug('rows', JSON.stringify(rows))
   return lodash.mapKeys(rows[0], (v, k) => lodash.camelCase(k))
 }
 
