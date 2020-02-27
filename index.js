@@ -1,6 +1,12 @@
 const botEvent = require('./event')
 const logic = require('./logic')
 
+const appEnv = process.env.APP_ENV
+if (appEnv === 'production') {
+  console.log = () => {}
+  console.debug = () => {}
+}
+
 exports.handler = async event => {
   const friendId = event.events[0].source.userId
   const message = event.events[0].message
