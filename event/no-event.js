@@ -1,17 +1,16 @@
 const env = require('../env')
 const tool = require('../tool')
+const logic = require('../logic')
 
 const noEvent = async (replyToken, message, friend) => {
   // console.log('[-] botEvent.noEvent')
-  const line = await tool.line.getClient(process.env.LINE_CHANNEL_ACCESS_TOKEN)
+  const line = await logic.line.getClient()
   await line.replyMessage(replyToken, [
     {
       type: 'text',
       text: env.messageText.noEventPrompt[0]
     }
   ])
-  let rows = await tool.db('setting').where({ option: 'CONTACT_ID' })
-  let contactId = rows[0].value
   let payload = null
   if (message.type === 'text') {
     payload = [
@@ -22,12 +21,7 @@ const noEvent = async (replyToken, message, friend) => {
     ]
   } else if (message.type === 'image' || message.type === 'video') {
     const buffer = await tool.line.getMessageContent(line, message.id)
-    const url = await tool.s3.uploadBuffer(
-      process.env.BUCKET_NAME,
-      process.env.ACCESS_KEY_ID,
-      process.env.SECRET_ACCESS_KEY,
-      buffer
-    )
+    const url = await logic.s3.uploadBuffer(buffer)
     payload = [
       {
         type: message.type,
@@ -43,10 +37,15 @@ const noEvent = async (replyToken, message, friend) => {
       }
     ]
   }
-  await line.pushMessage(contactId, [
+  const masterOfBotGroupId = process.env.LINE_MASTER_OF_BOT_GROUP_ID
+  await line.pushMessage(masterOfBotGroupId, [
     {
       type: 'text',
       text: '=> ' + friend.displayName
+    },
+    {
+      type: 'text',
+      text: friend.pictureUrl
     },
     ...payload
   ])

@@ -2,13 +2,22 @@ const lodash = require('lodash')
 const env = require('../env')
 const tool = require('../tool')
 
-const getFriendProfile = async friendId => {
-  // console.log('[-] logic.line.getFriendProfile')
-  const line = await tool.line.getClient(process.env.LINE_CHANNEL_ACCESS_TOKEN)
-  let friend = await line.getProfile(friendId)
+var line = null
+
+const getClient = async () => {
+  if (line == null) {
+    line = await tool.line.getClient(process.env.LINE_CHANNEL_ACCESS_TOKEN)
+  }
+  return line
+}
+
+const getProfile = async userId => {
+  console.log('[-] logic.line.getProfile')
+  const line = await getClient()
+  let friend = await line.getProfile(userId)
   friend.friendId = friend.userId
   delete friend.userId
-  let rows = await tool.db('friend').where('friend_id', friendId)
+  let rows = await tool.db('friend').where('friend_id', userId)
   if (rows.length == 0) {
     rows = await tool.db('setting').where({ option: 'ACTIVE_DATE__NEW_FRIEND' })
     const activeDateNewFriend = parseInt(rows[0].value, 10)
@@ -30,7 +39,7 @@ const getFriendProfile = async friendId => {
     friend.expiredAt = new Date(rows[0].expired_at)
     await tool
       .db('friend')
-      .where('friend_id', friendId)
+      .where('friend_id', userId)
       .update({
         display_name: friend.displayName,
         picture_url: friend.pictureUrl,
@@ -42,15 +51,8 @@ const getFriendProfile = async friendId => {
   return friend
 }
 
-const getFriendProfileByDisplayName = async displayName => {
-  console.log('[-] logic.line.getFriendProfileByDisplayName')
-  console.debug(
-    tool
-      .db('friend')
-      .where('display_name', displayName)
-      .orderBy('updated_at', 'desc')
-      .toString()
-  )
+const getProfileByDisplayName = async displayName => {
+  console.log('[-] logic.line.getProfileByDisplayName')
   let rows = await tool
     .db('friend')
     .where('display_name', displayName)
@@ -60,6 +62,7 @@ const getFriendProfileByDisplayName = async displayName => {
 }
 
 module.exports = {
-  getFriendProfile,
-  getFriendProfileByDisplayName
+  getClient,
+  getProfile,
+  getProfileByDisplayName
 }
