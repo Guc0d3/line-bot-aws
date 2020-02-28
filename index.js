@@ -41,6 +41,8 @@ exports.handler = async event => {
   console.debug('replyToken', replyToken)
 
   const user = await logic.line.getProfile(userId)
+  console.log('user.displayName', user.displayName)
+  console.log('user.pictureUrl', user.pictureUrl)
 
   const works = [
     // public event
