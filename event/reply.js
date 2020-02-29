@@ -8,10 +8,10 @@ var friendId = null
 
 const set = async (replyToken, message) => {
   if (!message) return false
-  if (message.type !== 'text') return false
-  // console.log('[-] botEvent.reply.set', message)
+  console.log('[-] botEvent.reply.set', message)
   const line = await logic.line.getClient()
   if (replyMode === 0) {
+    if (message.type !== 'text') return false
     if (!message.text.startsWith(env.messageEvent.reply)) return false
     console.log('replyMode = 0')
     const displayName = message.text.substring(
