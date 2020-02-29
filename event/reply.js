@@ -20,6 +20,16 @@ const set = async (replyToken, message) => {
     )
     console.debug('displayName', displayName)
     friend = await logic.line.getProfileByName(displayName)
+    if (friend == null) {
+      await line.replyMessage(replyToken, [
+        {
+          type: 'text',
+          text: 'name of friend is mismatched'
+        }
+      ])
+      replyMode = 0
+      return true
+    }
     friendId = friend.friendId
     console.debug('friend', JSON.stringify(friend))
     console.debug('friendId', friendId)
