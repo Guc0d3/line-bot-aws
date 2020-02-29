@@ -5,19 +5,20 @@ const tool = require('../tool')
 var line = null
 
 const getClient = async () => {
+  console.log('[-] logic.line.getClient')
   if (line == null) {
     line = await tool.line.getClient(process.env.LINE_CHANNEL_ACCESS_TOKEN)
   }
   return line
 }
 
-const getProfileById = async userId => {
+const getProfileById = async id => {
   console.log('[-] logic.line.getProfileById')
   const line = await getClient()
-  let friend = await line.getProfile(userId)
+  let friend = await line.getProfile(id)
   friend.friendId = friend.userId
   delete friend.userId
-  let rows = await tool.db('friend').where('friend_id', userId)
+  let rows = await tool.db('friend').where('friend_id', id)
   if (rows.length == 0) {
     rows = await tool.db('setting').where({ option: 'ACTIVE_DATE__NEW_FRIEND' })
     const activeDateNewFriend = parseInt(rows[0].value, 10)
@@ -39,7 +40,7 @@ const getProfileById = async userId => {
     friend.expiredAt = new Date(rows[0].expired_at)
     await tool
       .db('friend')
-      .where('friend_id', userId)
+      .where('friend_id', id)
       .update({
         display_name: friend.displayName,
         picture_url: friend.pictureUrl,
@@ -51,11 +52,11 @@ const getProfileById = async userId => {
   return friend
 }
 
-const getProfileByName = async displayName => {
+const getProfileByName = async name => {
   console.log('[-] logic.line.getProfileByName')
   let rows = await tool
     .db('friend')
-    .where('display_name', displayName)
+    .where('display_name', name)
     .orderBy('updated_at', 'desc')
   console.debug('rows', JSON.stringify(rows))
   if (rows.length !== 1) return null
