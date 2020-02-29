@@ -40,7 +40,7 @@ exports.handler = async event => {
   console.debug('userId', userId)
   console.debug('replyToken', replyToken)
 
-  const user = await logic.line.getProfile(userId)
+  const user = await logic.line.getProfileById(userId)
   console.log('user.displayName', user.displayName)
   console.log('user.pictureUrl', user.pictureUrl)
 

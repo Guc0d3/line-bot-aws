@@ -19,7 +19,7 @@ const set = async (replyToken, message) => {
       message.text.length
     )
     console.debug('displayName', displayName)
-    friend = await logic.line.getProfileByDisplayName(displayName)
+    friend = await logic.line.getProfileByName(displayName)
     friendId = friend.friendId
     console.debug('friend', JSON.stringify(friend))
     console.debug('friendId', friendId)

@@ -11,8 +11,8 @@ const getClient = async () => {
   return line
 }
 
-const getProfile = async userId => {
-  console.log('[-] logic.line.getProfile')
+const getProfileById = async userId => {
+  console.log('[-] logic.line.getProfileById')
   const line = await getClient()
   let friend = await line.getProfile(userId)
   friend.friendId = friend.userId
@@ -51,18 +51,19 @@ const getProfile = async userId => {
   return friend
 }
 
-const getProfileByDisplayName = async displayName => {
-  console.log('[-] logic.line.getProfileByDisplayName')
+const getProfileByName = async displayName => {
+  console.log('[-] logic.line.getProfileByName')
   let rows = await tool
     .db('friend')
     .where('display_name', displayName)
     .orderBy('updated_at', 'desc')
   console.debug('rows', JSON.stringify(rows))
+  if (rows.length !== 1) return null
   return lodash.mapKeys(rows[0], (v, k) => lodash.camelCase(k))
 }
 
 module.exports = {
   getClient,
-  getProfile,
-  getProfileByDisplayName
+  getProfileById,
+  getProfileByName
 }
