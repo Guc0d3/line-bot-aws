@@ -44,12 +44,26 @@ const set = async (replyToken, message) => {
     console.debug('replyMode = 1')
     console.debug('friend', JSON.stringify(friend))
     console.debug('friendId', friendId)
-    await line.pushMessage(friend.friendId, [
-      {
-        type: 'text',
-        text: message.text
-      }
-    ])
+
+    if (message.type === 'text') {
+      await line.pushMessage(friend.friendId, [
+        {
+          type: 'text',
+          text: message.text
+        }
+      ])
+    } else if (message.type === 'image' || message.type === 'video') {
+      const buffer = await tool.line.getMessageContent(line, message.id)
+      const url = await logic.s3.uploadBuffer(buffer)
+      await line.pushMessage(friend.friendId, [
+        {
+          type: message.type,
+          originalContentUrl: url,
+          previewImageUrl: url
+        }
+      ])
+    }
+
     await line.replyMessage(replyToken, [
       {
         type: 'text',
