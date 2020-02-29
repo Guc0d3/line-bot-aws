@@ -41,11 +41,12 @@ const noEvent = async (replyToken, message, friend) => {
   await line.pushMessage(masterOfBotGroupId, [
     {
       type: 'text',
-      text: '=> ' + friend.displayName
+      text: env.messageEvent.reply + friend.displayName
     },
     {
-      type: 'text',
-      text: friend.pictureUrl
+      type: 'image',
+      originalContentUrl: friend.pictureUrl,
+      previewImageUrl: friend.pictureUrl
     },
     ...payload
   ])
