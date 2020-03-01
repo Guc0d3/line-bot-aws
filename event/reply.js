@@ -45,7 +45,7 @@ const set = async (replyToken, message) => {
     console.debug('friendId', friendId)
 
     if (message.type === 'text') {
-      await line.pushMessage(friend.friendId, [
+      await logic.line.pushMessage(friend.friendId, [
         {
           type: 'text',
           text: message.text
