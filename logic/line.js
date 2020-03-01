@@ -70,9 +70,21 @@ const getProfileByName = async name => {
   return lodash.mapKeys(rows[0], (v, k) => lodash.camelCase(k))
 }
 
+const pushMessage = async (to, messages) => {
+  console.debug('[-] logic.line.pushMessage')
+  return await getClient().pushMessage(to, messages)
+}
+
+const replyMessage = async (replyToken, messages) => {
+  console.debug('[-] logic.line.replyMessage')
+  return await getClient().replyMessage(replyToken, messages)
+}
+
 module.exports = {
   getClient,
   getMessageContent,
   getProfileById,
-  getProfileByName
+  getProfileByName,
+  pushMessage,
+  replyMessage
 }

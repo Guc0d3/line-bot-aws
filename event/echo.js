@@ -3,14 +3,13 @@ const logic = require('../logic')
 
 const echo = async (replyToken, message, friend) => {
   console.debug('[-] botEvent.echo')
-  const line = logic.line.getClient()
-  await line.replyMessage(replyToken, [
+  await logic.line.replyMessage(replyToken, [
     {
       type: 'text',
       text: env.messageText.echoPrompt[0]
     }
   ])
-  let payload = [
+  let messages = [
     {
       type: 'text',
       text: env.messageEvent.reply + friend.displayName
@@ -23,7 +22,7 @@ const echo = async (replyToken, message, friend) => {
   ]
   switch (message.type) {
     case 'text':
-      payload.push({
+      messages.push({
         type: 'text',
         text: message.text
       })
@@ -31,20 +30,22 @@ const echo = async (replyToken, message, friend) => {
     case 'image':
       const buffer = await logic.line.getMessageContent(message.id)
       const url = await logic.s3.uploadBuffer(buffer)
-      payload.push({
+      messages.push({
         type: message.type,
         originalContentUrl: url,
         previewImageUrl: url
       })
       break
     default:
-      payload.push({
+      messages.push({
         type: 'text',
         text: env.messageText.echoPrompt[1]
       })
   }
-  const masterOfBotGroupId = process.env.LINE_MASTER_OF_BOT_GROUP_ID
-  await line.pushMessage(masterOfBotGroupId, payload)
+  await logic.line.pushMessage(
+    process.env.LINE_MASTER_OF_BOT_GROUP_ID,
+    messages
+  )
   return true
 }
 
