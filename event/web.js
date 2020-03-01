@@ -1,15 +1,16 @@
 const env = require('../env')
+const logic = require('../logic')
 const tool = require('../tool')
 
 const prompt = async (replyToken, message) => {
   if (!message) return false
   if (message.type !== 'text') return false
   if (message.text !== env.messageEvent.web.prompt) return false
-  // console.log('[-] botEvent.web.prompt')
+  console.debug('[-] botEvent.web.prompt')
   let rows = await tool.db('setting').where({ option: 'WEB_URL' })
   if (rows.length !== 1) return false
   const uri = rows[0].value
-  const line = await tool.line.getClient(process.env.LINE_CHANNEL_ACCESS_TOKEN)
+  const line = logic.line.getClient()
   await line.replyMessage(replyToken, [
     {
       type: 'flex',

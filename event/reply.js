@@ -9,7 +9,7 @@ var friendId = null
 const set = async (replyToken, message) => {
   if (!message) return false
   console.log('[-] botEvent.reply.set', message)
-  const line = await logic.line.getClient()
+  const line = logic.line.getClient()
   if (replyMode === 0) {
     if (message.type !== 'text') return false
     if (!message.text.startsWith(env.messageEvent.reply)) return false

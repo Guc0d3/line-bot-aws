@@ -1,11 +1,12 @@
 const env = require('../env')
+const logic = require('../logic')
 const tool = require('../tool')
 
 const get = async (replyToken, message) => {
   if (!message) return false
   if (message.type !== 'text') return false
   if (message.text !== env.messageEvent.holiday) return false
-  // console.log('[-] botEvent.holiday.get')
+  console.debug('[-] botEvent.holiday.get')
   let rows = await tool
     .db('setting')
     .where('option', 'HOLIDAY_IMAGE')
@@ -28,7 +29,7 @@ const get = async (replyToken, message) => {
     }
     return total
   }, [])
-  const line = await tool.line.getClient(process.env.LINE_CHANNEL_ACCESS_TOKEN)
+  const line = logic.line.getClient()
   await line.replyMessage(replyToken, messages)
   return true
 }

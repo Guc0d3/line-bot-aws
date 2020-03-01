@@ -1,10 +1,10 @@
 const env = require('../env')
-const tool = require('../tool')
 const logic = require('../logic')
+const tool = require('../tool')
 
 const noEvent = async (replyToken, message, friend) => {
-  // console.log('[-] botEvent.noEvent')
-  const line = await logic.line.getClient()
+  console.debug('[-] botEvent.noEvent')
+  const line = logic.line.getClient()
   await line.replyMessage(replyToken, [
     {
       type: 'text',

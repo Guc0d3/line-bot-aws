@@ -1,5 +1,6 @@
 const moment = require('moment')
 const env = require('../env')
+const logic = require('../logic')
 const tool = require('../tool')
 
 moment.locale('th')
@@ -8,10 +9,10 @@ const get = async (replyToken, message) => {
   if (!message) return false
   if (message.type !== 'text') return false
   if (message.text !== env.messageEvent.register.get) return false
-  // console.log('[-] botEvent.register.get')
+  console.debug('[-] botEvent.register.get')
   let rows = await tool.db('setting').where({ option: 'REGISTER_CODE' })
   if (rows.length != 1) return false
-  const line = await tool.line.getClient(process.env.LINE_CHANNEL_ACCESS_TOKEN)
+  const line = logic.line.getClient()
   await line.replyMessage(replyToken, [
     {
       type: 'text',
@@ -25,7 +26,7 @@ const prompt = async (replyToken, message, friend) => {
   if (!message) return false
   if (message.type !== 'text') return false
   if (message.text !== env.messageEvent.register.prompt) return false
-  // console.log('[-] botEvent.register.prompt')
+  console.debug('[-] botEvent.register.prompt')
   let contents = null
   if (friend.groupCode === env.messageGroup.vipFriend) {
     contents = [
@@ -64,7 +65,7 @@ const prompt = async (replyToken, message, friend) => {
       }
     ]
   }
-  const line = await tool.line.getClient(process.env.LINE_CHANNEL_ACCESS_TOKEN)
+  const line = logic.line.getClient()
   await line.replyMessage(replyToken, [
     {
       type: 'flex',
@@ -93,7 +94,7 @@ const random = async (replyToken, message) => {
     .db('setting')
     .where({ option: 'REGISTER_CODE' })
     .update({ value: code })
-  const line = await tool.line.getClient(process.env.LINE_CHANNEL_ACCESS_TOKEN)
+  const line = logic.line.getClient()
   await line.replyMessage(replyToken, [
     {
       type: 'text',
@@ -142,7 +143,7 @@ const set = async (replyToken, message, friend) => {
       expired_at: expiredAt.toISOString().substr(0, 10),
       updated_at: tool.db.fn.now()
     })
-  const line = await tool.line.getClient(process.env.LINE_CHANNEL_ACCESS_TOKEN)
+  const line = logic.line.getClient()
   await line.replyMessage(replyToken, [
     {
       type: 'text',

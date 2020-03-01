@@ -4,17 +4,17 @@ const tool = require('../tool')
 
 var line = null
 
-const getClient = async () => {
-  console.log('[-] logic.line.getClient')
+const getClient = () => {
+  console.debug('[-] logic.line.getClient')
   if (line == null) {
-    line = await tool.line.getClient(process.env.LINE_CHANNEL_ACCESS_TOKEN)
+    line = tool.line.getClient(process.env.LINE_CHANNEL_ACCESS_TOKEN)
   }
   return line
 }
 
 const getProfileById = async id => {
-  console.log('[-] logic.line.getProfileById')
-  const line = await getClient()
+  console.debug('[-] logic.line.getProfileById')
+  const line = getClient()
   let friend = await line.getProfile(id)
   friend.friendId = friend.userId
   delete friend.userId
@@ -53,7 +53,7 @@ const getProfileById = async id => {
 }
 
 const getProfileByName = async name => {
-  console.log('[-] logic.line.getProfileByName')
+  console.debug('[-] logic.line.getProfileByName')
   let rows = await tool
     .db('friend')
     .where('display_name', name)
