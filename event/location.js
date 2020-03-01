@@ -7,22 +7,12 @@ const get = async (replyToken, message) => {
   if (message.type !== 'text') return false
   if (message.text !== env.messageEvent.location) return false
   console.debug('[-] botEvent.location.get')
-  let rows = await tool.db('setting').where('option', 'LOCATION_ADDRESS')
-  let address = rows[0].value
-  rows = await tool.db('setting').where('option', 'LOCATION_LATITUDE')
-  let latitude = parseFloat(rows[0].value)
-  rows = await tool.db('setting').where('option', 'LOCATION_LONGITUDE')
-  let longitude = parseFloat(rows[0].value)
-  rows = await tool.db('setting').where('option', 'LOCATION_TITLE')
-  let title = rows[0].value
+  const location = await logic.setting.location.get()
   const line = logic.line.getClient()
   await line.replyMessage(replyToken, [
     {
       type: 'location',
-      title,
-      address,
-      latitude,
-      longitude
+      ...location
     }
   ])
   return true
