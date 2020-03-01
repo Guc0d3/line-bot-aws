@@ -1,6 +1,6 @@
 const env = require('../env')
 const logic = require('../logic')
-const tool = require('../tool')
+// const tool = require('../tool')
 
 const get = async (replyToken, message) => {
   if (!message) return false
@@ -29,7 +29,7 @@ const get = async (replyToken, message) => {
   //   }
   //   return total
   // }, [])
-  const contact = logic.setting.getContact()
+  const contact = await logic.setting.getContact()
   let messages = []
   if (contact.image) {
     messages.push({
