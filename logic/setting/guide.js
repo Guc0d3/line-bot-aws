@@ -7,13 +7,13 @@ const get = async () => {
     .orWhere('option', 'GUIDE_MESSAGE')
   if (rows.length != 2) throw 'setting.guide is invalid'
   let guide = rows.reduce((total, row) => {
-    if (row.option === 'CONTACT_IMAGE' && row.value) {
+    if (row.option === 'GUIDE_IMAGE' && row.value) {
       return {
         ...total,
         image: row.value
       }
     }
-    if (row.option === 'CONTACT_MESSAGE' && row.value) {
+    if (row.option === 'GUIDE_MESSAGE' && row.value) {
       return {
         ...total,
         text: row.value
