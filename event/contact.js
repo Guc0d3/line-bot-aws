@@ -1,5 +1,4 @@
 const env = require('../env')
-const logic = require('../logic')
 const tool = require('../tool')
 
 const get = async (replyToken, message) => {
@@ -7,19 +6,20 @@ const get = async (replyToken, message) => {
   if (message.type !== 'text') return false
   if (message.text !== env.messageEvent.contact) return false
   console.debug('[-] botEvent.contect.get')
-  const contact = await logic.setting.contact.get()
   let messages = []
-  if (contact.image) {
+  let rows = await tool.db('setting').where('option', 'CONTACT_IMAGE')
+  if (rows[0].value) {
     messages.push({
       type: 'image',
-      originalContentUrl: contact.image,
-      previewImageUrl: contact.image
+      originalContentUrl: rows[0].value,
+      previewImageUrl: rows[0].value
     })
   }
-  if (contact.text) {
+  rows = await tool.db('setting').where('option', 'CONTACT_MESSAGE')
+  if (rows[0].value) {
     messages.push({
       type: 'text',
-      text: contact.text
+      text: rows[0].value
     })
   }
   await tool.line.replyMessage(replyToken, messages)
