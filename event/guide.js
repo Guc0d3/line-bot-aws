@@ -1,5 +1,4 @@
 const env = require('../env')
-const logic = require('../logic')
 const tool = require('../tool')
 
 const get = async (replyToken, message) => {
@@ -7,19 +6,20 @@ const get = async (replyToken, message) => {
   if (message.type !== 'text') return false
   if (message.text !== env.messageEvent.guide) return false
   console.debug('[-] botEvent.guide.get')
-  const guide = await logic.setting.guide.get()
   let messages = []
-  if (guide.image) {
+  let rows = await tool.db('setting').where('option', 'GUIDE_IMAGE')
+  if (rows[0].value) {
     messages.push({
       type: 'image',
-      originalContentUrl: guide.image,
-      previewImageUrl: guide.image
+      originalContentUrl: rows[0].value,
+      previewImageUrl: rows[0].value
     })
   }
-  if (guide.text) {
+  rows = await tool.db('setting').where('option', 'GUIDE_MESSAGE')
+  if (rows[0].value) {
     messages.push({
       type: 'text',
-      text: guide.text
+      text: rows[0].value
     })
   }
   await tool.line.replyMessage(replyToken, messages)
