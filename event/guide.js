@@ -1,6 +1,5 @@
 const env = require('../env')
 const logic = require('../logic')
-const tool = require('../tool')
 
 const get = async (replyToken, message) => {
   if (!message) return false
