@@ -3,12 +3,24 @@ const logic = require('../logic')
 
 const echo = async (replyToken, message, friend) => {
   console.debug('[-] botEvent.echo')
-  await logic.line.replyMessage(replyToken, [
-    {
-      type: 'text',
-      text: env.messageText.echoPrompt[0]
-    }
-  ])
+  switch (message.type) {
+    case 'text':
+    case 'image':
+      await logic.line.replyMessage(replyToken, [
+        {
+          type: 'text',
+          text: env.messageText.echoPrompt[0]
+        }
+      ])
+      break
+    default:
+      await logic.line.replyMessage(replyToken, [
+        {
+          type: 'text',
+          text: env.messageText.echoPrompt[1]
+        }
+      ])
+  }
   let messages = [
     {
       type: 'text',
@@ -39,7 +51,7 @@ const echo = async (replyToken, message, friend) => {
     default:
       messages.push({
         type: 'text',
-        text: env.messageText.echoPrompt[1]
+        text: env.messageText.echoPrompt[2]
       })
   }
   await logic.line.pushMessage(
