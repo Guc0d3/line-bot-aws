@@ -2,26 +2,24 @@ const lodash = require('lodash')
 const env = require('../env')
 const tool = require('../tool')
 
-var client = null
+// const getClient = () => {
+//   console.debug('[-] logic.line.getClient')
+//   if (client == null) {
+//     client = tool.line.create(process.env.LINE_CHANNEL_ACCESS_TOKEN)
+//   }
+//   return client
+// }
 
-const getClient = () => {
-  console.debug('[-] logic.line.getClient')
-  if (client == null) {
-    client = tool.line.getClient(process.env.LINE_CHANNEL_ACCESS_TOKEN)
-  }
-  return client
-}
-
-const getMessageContent = async id => {
-  console.debug('[-] logic.line.getMessageContent')
-  const client = getClient()
-  const buffer = await tool.line.getMessageContent(client, id)
-  return buffer
-}
+// const getMessageContent = async id => {
+//   console.debug('[-] logic.line.getMessageContent')
+//   const client = getClient()
+//   const buffer = await tool.line.getMessageContent(client, id)
+//   return buffer
+// }
 
 const getProfileById = async userId => {
   console.debug('[-] logic.line.getProfileById')
-  let friend = await getClient().getProfile(userId)
+  let friend = await tool.line.getProfile(userId)
   friend.friendId = friend.userId
   delete friend.userId
   let rows = await tool.db('friend').where('friend_id', userId)
@@ -58,32 +56,32 @@ const getProfileById = async userId => {
   return friend
 }
 
-const getProfileByName = async name => {
+const getProfileByName = async userDisplayName => {
   console.debug('[-] logic.line.getProfileByName')
   let rows = await tool
     .db('friend')
-    .where('display_name', name)
+    .where('display_name', userDisplayName)
     .orderBy('updated_at', 'desc')
   console.debug('rows', JSON.stringify(rows))
   if (rows.length !== 1) return null
   return lodash.mapKeys(rows[0], (v, k) => lodash.camelCase(k))
 }
 
-const pushMessage = async (to, messages) => {
-  console.debug('[-] logic.line.pushMessage')
-  return await getClient().pushMessage(to, messages)
-}
+// const pushMessage = async (to, messages) => {
+//   console.debug('[-] logic.line.pushMessage')
+//   return await getClient().pushMessage(to, messages)
+// }
 
-const replyMessage = async (replyToken, messages) => {
-  console.debug('[-] logic.line.replyMessage')
-  return await getClient().replyMessage(replyToken, messages)
-}
+// const replyMessage = async (replyToken, messages) => {
+//   console.debug('[-] logic.line.replyMessage')
+//   return await getClient().replyMessage(replyToken, messages)
+// }
 
 module.exports = {
-  getClient,
-  getMessageContent,
+  // getClient,
+  // getMessageContent,
   getProfileById,
-  getProfileByName,
-  pushMessage,
-  replyMessage
+  getProfileByName
+  // pushMessage,
+  // replyMessage
 }

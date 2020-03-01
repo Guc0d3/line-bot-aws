@@ -1,5 +1,6 @@
 const botEvent = require('./event')
 const logic = require('./logic')
+const tool = require('./tool')
 
 if (process.env.APP_ENV === 'production') {
   console.log = () => {}
@@ -10,6 +11,8 @@ if (process.env.APP_ENV === 'production') {
   // 'test'
   console.debug = () => {}
 }
+
+tool.line.create(process.env.LINE_CHANNEL_ACCESS_TOKEN)
 
 exports.handler = async event => {
   console.log('[-] botEvent')

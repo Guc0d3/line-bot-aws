@@ -1,6 +1,5 @@
 const moment = require('moment')
 const env = require('../env')
-const logic = require('../logic')
 const tool = require('../tool')
 
 moment.locale('th')
@@ -12,7 +11,7 @@ const get = async (replyToken, message) => {
   console.debug('[-] botEvent.register.get')
   let rows = await tool.db('setting').where({ option: 'REGISTER_CODE' })
   if (rows.length != 1) return false
-  await logic.line.replyMessage(replyToken, [
+  await tool.line.replyMessage(replyToken, [
     {
       type: 'text',
       text: env.messageText.registerPrompt[9] + rows[0].value
@@ -64,7 +63,7 @@ const prompt = async (replyToken, message, friend) => {
       }
     ]
   }
-  await logic.line.replyMessage(replyToken, [
+  await tool.line.replyMessage(replyToken, [
     {
       type: 'flex',
       altText: env.messageText.registerPrompt[5],
@@ -92,7 +91,7 @@ const random = async (replyToken, message) => {
     .db('setting')
     .where({ option: 'REGISTER_CODE' })
     .update({ value: code })
-  await logic.line.replyMessage(replyToken, [
+  await tool.line.replyMessage(replyToken, [
     {
       type: 'text',
       text: env.messageText.registerPrompt[7]
@@ -140,7 +139,7 @@ const set = async (replyToken, message, friend) => {
       expired_at: expiredAt.toISOString().substr(0, 10),
       updated_at: tool.db.fn.now()
     })
-  await logic.line.replyMessage(replyToken, [
+  await tool.line.replyMessage(replyToken, [
     {
       type: 'text',
       text: env.messageText.registerPrompt[6]

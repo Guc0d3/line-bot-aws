@@ -1,5 +1,6 @@
 const env = require('../env')
 const logic = require('../logic')
+const tool = require('../tool')
 
 const get = async (replyToken, message) => {
   if (!message) return false
@@ -21,7 +22,7 @@ const get = async (replyToken, message) => {
       text: holiday.text
     })
   }
-  await logic.line.replyMessage(replyToken, messages)
+  await tool.line.replyMessage(replyToken, messages)
   return true
 }
 

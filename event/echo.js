@@ -1,12 +1,13 @@
 const env = require('../env')
 const logic = require('../logic')
+const tool = require('../tool')
 
 const echo = async (replyToken, message, friend) => {
   console.debug('[-] botEvent.echo')
   switch (message.type) {
     case 'text':
     case 'image':
-      await logic.line.replyMessage(replyToken, [
+      await tool.line.replyMessage(replyToken, [
         {
           type: 'text',
           text: env.messageText.echoPrompt[0]
@@ -14,7 +15,7 @@ const echo = async (replyToken, message, friend) => {
       ])
       break
     default:
-      await logic.line.replyMessage(replyToken, [
+      await tool.line.replyMessage(replyToken, [
         {
           type: 'text',
           text: env.messageText.echoPrompt[1]
@@ -40,7 +41,7 @@ const echo = async (replyToken, message, friend) => {
       })
       break
     case 'image':
-      const buffer = await logic.line.getMessageContent(message.id)
+      const buffer = await tool.line.getMessageContent(message.id)
       const url = await logic.s3.uploadBuffer(buffer)
       messages.push({
         type: message.type,
@@ -54,10 +55,7 @@ const echo = async (replyToken, message, friend) => {
         text: env.messageText.echoPrompt[2]
       })
   }
-  await logic.line.pushMessage(
-    process.env.LINE_MASTER_OF_BOT_GROUP_ID,
-    messages
-  )
+  await tool.line.pushMessage(process.env.LINE_MASTER_OF_BOT_GROUP_ID, messages)
   return true
 }
 

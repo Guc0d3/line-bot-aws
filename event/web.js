@@ -1,5 +1,4 @@
 const env = require('../env')
-const logic = require('../logic')
 const tool = require('../tool')
 
 const prompt = async (replyToken, message) => {
@@ -10,7 +9,7 @@ const prompt = async (replyToken, message) => {
   let rows = await tool.db('setting').where({ option: 'WEB_URL' })
   if (rows.length !== 1) return false
   const uri = rows[0].value
-  await logic.line.replyMessage(replyToken, [
+  await tool.line.replyMessage(replyToken, [
     {
       type: 'flex',
       altText: 'bot send web menu',

@@ -1,10 +1,12 @@
 const lineBotSdk = require('@line/bot-sdk')
 
-const getClient = channelAccessToken => {
-  return new lineBotSdk.Client({ channelAccessToken })
+var client = null
+
+const create = channelAccessToken => {
+  client = new lineBotSdk.Client({ channelAccessToken })
 }
 
-const getMessageContent = async (client, messageId) => {
+const getMessageContent = async messageId => {
   return new Promise((resolve, reject) => {
     client.getMessageContent(messageId).then(stream => {
       var content = []
@@ -22,7 +24,22 @@ const getMessageContent = async (client, messageId) => {
   })
 }
 
+const getProfile = async userId => {
+  return await client.getProfile(userId)
+}
+
+const pushMessage = async (to, messages) => {
+  return await client.pushMessage(to, messages)
+}
+
+const replyMessage = async (replyToken, messages) => {
+  return await client.replyMessage(replyToken, messages)
+}
+
 module.exports = {
-  getClient,
-  getMessageContent
+  create,
+  getMessageContent,
+  getProfile,
+  pushMessage,
+  replyMessage
 }

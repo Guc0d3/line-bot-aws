@@ -1,5 +1,4 @@
 const env = require('../env')
-const logic = require('../logic')
 const tool = require('../tool')
 
 const get = async (replyToken, message, friend) => {
@@ -9,7 +8,7 @@ const get = async (replyToken, message, friend) => {
   console.debug('[-] botEvent.price.get')
   if (friend.groupCode === env.messageGroup.banFriend) {
     console.log('This friend is baned:', JSON.stringify(friend))
-    await logic.line.replyMessage(replyToken, [
+    await tool.line.replyMessage(replyToken, [
       {
         type: 'text',
         text: env.messageText.banFriend
@@ -44,9 +43,9 @@ const get = async (replyToken, message, friend) => {
       }
       return total
     }, [])
-    await logic.line.replyMessage(replyToken, messages)
+    await tool.line.replyMessage(replyToken, messages)
   } else {
-    await logic.line.replyMessage(replyToken, [
+    await tool.line.replyMessage(replyToken, [
       {
         type: 'text',
         text: env.messageText.exipred[0]
