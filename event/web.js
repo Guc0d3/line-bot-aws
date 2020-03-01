@@ -10,8 +10,7 @@ const prompt = async (replyToken, message) => {
   let rows = await tool.db('setting').where({ option: 'WEB_URL' })
   if (rows.length !== 1) return false
   const uri = rows[0].value
-  const line = logic.line.getClient()
-  await line.replyMessage(replyToken, [
+  await logic.line.replyMessage(replyToken, [
     {
       type: 'flex',
       altText: 'bot send web menu',

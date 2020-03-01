@@ -7,10 +7,9 @@ const get = async (replyToken, message, friend) => {
   if (message.type !== 'text') return false
   if (message.text !== env.messageEvent.price) return false
   console.debug('[-] botEvent.price.get')
-  const line = logic.line.getClient()
   if (friend.groupCode === env.messageGroup.banFriend) {
     console.log('This friend is baned:', JSON.stringify(friend))
-    await line.replyMessage(replyToken, [
+    await logic.line.replyMessage(replyToken, [
       {
         type: 'text',
         text: env.messageText.banFriend
@@ -45,9 +44,9 @@ const get = async (replyToken, message, friend) => {
       }
       return total
     }, [])
-    await line.replyMessage(replyToken, messages)
+    await logic.line.replyMessage(replyToken, messages)
   } else {
-    await line.replyMessage(replyToken, [
+    await logic.line.replyMessage(replyToken, [
       {
         type: 'text',
         text: env.messageText.exipred[0]

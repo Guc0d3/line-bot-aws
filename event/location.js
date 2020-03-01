@@ -8,8 +8,7 @@ const get = async (replyToken, message) => {
   if (message.text !== env.messageEvent.location) return false
   console.debug('[-] botEvent.location.get')
   const location = await logic.setting.location.get()
-  const line = logic.line.getClient()
-  await line.replyMessage(replyToken, [
+  await logic.line.replyMessage(replyToken, [
     {
       type: 'location',
       ...location

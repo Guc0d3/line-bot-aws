@@ -21,8 +21,7 @@ const get = async (replyToken, message) => {
       text: contact.text
     })
   }
-  const line = logic.line.getClient()
-  await line.replyMessage(replyToken, messages)
+  await logic.line.replyMessage(replyToken, messages)
   return true
 }
 

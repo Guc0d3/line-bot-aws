@@ -2,30 +2,29 @@ const lodash = require('lodash')
 const env = require('../env')
 const tool = require('../tool')
 
-var line = null
+var client = null
 
 const getClient = () => {
   console.debug('[-] logic.line.getClient')
-  if (line == null) {
-    line = tool.line.getClient(process.env.LINE_CHANNEL_ACCESS_TOKEN)
+  if (client == null) {
+    client = tool.line.getClient(process.env.LINE_CHANNEL_ACCESS_TOKEN)
   }
-  return line
+  return client
 }
 
 const getMessageContent = async id => {
   console.debug('[-] logic.line.getMessageContent')
-  const line = getClient()
-  const buffer = await tool.line.getMessageContent(line, id)
+  const client = getClient()
+  const buffer = await tool.line.getMessageContent(client, id)
   return buffer
 }
 
-const getProfileById = async id => {
+const getProfileById = async userId => {
   console.debug('[-] logic.line.getProfileById')
-  const line = getClient()
-  let friend = await line.getProfile(id)
+  let friend = await getClient().getProfile(userId)
   friend.friendId = friend.userId
   delete friend.userId
-  let rows = await tool.db('friend').where('friend_id', id)
+  let rows = await tool.db('friend').where('friend_id', userId)
   if (rows.length == 0) {
     rows = await tool.db('setting').where({ option: 'ACTIVE_DATE__NEW_FRIEND' })
     const activeDateNewFriend = parseInt(rows[0].value, 10)
@@ -47,7 +46,7 @@ const getProfileById = async id => {
     friend.expiredAt = new Date(rows[0].expired_at)
     await tool
       .db('friend')
-      .where('friend_id', id)
+      .where('friend_id', userId)
       .update({
         display_name: friend.displayName,
         picture_url: friend.pictureUrl,

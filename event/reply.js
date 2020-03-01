@@ -9,7 +9,6 @@ var friendId = null
 const set = async (replyToken, message) => {
   if (!message) return false
   console.log('[-] botEvent.reply.set', message)
-  const line = logic.line.getClient()
   if (replyMode === 0) {
     if (message.type !== 'text') return false
     if (!message.text.startsWith(env.messageEvent.reply)) return false
@@ -21,7 +20,7 @@ const set = async (replyToken, message) => {
     console.debug('displayName', displayName)
     friend = await logic.line.getProfileByName(displayName)
     if (friend == null) {
-      await line.replyMessage(replyToken, [
+      await logic.line.replyMessage(replyToken, [
         {
           type: 'text',
           text: 'name of friend is mismatched'
@@ -33,7 +32,7 @@ const set = async (replyToken, message) => {
     friendId = friend.friendId
     console.debug('friend', JSON.stringify(friend))
     console.debug('friendId', friendId)
-    await line.replyMessage(replyToken, [
+    await logic.line.replyMessage(replyToken, [
       {
         type: 'text',
         text: 'wait reply message ...'
@@ -55,7 +54,7 @@ const set = async (replyToken, message) => {
     } else if (message.type === 'image' || message.type === 'video') {
       const buffer = await logic.line.getMessageContent(message.id)
       const url = await logic.s3.uploadBuffer(buffer)
-      await line.pushMessage(friend.friendId, [
+      await logic.line.pushMessage(friend.friendId, [
         {
           type: message.type,
           originalContentUrl: url,
@@ -64,7 +63,7 @@ const set = async (replyToken, message) => {
       ])
     }
 
-    await line.replyMessage(replyToken, [
+    await logic.line.replyMessage(replyToken, [
       {
         type: 'text',
         text: 'reply message complete'
