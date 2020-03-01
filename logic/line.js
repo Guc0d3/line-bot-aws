@@ -12,6 +12,13 @@ const getClient = () => {
   return line
 }
 
+const getMessageContent = async id => {
+  console.debug('[-] logic.line.getMessageContent')
+  const line = getClient()
+  const buffer = await tool.line.getMessageContent(line, id)
+  return buffer
+}
+
 const getProfileById = async id => {
   console.debug('[-] logic.line.getProfileById')
   const line = getClient()
@@ -65,6 +72,7 @@ const getProfileByName = async name => {
 
 module.exports = {
   getClient,
+  getMessageContent,
   getProfileById,
   getProfileByName
 }

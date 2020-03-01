@@ -63,6 +63,6 @@ exports.handler = async event => {
     return result || work
   }, false)
   if (noEvent && groupId !== process.env.LINE_MASTER_OF_BOT_GROUP_ID) {
-    await botEvent.noEvent(replyToken, message, user)
+    await botEvent.echo(replyToken, message, user)
   }
 }

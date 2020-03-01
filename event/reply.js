@@ -53,7 +53,7 @@ const set = async (replyToken, message) => {
         }
       ])
     } else if (message.type === 'image' || message.type === 'video') {
-      const buffer = await tool.line.getMessageContent(line, message.id)
+      const buffer = await logic.line.getMessageContent(message.id)
       const url = await logic.s3.uploadBuffer(buffer)
       await line.pushMessage(friend.friendId, [
         {
