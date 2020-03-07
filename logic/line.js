@@ -33,7 +33,7 @@ const getProfileById = async userId => {
     await tool.db('friend').insert({
       display_name: friend.displayName,
       expired_at: friend.expiredAt.toISOString().substr(0, 10),
-      friend_id: friendId,
+      friend_id: userId,
       name: friend.displayName,
       group_code: env.messageGroup.newFriend,
       picture_url: friend.pictureUrl,
