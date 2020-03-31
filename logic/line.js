@@ -63,7 +63,6 @@ const getProfileByName = async userDisplayName => {
     .where('display_name', userDisplayName)
     .orderBy('updated_at', 'desc')
   console.debug('rows', JSON.stringify(rows))
-  if (rows.length !== 1) return null
   return lodash.mapKeys(rows[0], (v, k) => lodash.camelCase(k))
 }
 
