@@ -1,5 +1,5 @@
-const botEvent = require('./event')
 const logic = require('./logic')
+const router = require('./router')
 const tool = require('./tool')
 
 if (process.env.APP_ENV === 'production') {
@@ -15,7 +15,6 @@ if (process.env.APP_ENV === 'production') {
 tool.line.create(process.env.LINE_CHANNEL_ACCESS_TOKEN)
 
 exports.handler = async event => {
-  console.log('[-] botEvent')
   // basic event
   // {
   //   "events": [{
@@ -35,37 +34,35 @@ exports.handler = async event => {
   //   }],
   //   "destination": "U820116ffcbe3f3ca7..."
   // }
-  const message = event.events[0].message
-  const userId = event.events[0].source.userId
-  const groupId = event.events[0].source.groupId
-  const replyToken = event.events[0].replyToken
-  console.debug('message', JSON.stringify(message))
-  console.debug('userId', userId)
-  console.debug('replyToken', replyToken)
+  const botEvent = event.events[0]
+  console.debug('botEvent', JSON.stringify(botEvent, null, 2))
 
-  const user = await logic.line.getProfileById(userId)
+  const user = await logic.line.getProfileById(botEvent.source.userId)
   console.log('user.displayName', user.displayName)
   console.log('user.pictureUrl', user.pictureUrl)
 
   const works = [
-    // public event
-    await botEvent.price.get(replyToken, message, user),
-    await botEvent.holiday.get(replyToken, message),
-    await botEvent.location.get(replyToken, message),
-    await botEvent.guide.get(replyToken, message),
-    await botEvent.register.prompt(replyToken, message, user),
-    await botEvent.contact.get(replyToken, message),
-    // private event
-    await botEvent.register.get(replyToken, message),
-    await botEvent.register.random(replyToken, message),
-    await botEvent.register.set(replyToken, message, user),
-    await botEvent.reply.set(replyToken, message),
-    await botEvent.web.prompt(replyToken, message)
+    // public router
+    await router.price.get(botEvent.replyToken, botEvent.message, user),
+    await router.holiday.get(botEvent.replyToken, botEvent.message),
+    await router.location.get(botEvent.replyToken, botEvent.message),
+    await router.guide.get(botEvent.replyToken, botEvent.message),
+    await router.register.prompt(botEvent.replyToken, botEvent.message, user),
+    await router.contact.get(botEvent.replyToken, botEvent.message),
+    // private router
+    await router.register.get(botEvent.replyToken, botEvent.message),
+    await router.register.random(botEvent.replyToken, botEvent.message),
+    await router.register.set(botEvent.replyToken, botEvent.message, user),
+    await router.reply.set(botEvent.replyToken, botEvent.message),
+    await router.web.prompt(botEvent.replyToken, botEvent.message)
   ]
   const noEvent = !works.reduce((result, work) => {
     return result || work
   }, false)
-  if (noEvent && groupId !== process.env.LINE_MASTER_OF_BOT_GROUP_ID) {
-    await botEvent.echo(replyToken, message, user)
+  if (
+    noEvent &&
+    botEvent.source.groupId !== process.env.LINE_MASTER_OF_BOT_GROUP_ID
+  ) {
+    await router.echo(botEvent.replyToken, botEvent.message, user)
   }
 }
