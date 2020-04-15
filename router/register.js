@@ -1,5 +1,6 @@
 const moment = require('moment')
 const env = require('../env')
+const logic = require('../logic')
 const tool = require('../tool')
 
 moment.locale('th')
