@@ -46,12 +46,12 @@ exports.handler = async event => {
     await router.holiday.get(botEvent),
     await router.location.get(botEvent),
     await router.guide.get(botEvent),
-    await router.register.prompt(botEvent.replyToken, botEvent.message, user),
+    await router.register.prompt(botEvent),
     await router.contact.get(botEvent),
     // private router
-    await router.register.get(botEvent.replyToken, botEvent.message),
-    await router.register.random(botEvent.replyToken, botEvent.message),
-    await router.register.set(botEvent.replyToken, botEvent.message, user),
+    await router.register.get(botEvent),
+    await router.register.random(botEvent),
+    await router.register.set(botEvent),
     await router.reply.set(botEvent),
     await router.web.prompt(botEvent)
   ]
