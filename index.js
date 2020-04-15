@@ -52,7 +52,7 @@ exports.handler = async event => {
     await router.register.get(botEvent.replyToken, botEvent.message),
     await router.register.random(botEvent.replyToken, botEvent.message),
     await router.register.set(botEvent.replyToken, botEvent.message, user),
-    await router.reply.set(botEvent.replyToken, botEvent.message),
+    await router.reply.set(botEvent),
     await router.web.prompt(botEvent.replyToken, botEvent.message)
   ]
   const noEvent = !works.reduce((result, work) => {

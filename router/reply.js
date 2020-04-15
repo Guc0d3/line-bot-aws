@@ -6,21 +6,25 @@ var replyMode = 0
 var friend = null
 var friendId = null
 
-const set = async (replyToken, message) => {
-  if (!message) return false
-  console.log('[-] botEvent.reply.set', message)
+const set = async botEvent => {
+  if (!botEvent.message) return false
+  if (botEvent.source.groupId !== process.env.LINE_MASTER_OF_BOT_GROUP_ID)
+    return false
   if (replyMode === 0) {
-    if (message.type !== 'text') return false
-    if (!message.text.startsWith(env.messageEvent.reply)) return false
-    console.log('replyMode = 0')
-    const displayName = message.text.substring(
-      env.messageEvent.reply.length,
-      message.text.length
-    )
+    if (botEvent.message.type !== 'text') return false
+    // if (!botEvent.message.text.startsWith(env.messageEvent.reply)) return false
+    // const displayName = botEvent.message.text.substring(
+    //   env.messageEvent.reply.length,
+    //   botEvent.message.text.length
+    // )
+    const displayName = botEvent.message.text
+      .split('\n')[0]
+      .split(':')[1]
+      .trim()
     console.debug('displayName', displayName)
     friend = await logic.line.getProfileByName(displayName)
     if (friend == null) {
-      await tool.line.replyMessage(replyToken, [
+      await tool.line.replyMessage(botEvent.replyToken, [
         {
           type: 'text',
           text: 'name of friend is mismatched'
@@ -32,7 +36,7 @@ const set = async (replyToken, message) => {
     friendId = friend.friendId
     console.debug('friend', JSON.stringify(friend))
     console.debug('friendId', friendId)
-    await tool.line.replyMessage(replyToken, [
+    await tool.line.replyMessage(botEvent.replyToken, [
       {
         type: 'text',
         text: 'wait reply message ...'
@@ -44,26 +48,29 @@ const set = async (replyToken, message) => {
     console.debug('friend', JSON.stringify(friend))
     console.debug('friendId', friendId)
 
-    if (message.type === 'text') {
+    if (botEvent.message.type === 'text') {
       await tool.line.pushMessage(friend.friendId, [
         {
           type: 'text',
-          text: message.text
+          text: botEvent.message.text
         }
       ])
-    } else if (message.type === 'image' || message.type === 'video') {
-      const buffer = await tool.line.getMessageContent(message.id)
+    } else if (
+      botEvent.message.type === 'image' ||
+      botEvent.message.type === 'video'
+    ) {
+      const buffer = await tool.line.getMessageContent(botEvent.message.id)
       const url = await logic.s3.uploadBuffer(buffer)
       await tool.line.pushMessage(friend.friendId, [
         {
-          type: message.type,
+          type: botEvent.message.type,
           originalContentUrl: url,
           previewImageUrl: url
         }
       ])
     }
 
-    await tool.line.replyMessage(replyToken, [
+    await tool.line.replyMessage(botEvent.replyToken, [
       {
         type: 'text',
         text: 'reply message complete'
