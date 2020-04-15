@@ -7,18 +7,12 @@ const echo = async (replyToken, message, user) => {
   switch (message.type) {
     case 'text':
     case 'image':
-      await tool.line.replyMessage(replyToken, [
-        {
-          type: 'text',
-          text: env.messageText.echoPrompt[0]
-        }
-      ])
       break
     default:
       await tool.line.replyMessage(replyToken, [
         {
           type: 'text',
-          text: env.messageText.echoPrompt[1]
+          text: env.messageText.echoPrompt[0]
         }
       ])
   }
@@ -56,9 +50,9 @@ const echo = async (replyToken, message, user) => {
     default:
       // messages.push({
       //   type: 'text',
-      //   text: env.messageText.echoPrompt[2]
+      //   text: env.messageText.echoPrompt[1]
       // })
-      text += env.messageText.echoPrompt[2]
+      text += env.messageText.echoPrompt[1]
   }
   await tool.line.pushMessage(process.env.LINE_MASTER_OF_BOT_GROUP_ID, [
     {
