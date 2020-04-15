@@ -2,7 +2,7 @@ const env = require('../env')
 const logic = require('../logic')
 const tool = require('../tool')
 
-const echo = async (replyToken, message, friend) => {
+const echo = async (replyToken, message, user) => {
   console.debug('[-] botEvent.echo')
   switch (message.type) {
     case 'text':
@@ -25,23 +25,19 @@ const echo = async (replyToken, message, friend) => {
   // let messages = [
   //   {
   //     type: 'text',
-  //     text: env.messageEvent.reply + friend.displayName
+  //     text: env.messageEvent.reply + user.displayName
   //   },
   //   {
   //     type: 'image',
-  //     originalContentUrl: friend.pictureUrl,
-  //     previewImageUrl: friend.pictureUrl
+  //     originalContentUrl: user.pictureUrl,
+  //     previewImageUrl: user.pictureUrl
   //   }
   // ]
   let messages = [
     {
       type: 'text',
       text:
-        env.messageEvent.reply +
-        friend.displayName +
-        '[' +
-        friend.pictureUrl +
-        ']'
+        env.messageEvent.reply + user.displayName + '[' + user.pictureUrl + ']'
     }
   ]
   switch (message.type) {
