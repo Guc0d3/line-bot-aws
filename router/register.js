@@ -30,7 +30,11 @@ const prompt = async (replyToken, message, friend) => {
     contents = [
       {
         type: 'text',
-        text: env.messageText.userIsVIP
+        text: env.messageText.userIsVIP[0]
+      },
+      {
+        type: 'text',
+        text: env.messageText.userIsVIP[1]
       }
     ]
   } else {
@@ -39,12 +43,12 @@ const prompt = async (replyToken, message, friend) => {
     contents = [
       {
         type: 'text',
-        text: env.messageText.registerPrompt[2]
+        text: env.messageText.userIsExpiredAt[0]
       },
       {
         type: 'text',
         text:
-          env.messageText.registerPrompt[3] +
+          env.messageText.userIsExpiredAt[1] +
           ' ' +
           moment(friend.expiredAt).format('DD MMMM YYYY')
       },
@@ -53,7 +57,7 @@ const prompt = async (replyToken, message, friend) => {
         style: 'primary',
         action: {
           type: 'uri',
-          label: env.messageText.registerPrompt[4],
+          label: env.messageText.increaseExpireDate,
           uri: registerUrl
         }
       }
@@ -62,7 +66,6 @@ const prompt = async (replyToken, message, friend) => {
   await tool.line.replyMessage(replyToken, [
     {
       type: 'flex',
-      altText: env.messageText.registerPrompt[5],
       contents: {
         type: 'bubble',
         body: {
@@ -90,11 +93,11 @@ const random = async (replyToken, message) => {
   await tool.line.replyMessage(replyToken, [
     {
       type: 'text',
-      text: env.messageText.registerPrompt[7]
+      text: env.messageText.randomRegisterCodeSuccess[0]
     },
     {
       type: 'text',
-      text: env.messageText.registerPrompt[8] + code
+      text: env.messageText.randomRegisterCodeSuccess[1] + ': ' + code
     }
   ])
   return true
@@ -138,16 +141,16 @@ const set = async (replyToken, message, friend) => {
   await tool.line.replyMessage(replyToken, [
     {
       type: 'text',
-      text: env.messageText.registerPrompt[6]
+      text: env.messageText.registerSuccess
     },
     {
       type: 'text',
-      text: env.messageText.registerPrompt[2]
+      text: env.messageText.userIsExpiredAt[0]
     },
     {
       type: 'text',
       text:
-        env.messageText.registerPrompt[3] +
+        env.messageText.userIsExpiredAt[1] +
         ' ' +
         moment(expiredAt).format('DD MMMM YYYY')
     }
