@@ -42,7 +42,7 @@ exports.handler = async event => {
 
   const works = [
     // public router
-    await router.price.get(botEvent.replyToken, botEvent.message, user),
+    await router.price.get(botEvent),
     await router.holiday.get(botEvent.replyToken, botEvent.message),
     await router.location.get(botEvent.replyToken, botEvent.message),
     await router.guide.get(botEvent.replyToken, botEvent.message),
