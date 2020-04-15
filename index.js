@@ -35,11 +35,10 @@ exports.handler = async event => {
   //   "destination": "U820116ffcbe3f3ca7..."
   // }
   const botEvent = event.events[0]
-  console.debug('botEvent', JSON.stringify(botEvent, null, 2))
+  console.debug('botEvent =', JSON.stringify(botEvent, null, 2))
 
   const user = await logic.line.getProfileById(botEvent.source.userId)
-  console.log('user.displayName', user.displayName)
-  console.log('user.pictureUrl', user.pictureUrl)
+  console.debug('user =', JSON.stringify(user, null, 2))
 
   const works = [
     // public router
