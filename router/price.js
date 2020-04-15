@@ -1,7 +1,6 @@
 const env = require('../env')
+const logic = require('../logic')
 const tool = require('../tool')
-
-const logic = require('./logic')
 
 const get = async botEvent => {
   if (!botEvent.message) return false
