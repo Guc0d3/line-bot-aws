@@ -44,6 +44,9 @@ const messageText = {
     'รหัสสมาชิกใหม่: ',
     'รหัสสมาชิก: '
   ],
+  replyPrompt: {
+    displayNameIsMismatched: 'ชื่อที่ตอบกลับไม่มีอยู่ในระบบ'
+  },
   webPrompt: ['เพื่อน', 'ประวัตการสนทนา', 'ตั้งค่า']
 }
 

@@ -3,84 +3,109 @@ const logic = require('../logic')
 const tool = require('../tool')
 
 var replyMode = 0
-var friend = null
-var friendId = null
+var user = null
 
 const set = async botEvent => {
   if (!botEvent.message) return false
   if (botEvent.source.groupId !== process.env.LINE_MASTER_OF_BOT_GROUP_ID)
     return false
+  console.debug('replyMode =', replyMode)
   if (replyMode === 0) {
     if (botEvent.message.type !== 'text') return false
-    // if (!botEvent.message.text.startsWith(env.messageEvent.reply)) return false
-    // const displayName = botEvent.message.text.substring(
-    //   env.messageEvent.reply.length,
-    //   botEvent.message.text.length
-    // )
-    const displayName = botEvent.message.text
-      .split('\n')[0]
-      .split(':')[1]
-      .trim()
-    console.debug('displayName', displayName)
-    friend = await logic.line.getProfileByName(displayName)
-    if (friend == null) {
+    // get user
+    let displayName = null
+    try {
+      displayName = botEvent.message.text
+        .split('\n')[0]
+        .split(':')[1]
+        .trim()
+    } catch (error) {
+      console.error('can not get displayName')
+    }
+    user = await logic.line.getProfileByName(displayName)
+    if (user == null) {
       await tool.line.replyMessage(botEvent.replyToken, [
         {
           type: 'text',
-          text: 'name of friend is mismatched'
+          text: env.messageText.replyPrompt.displayNameIsMismatched
         }
       ])
-      replyMode = 0
       return true
     }
-    friendId = friend.friendId
-    console.debug('friend', JSON.stringify(friend))
-    console.debug('friendId', friendId)
-    await tool.line.replyMessage(botEvent.replyToken, [
-      {
-        type: 'text',
-        text: 'wait reply message ...'
-      }
-    ])
-    replyMode = 1
-  } else if (replyMode === 1) {
-    console.debug('replyMode = 1')
-    console.debug('friend', JSON.stringify(friend))
-    console.debug('friendId', friendId)
-
-    if (botEvent.message.type === 'text') {
-      await tool.line.pushMessage(friend.friendId, [
+    console.debug('user =', JSON.stringify(user))
+    // get text
+    let text = null
+    try {
+      text = botEvent.message.text
+        .split('\n')[2]
+        .split(':')[1]
+        .trim()
+    } catch (error) {
+      console.error('can not get text')
+    }
+    console.debug('text =', text)
+    if (text) {
+      await tool.line.pushMessage(user.friendId, [
         {
           type: 'text',
-          text: botEvent.message.text
+          text
         }
       ])
-    } else if (
-      botEvent.message.type === 'image' ||
-      botEvent.message.type === 'video'
-    ) {
-      const buffer = await tool.line.getMessageContent(botEvent.message.id)
-      const url = await logic.s3.uploadBuffer(buffer)
-      await tool.line.pushMessage(friend.friendId, [
+    } else {
+      await tool.line.replyMessage(botEvent.replyToken, [
         {
-          type: botEvent.message.type,
-          originalContentUrl: url,
-          previewImageUrl: url
+          type: 'text',
+          text: 'wait reply message ...'
         }
       ])
+      replyMode = 1
     }
-
-    await tool.line.replyMessage(botEvent.replyToken, [
-      {
-        type: 'text',
-        text: 'reply message complete'
-      }
-    ])
+    return true
+  } else if (replyMode === 1) {
+    switch (botEvent.message.type) {
+      case 'text':
+        await tool.line.pushMessage(user.friendId, [
+          {
+            type: 'text',
+            text: botEvent.message.text
+          }
+        ])
+        await tool.line.replyMessage(botEvent.replyToken, [
+          {
+            type: 'text',
+            text: 'reply message complete'
+          }
+        ])
+        break
+      case 'image':
+        const buffer = await tool.line.getMessageContent(botEvent.message.id)
+        const url = await logic.s3.uploadBuffer(buffer)
+        await tool.line.pushMessage(user.friendId, [
+          {
+            type: botEvent.message.type,
+            originalContentUrl: url,
+            previewImageUrl: url
+          }
+        ])
+        await tool.line.replyMessage(botEvent.replyToken, [
+          {
+            type: 'text',
+            text: 'reply message complete'
+          }
+        ])
+        break
+      default:
+        await tool.line.replyMessage(botEvent.replyToken, [
+          {
+            type: 'text',
+            text: 'Oop, no support message type. please reply again'
+          }
+        ])
+    }
     replyMode = 0
-  } else {
-    return false
+    return true
   }
-  return true
+  return false
 }
 
 module.exports = {
