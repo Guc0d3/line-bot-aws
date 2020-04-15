@@ -8,7 +8,6 @@ const get = async (replyToken, message) => {
   if (!message) return false
   if (message.type !== 'text') return false
   if (message.text !== env.messageEvent.register.get) return false
-  console.debug('[-] botEvent.register.get')
   let rows = await tool.db('setting').where({ option: 'REGISTER_CODE' })
   if (rows.length != 1) return false
   await tool.line.replyMessage(replyToken, [
@@ -20,13 +19,12 @@ const get = async (replyToken, message) => {
   return true
 }
 
-const prompt = async (replyToken, message, friend) => {
+const prompt = async (replyToken, message, user) => {
   if (!message) return false
   if (message.type !== 'text') return false
   if (message.text !== env.messageEvent.register.prompt) return false
-  console.debug('[-] botEvent.register.prompt')
   let contents = null
-  if (friend.groupCode === env.messageGroup.vipFriend) {
+  if (user.groupCode === env.messageGroup.vipFriend) {
     contents = [
       {
         type: 'text',
@@ -39,7 +37,7 @@ const prompt = async (replyToken, message, friend) => {
     ]
   } else {
     let rows = await tool.db('setting').where({ option: 'WEB_URL' })
-    const registerUrl = rows[0].value + '/#/register?id=' + friend.friendId
+    const registerUrl = rows[0].value + '/#/register?id=' + user.friendId
     contents = [
       {
         type: 'text',
@@ -50,7 +48,7 @@ const prompt = async (replyToken, message, friend) => {
         text:
           env.messageText.userIsExpiredAt[1] +
           ' ' +
-          moment(friend.expiredAt).format('DD MMMM YYYY')
+          moment(user.expiredAt).format('DD MMMM YYYY')
       },
       {
         type: 'button',
@@ -66,6 +64,7 @@ const prompt = async (replyToken, message, friend) => {
   await tool.line.replyMessage(replyToken, [
     {
       type: 'flex',
+      altText: env.messageText.botSendMessage,
       contents: {
         type: 'bubble',
         body: {
@@ -84,7 +83,6 @@ const random = async (replyToken, message) => {
   if (!message) return false
   if (message.type !== 'text') return false
   if (message.text !== env.messageEvent.register.random) return false
-  // console.log('[-] botEvent.register.random')
   const code = Math.floor(100000 + Math.random() * 900000).toString()
   let result = await tool
     .db('setting')
@@ -103,18 +101,17 @@ const random = async (replyToken, message) => {
   return true
 }
 
-const set = async (replyToken, message, friend) => {
+const set = async (replyToken, message, user) => {
   if (!message) return false
   if (message.type !== 'text') return false
   if (!/^([0-9]{6})$/.test(message.text)) return false
-  // console.log('[-] botEvent.register.set')
   let rows = await tool.db('setting').where({
     option: 'REGISTER_CODE',
     value: message.text
   })
   if (rows.length != 1) return false
   let activeDate = 0
-  if (friend.groupCode === env.messageGroup.warningFriend) {
+  if (user.groupCode === env.messageGroup.warningFriend) {
     rows = await tool.db('setting').where({
       option: 'ACTIVE_DATE__WARNING_FRIEND'
     })
@@ -129,12 +126,12 @@ const set = async (replyToken, message, friend) => {
   expiredAt.setDate(expiredAt.getDate() + 1 + parseInt(activeDate, 10))
   await tool
     .db('friend')
-    .where('friend_id', friend.friendId)
+    .where('friend_id', user.friendId)
     .update({
       group_code:
-        friend.groupCode === env.messageGroup.newFriend
+        user.groupCode === env.messageGroup.newFriend
           ? env.messageGroup.friend
-          : friend.groupCode,
+          : user.groupCode,
       expired_at: expiredAt.toISOString().substr(0, 10),
       updated_at: tool.db.fn.now()
     })
