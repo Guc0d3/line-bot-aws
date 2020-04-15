@@ -25,7 +25,7 @@ const prompt = async (replyToken, message) => {
               style: 'primary',
               action: {
                 type: 'uri',
-                label: env.messageText.webPrompt[0],
+                label: env.messageText.friend,
                 uri: uri + '/#/friend'
               }
             },
@@ -34,7 +34,7 @@ const prompt = async (replyToken, message) => {
               style: 'primary',
               action: {
                 type: 'uri',
-                label: env.messageText.webPrompt[1],
+                label: env.messageText.history,
                 uri: uri + '/#/history'
               }
             },
@@ -43,7 +43,7 @@ const prompt = async (replyToken, message) => {
               style: 'primary',
               action: {
                 type: 'uri',
-                label: env.messageText.webPrompt[2],
+                label: env.messageText.setting,
                 uri: uri + '/#/setting'
               }
             }

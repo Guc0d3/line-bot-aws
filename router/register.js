@@ -14,7 +14,7 @@ const get = async (replyToken, message) => {
   await tool.line.replyMessage(replyToken, [
     {
       type: 'text',
-      text: env.messageText.registerPrompt[9] + rows[0].value
+      text: env.messageText.registerCode + ': ' + rows[0].value
     }
   ])
   return true
@@ -30,11 +30,7 @@ const prompt = async (replyToken, message, friend) => {
     contents = [
       {
         type: 'text',
-        text: env.messageText.registerPrompt[0]
-      },
-      {
-        type: 'text',
-        text: env.messageText.registerPrompt[1]
+        text: env.messageText.userIsVIP
       }
     ]
   } else {

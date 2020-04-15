@@ -27,7 +27,7 @@ const set = async botEvent => {
       await tool.line.replyMessage(botEvent.replyToken, [
         {
           type: 'text',
-          text: env.messageText.replyPrompt.displayNameIsMismatched
+          text: env.messageText.usernameIsMismatched
         }
       ])
       return true
@@ -55,7 +55,7 @@ const set = async botEvent => {
       await tool.line.replyMessage(botEvent.replyToken, [
         {
           type: 'text',
-          text: env.messageText.replyPrompt.waiting + ' ' + displayName
+          text: env.messageText.replyPrompt
         }
       ])
       replyMode = 1
@@ -73,7 +73,7 @@ const set = async botEvent => {
         await tool.line.replyMessage(botEvent.replyToken, [
           {
             type: 'text',
-            text: env.messageText.replyPrompt.complete
+            text: env.messageText.replyComplete
           }
         ])
         break
@@ -90,7 +90,7 @@ const set = async botEvent => {
         await tool.line.replyMessage(botEvent.replyToken, [
           {
             type: 'text',
-            text: env.messageText.replyPrompt.complete
+            text: env.messageText.replyComplete
           }
         ])
         break

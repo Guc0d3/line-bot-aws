@@ -3,19 +3,6 @@ const logic = require('../logic')
 const tool = require('../tool')
 
 const echo = async (replyToken, message, user) => {
-  // reply to user
-  switch (message.type) {
-    case 'text':
-    case 'image':
-      break
-    default:
-      await tool.line.replyMessage(replyToken, [
-        {
-          type: 'text',
-          text: env.messageText.echoPrompt[0]
-        }
-      ])
-  }
   // echo to master of bot
   let text =
     'User: ' +
@@ -33,7 +20,7 @@ const echo = async (replyToken, message, user) => {
       text += url
       break
     default:
-      text += env.messageText.echoPrompt[1]
+      text += env.messageText.undefined
   }
   await tool.line.pushMessage(process.env.LINE_MASTER_OF_BOT_GROUP_ID, [
     {

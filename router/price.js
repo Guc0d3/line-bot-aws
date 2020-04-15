@@ -48,11 +48,11 @@ const get = async (replyToken, message, friend) => {
     await tool.line.replyMessage(replyToken, [
       {
         type: 'text',
-        text: env.messageText.exipred[0]
+        text: env.messageText.exipred
       },
       {
         type: 'text',
-        text: env.messageText.exipred[1]
+        text: env.messageText.registerDemoLink
       }
     ])
   }
