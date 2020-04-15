@@ -4,13 +4,13 @@ const tool = require('../tool')
 
 moment.locale('th')
 
-const get = async (replyToken, message) => {
-  if (!message) return false
-  if (message.type !== 'text') return false
-  if (message.text !== env.messageEvent.register.get) return false
+const get = async botEvent => {
+  if (!botEvent.message) return false
+  if (botEvent.message.type !== 'text') return false
+  if (botEvent.message.text !== env.messageEvent.register.get) return false
   let rows = await tool.db('setting').where({ option: 'REGISTER_CODE' })
   if (rows.length != 1) return false
-  await tool.line.replyMessage(replyToken, [
+  await tool.line.replyMessage(botEvent.replyToken, [
     {
       type: 'text',
       text: env.messageText.registerCode + ': ' + rows[0].value
@@ -19,12 +19,18 @@ const get = async (replyToken, message) => {
   return true
 }
 
-const prompt = async (replyToken, message, user) => {
-  if (!message) return false
-  if (message.type !== 'text') return false
-  if (message.text !== env.messageEvent.register.prompt) return false
+const prompt = async botEvent => {
+  if (!botEvent.message) return false
+  if (botEvent.message.type !== 'text') return false
+  if (botEvent.message.text !== env.messageEvent.register.prompt) return false
+
+  // get user
+  const user = await logic.line.getProfileById(botEvent.source.userId)
+
   let contents = null
+
   if (user.groupCode === env.messageGroup.vipFriend) {
+    // create flex menu for VIP user
     contents = [
       {
         type: 'text',
@@ -36,6 +42,7 @@ const prompt = async (replyToken, message, user) => {
       }
     ]
   } else {
+    // create flex menu for another user
     let rows = await tool.db('setting').where({ option: 'WEB_URL' })
     const registerUrl = rows[0].value + '/#/register?id=' + user.friendId
     contents = [
@@ -61,7 +68,9 @@ const prompt = async (replyToken, message, user) => {
       }
     ]
   }
-  await tool.line.replyMessage(replyToken, [
+
+  // send flex menu to user
+  await tool.line.replyMessage(botEvent.replyToken, [
     {
       type: 'flex',
       altText: env.messageText.botSendMessage,
@@ -76,19 +85,20 @@ const prompt = async (replyToken, message, user) => {
       }
     }
   ])
+
   return true
 }
 
-const random = async (replyToken, message) => {
-  if (!message) return false
-  if (message.type !== 'text') return false
-  if (message.text !== env.messageEvent.register.random) return false
+const random = async botEvent => {
+  if (!botEvent.message) return false
+  if (botEvent.message.type !== 'text') return false
+  if (botEvent.message.text !== env.messageEvent.register.random) return false
   const code = Math.floor(100000 + Math.random() * 900000).toString()
   let result = await tool
     .db('setting')
     .where({ option: 'REGISTER_CODE' })
     .update({ value: code })
-  await tool.line.replyMessage(replyToken, [
+  await tool.line.replyMessage(botEvent.replyToken, [
     {
       type: 'text',
       text: env.messageText.randomRegisterCodeSuccess[0]
@@ -101,15 +111,22 @@ const random = async (replyToken, message) => {
   return true
 }
 
-const set = async (replyToken, message, user) => {
-  if (!message) return false
-  if (message.type !== 'text') return false
-  if (!/^([0-9]{6})$/.test(message.text)) return false
+const set = async botEvent => {
+  if (!botEvent.message) return false
+  if (botEvent.message.type !== 'text') return false
+  if (!/^([0-9]{6})$/.test(botEvent.message.text)) return false
+
+  // get user
+  const user = await logic.line.getProfileById(botEvent.source.userId)
+
+  // check register code
   let rows = await tool.db('setting').where({
     option: 'REGISTER_CODE',
-    value: message.text
+    value: botEvent.message.text
   })
   if (rows.length != 1) return false
+
+  // get active date by user groupcode
   let activeDate = 0
   if (user.groupCode === env.messageGroup.warningFriend) {
     rows = await tool.db('setting').where({
@@ -122,6 +139,8 @@ const set = async (replyToken, message, user) => {
     })
     activeDate = rows[0].value
   }
+
+  // set expired date
   let expiredAt = new Date()
   expiredAt.setDate(expiredAt.getDate() + 1 + parseInt(activeDate, 10))
   await tool
@@ -135,7 +154,9 @@ const set = async (replyToken, message, user) => {
       expired_at: expiredAt.toISOString().substr(0, 10),
       updated_at: tool.db.fn.now()
     })
-  await tool.line.replyMessage(replyToken, [
+
+  // reply success message
+  await tool.line.replyMessage(botEvent.replyToken, [
     {
       type: 'text',
       text: env.messageText.registerSuccess
@@ -152,6 +173,7 @@ const set = async (replyToken, message, user) => {
         moment(expiredAt).format('DD MMMM YYYY')
     }
   ])
+
   return true
 }
 

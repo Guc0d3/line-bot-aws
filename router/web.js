@@ -1,15 +1,15 @@
 const env = require('../env')
 const tool = require('../tool')
 
-const prompt = async (replyToken, message) => {
-  if (!message) return false
-  if (message.type !== 'text') return false
-  if (message.text !== env.messageEvent.web.prompt) return false
+const prompt = async botEvent => {
+  if (!botEvent.message) return false
+  if (botEvent.message.type !== 'text') return false
+  if (botEvent.message.text !== env.messageEvent.web.prompt) return false
   console.debug('[-] botEvent.web.prompt')
   let rows = await tool.db('setting').where({ option: 'WEB_URL' })
   if (rows.length !== 1) return false
   const uri = rows[0].value
-  await tool.line.replyMessage(replyToken, [
+  await tool.line.replyMessage(botEvent.replyToken, [
     {
       type: 'flex',
       altText: 'bot send web menu',

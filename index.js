@@ -43,25 +43,22 @@ exports.handler = async event => {
   const works = [
     // public router
     await router.price.get(botEvent),
-    await router.holiday.get(botEvent.replyToken, botEvent.message),
-    await router.location.get(botEvent.replyToken, botEvent.message),
-    await router.guide.get(botEvent.replyToken, botEvent.message),
+    await router.holiday.get(botEvent),
+    await router.location.get(botEvent),
+    await router.guide.get(botEvent),
     await router.register.prompt(botEvent.replyToken, botEvent.message, user),
-    await router.contact.get(botEvent.replyToken, botEvent.message),
+    await router.contact.get(botEvent),
     // private router
     await router.register.get(botEvent.replyToken, botEvent.message),
     await router.register.random(botEvent.replyToken, botEvent.message),
     await router.register.set(botEvent.replyToken, botEvent.message, user),
     await router.reply.set(botEvent),
-    await router.web.prompt(botEvent.replyToken, botEvent.message)
+    await router.web.prompt(botEvent)
   ]
   const noEvent = !works.reduce((result, work) => {
     return result || work
   }, false)
-  if (
-    noEvent &&
-    botEvent.source.groupId !== process.env.LINE_MASTER_OF_BOT_GROUP_ID
-  ) {
-    await router.echo(botEvent.replyToken, botEvent.message, user)
+  if (noEvent) {
+    await router.echo(botEvent)
   }
 }

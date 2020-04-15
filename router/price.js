@@ -9,7 +9,6 @@ const get = async botEvent => {
 
   // get user
   const user = await logic.line.getProfileById(botEvent.source.userId)
-  console.debug('user =', JSON.stringify(user, null, 2))
 
   // ban user prompt
   if (user.groupCode === env.messageGroup.banFriend) {

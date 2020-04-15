@@ -9,7 +9,6 @@ const messageEvent = {
     random: '/rc',
     get: '/c'
   },
-  reply: '=> ',
   web: {
     prompt: '/web'
   }

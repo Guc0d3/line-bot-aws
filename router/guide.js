@@ -1,10 +1,10 @@
 const env = require('../env')
 const tool = require('../tool')
 
-const get = async (replyToken, message) => {
-  if (!message) return false
-  if (message.type !== 'text') return false
-  if (message.text !== env.messageEvent.guide) return false
+const get = async botEvent => {
+  if (!botEvent.message) return false
+  if (botEvent.message.type !== 'text') return false
+  if (botEvent.message.text !== env.messageEvent.guide) return false
   console.debug('[-] botEvent.guide.get')
   let messages = []
   let rows = await tool.db('setting').where('option', 'GUIDE_IMAGE')
@@ -22,7 +22,7 @@ const get = async (replyToken, message) => {
       text: rows[0].value
     })
   }
-  await tool.line.replyMessage(replyToken, messages)
+  await tool.line.replyMessage(botEvent.replyToken, messages)
   return true
 }
 

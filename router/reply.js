@@ -32,7 +32,6 @@ const set = async botEvent => {
       ])
       return true
     }
-    console.debug('user =', JSON.stringify(user))
     // get text
     let text = null
     try {

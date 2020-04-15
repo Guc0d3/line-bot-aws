@@ -2,7 +2,14 @@ const env = require('../env')
 const logic = require('../logic')
 const tool = require('../tool')
 
-const echo = async (replyToken, message, user) => {
+const echo = async botEvent => {
+  // no echo message in master of bot group
+  if (botEvent.source.groupId === process.env.LINE_MASTER_OF_BOT_GROUP_ID)
+    return false
+
+  // get user
+  const user = await logic.line.getProfileById(botEvent.source.userId)
+
   // echo to master of bot
   let text =
     'User: ' +
@@ -10,12 +17,12 @@ const echo = async (replyToken, message, user) => {
     '\nDisplay: ' +
     user.pictureUrl +
     '\nMessage: '
-  switch (message.type) {
+  switch (botEvent.message.type) {
     case 'text':
-      text += message.text
+      text += botEvent.message.text
       break
     case 'image':
-      const buffer = await tool.line.getMessageContent(message.id)
+      const buffer = await tool.line.getMessageContent(botEvent.message.id)
       const url = await logic.s3.uploadBuffer(buffer)
       text += url
       break
@@ -28,6 +35,7 @@ const echo = async (replyToken, message, user) => {
       text
     }
   ])
+
   return true
 }
 
