@@ -45,7 +45,6 @@ const getProfileByName = async userDisplayName => {
     .db('friend')
     .where('display_name', userDisplayName)
     .orderBy('updated_at', 'desc')
-  console.debug('rows', JSON.stringify(rows))
   return lodash.mapKeys(rows[0], (v, k) => lodash.camelCase(k))
 }
 
