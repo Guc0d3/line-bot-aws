@@ -55,7 +55,7 @@ const set = async botEvent => {
       await tool.line.replyMessage(botEvent.replyToken, [
         {
           type: 'text',
-          text: 'wait reply message ...'
+          text: env.messageText.replyPrompt.waiting + ' ' + displayName
         }
       ])
       replyMode = 1
@@ -73,7 +73,7 @@ const set = async botEvent => {
         await tool.line.replyMessage(botEvent.replyToken, [
           {
             type: 'text',
-            text: 'reply message complete'
+            text: env.messageText.replyPrompt.complete
           }
         ])
         break
@@ -90,7 +90,7 @@ const set = async botEvent => {
         await tool.line.replyMessage(botEvent.replyToken, [
           {
             type: 'text',
-            text: 'reply message complete'
+            text: env.messageText.replyPrompt.complete
           }
         ])
         break
