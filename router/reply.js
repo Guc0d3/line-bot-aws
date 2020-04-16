@@ -50,6 +50,12 @@ const set = async (botEvent) => {
           text: botEvent.message.text.split('\n')[2].split(':')[1].trim(),
         },
       ])
+      await tool.line.replyMessage(botEvent.replyToken, [
+        {
+          type: 'text',
+          text: env.messageText.replyComplete,
+        },
+      ])
       user = null
     } else {
       await tool.line.replyMessage(botEvent.replyToken, [
