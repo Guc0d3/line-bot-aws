@@ -2,78 +2,87 @@ const env = require('../env')
 const logic = require('../logic')
 const tool = require('../tool')
 
-var replyMode = 0
 var user = null
 
-const set = async botEvent => {
+const set = async (botEvent) => {
   if (!botEvent.message) return false
   if (botEvent.source.groupId !== process.env.LINE_MASTER_OF_BOT_GROUP_ID)
     return false
-  console.debug('replyMode =', replyMode)
-  if (replyMode === 0) {
-    if (botEvent.message.type !== 'text') return false
-    // get user
-    let displayName = null
+
+  // check User and Message
+  let hasUser = false
+  let hasMessage = false
+  if (botEvent.message.text) {
     try {
-      displayName = botEvent.message.text
-        .split('\n')[0]
-        .split(':')[1]
-        .trim()
-    } catch (error) {
-      console.error('can not get displayName')
-    }
-    user = await logic.line.getProfileByName(displayName)
-    if (user == null) {
-      await tool.line.replyMessage(botEvent.replyToken, [
-        {
-          type: 'text',
-          text: env.messageText.usernameIsMismatched
-        }
-      ])
-      return true
-    }
-    // get text
-    let text = null
+      if (
+        botEvent.message.text
+          .split('\n')[0]
+          .split(':')[0]
+          .trim()
+          .toLowerCase() === 'user' &&
+        botEvent.message.text.split('\n')[0].split(':')[1].trim().length > 0
+      ) {
+        hasUser = true
+      }
+    } catch (error) {}
     try {
-      text = botEvent.message.text
-        .split('\n')[2]
-        .split(':')[1]
-        .trim()
-    } catch (error) {
-      console.error('can not get text')
-    }
-    console.debug('text =', text)
-    if (text) {
+      if (
+        botEvent.message.text
+          .split('\n')[2]
+          .split(':')[0]
+          .trim()
+          .toLowerCase() === 'message' &&
+        botEvent.message.text.split('\n')[2].split(':')[1].trim().length > 0
+      ) {
+        hasMessage = true
+      }
+    } catch (error) {}
+  }
+
+  if (hasUser && hasMessage) {
+    user = await logic.line.getProfileByName(
+      botEvent.message.text.split('\n')[0].split(':')[1].trim()
+    )
+    if (user) {
       await tool.line.pushMessage(user.friendId, [
         {
           type: 'text',
-          text
-        }
+          text: botEvent.message.text.split('\n')[2].split(':')[1].trim(),
+        },
       ])
+      user = null
     } else {
       await tool.line.replyMessage(botEvent.replyToken, [
         {
           type: 'text',
-          text: env.messageText.replyPrompt
-        }
+          text: env.messageText.usernameIsMismatched,
+        },
       ])
-      replyMode = 1
     }
-    return true
-  } else if (replyMode === 1) {
+  } else if (hasUser) {
+    user = await logic.line.getProfileByName(
+      botEvent.message.text.split('\n')[0].split(':')[1].trim()
+    )
+    await tool.line.replyMessage(botEvent.replyToken, [
+      {
+        type: 'text',
+        text: env.messageText.replyPrompt,
+      },
+    ])
+  } else if (user) {
     switch (botEvent.message.type) {
       case 'text':
         await tool.line.pushMessage(user.friendId, [
           {
             type: 'text',
-            text: botEvent.message.text
-          }
+            text: botEvent.message.text,
+          },
         ])
         await tool.line.replyMessage(botEvent.replyToken, [
           {
             type: 'text',
-            text: env.messageText.replyComplete
-          }
+            text: env.messageText.replyComplete,
+          },
         ])
         break
       case 'image':
@@ -83,30 +92,28 @@ const set = async botEvent => {
           {
             type: botEvent.message.type,
             originalContentUrl: url,
-            previewImageUrl: url
-          }
+            previewImageUrl: url,
+          },
         ])
         await tool.line.replyMessage(botEvent.replyToken, [
           {
             type: 'text',
-            text: env.messageText.replyComplete
-          }
+            text: env.messageText.replyComplete,
+          },
         ])
         break
       default:
         await tool.line.replyMessage(botEvent.replyToken, [
           {
             type: 'text',
-            text: 'Oop, no support message type. please reply again'
-          }
+            text: 'Oop, no support message type. please reply again',
+          },
         ])
     }
-    replyMode = 0
-    return true
+    user = null
   }
-  return false
 }
 
 module.exports = {
-  set
+  set,
 }
