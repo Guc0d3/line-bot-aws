@@ -54,14 +54,11 @@ const get = async (botEvent) => {
       return total
     }, [])
 
-    // TODO
-    console.debug('current', moment(new Date()).format('DD MMMM YYYY'))
-    console.debug('expiredAt', moment(new Date()).format('DD MMMM YYYY'))
-    console.debug(moment(user.expiredAt).diff(moment(new Date())))
-    if (moment(user.expiredAt).diff(moment(new Date())) < 3) {
+    // add message to user when nearly expired date
+    if (moment(user.expiredAt).diff(moment(new Date()), 'days') <= 5) {
       messages.push({
         type: 'text',
-        text: 'ระบบส่งราคาอัตโนมัติใกล้หมดอายุแล้วนะ รีบต่ออายุสมาชิกได้แล้ว',
+        text: env.messageText.userNearlyExpired,
       })
     }
 
