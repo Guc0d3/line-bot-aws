@@ -1,8 +1,10 @@
+const moment = require('moment')
+
 const env = require('../env')
 const logic = require('../logic')
 const tool = require('../tool')
 
-const get = async botEvent => {
+const get = async (botEvent) => {
   if (!botEvent.message) return false
   if (botEvent.message.type !== 'text') return false
   if (botEvent.message.text !== env.messageEvent.price) return false
@@ -16,8 +18,8 @@ const get = async botEvent => {
     await tool.line.replyMessage(botEvent.replyToken, [
       {
         type: 'text',
-        text: env.messageText.banFriend
-      }
+        text: env.messageText.banFriend,
+      },
     ])
     return true
   }
@@ -40,18 +42,21 @@ const get = async botEvent => {
         total.push({
           type: 'image',
           originalContentUrl: row.value,
-          previewImageUrl: row.value
+          previewImageUrl: row.value,
         })
       }
       if (row.option === 'PRICE_MESSAGE' && row.value) {
         total.push({
           type: 'text',
-          text: row.value
+          text: row.value,
         })
       }
       return total
     }, [])
     await tool.line.replyMessage(botEvent.replyToken, messages)
+    // TODO
+    console.debug(moment(new Date()).format('DD MMMM YYYY'))
+    console.debug(moment(new Date()).add(7, 'days').format('DD MMMM YYYY'))
   }
 
   // expired user
@@ -59,12 +64,12 @@ const get = async botEvent => {
     await tool.line.replyMessage(botEvent.replyToken, [
       {
         type: 'text',
-        text: env.messageText.exipred
+        text: env.messageText.exipred,
       },
       {
         type: 'text',
-        text: env.messageText.registerDemoLink
-      }
+        text: env.messageText.registerDemoLink,
+      },
     ])
   }
 
@@ -72,5 +77,5 @@ const get = async botEvent => {
 }
 
 module.exports = {
-  get
+  get,
 }
