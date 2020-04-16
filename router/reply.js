@@ -112,7 +112,7 @@ const set = async (botEvent) => {
         await tool.line.replyMessage(botEvent.replyToken, [
           {
             type: 'text',
-            text: 'Oop, no support message type. please reply again',
+            text: env.messageText.botSendTextOrImageOnly,
           },
         ])
     }

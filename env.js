@@ -7,11 +7,11 @@ const messageEvent = {
   register: {
     prompt: 'ต่ออายุการใช้งาน',
     random: '/rc',
-    get: '/c'
+    get: '/c',
   },
   web: {
-    prompt: '/web'
-  }
+    prompt: '/web',
+  },
 }
 
 const messageGroup = {
@@ -19,13 +19,15 @@ const messageGroup = {
   friend: 'f',
   newFriend: 'n',
   vipFriend: 'v',
-  warningFriend: 'w'
+  warningFriend: 'w',
 }
 
 const messageText = {
   banFriend:
     'ขออภัย บอทอยู่ในช่วงกำลังพัฒนา ติดต่อเพิ่มเติมที่เมนูด้านล่างขวามือ',
   botSendMessage: 'ระบบอัตโนมัติ ส่งข้อความ',
+  botSendTextOrImageOnly:
+    'ขณะนี้ระบบสามารถส่งข้อความและรูปภาพเท่านั้น, กรุณาส่งข้อมูลใหม่',
   contact: 'โทร: 0922649088 \nไลน์: https://line.me/ti/p/KY6UiRe60S',
   exipred:
     'ลูกค้าหมดอายุการใช้งาน หากต้องการใช้งานต่อกรุณากรอกรหัสเพื่อต่ออายุสมาชิก',
@@ -42,11 +44,11 @@ const messageText = {
   undefined: '!@#$%^&*(',
   userIsExpiredAt: ['ผู้ใช้สามารถสอบถามราคาได้', 'ถึงวันที่'],
   userIsVIP: ['ผู้ใช้เป็นสมาชิกวีไอพี', 'ไม่จำเป็นต้องต่ออายุสมาชิก'],
-  usernameIsMismatched: 'ผู้ใช้ที่ระบุไม่มีอยู่ในระบบ'
+  usernameIsMismatched: 'ผู้ใช้ที่ระบุไม่มีอยู่ในระบบ',
 }
 
 module.exports = {
   messageEvent,
   messageGroup,
-  messageText
+  messageText,
 }
