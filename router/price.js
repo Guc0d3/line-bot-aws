@@ -53,10 +53,19 @@ const get = async (botEvent) => {
       }
       return total
     }, [])
-    await tool.line.replyMessage(botEvent.replyToken, messages)
+
     // TODO
-    console.debug(moment(new Date()).format('DD MMMM YYYY'))
-    console.debug(moment(new Date()).add(7, 'days').format('DD MMMM YYYY'))
+    console.debug('current', moment(new Date()).format('DD MMMM YYYY'))
+    console.debug('expiredAt', moment(new Date()).format('DD MMMM YYYY'))
+    console.debug(moment(user.expiredAt).diff(moment(new Date())))
+    if (moment(user.expiredAt).diff(moment(new Date())) < 3) {
+      messages.push({
+        type: 'text',
+        text: 'ระบบส่งราคาอัตโนมัติใกล้หมดอายุแล้วนะ รีบต่ออายุสมาชิกได้แล้ว',
+      })
+    }
+
+    await tool.line.replyMessage(botEvent.replyToken, messages)
   }
 
   // expired user
