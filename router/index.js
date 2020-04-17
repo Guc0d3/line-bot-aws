@@ -17,5 +17,5 @@ module.exports = {
   price,
   register,
   reply,
-  web
+  web,
 }

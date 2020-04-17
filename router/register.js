@@ -5,7 +5,7 @@ const tool = require('../tool')
 
 moment.locale('th')
 
-const get = async botEvent => {
+const get = async (botEvent) => {
   if (!botEvent.message) return false
   if (botEvent.message.type !== 'text') return false
   if (botEvent.message.text !== env.messageEvent.register.get) return false
@@ -14,13 +14,13 @@ const get = async botEvent => {
   await tool.line.replyMessage(botEvent.replyToken, [
     {
       type: 'text',
-      text: env.messageText.registerCode + ': ' + rows[0].value
-    }
+      text: env.messageText.registerCode + ': ' + rows[0].value,
+    },
   ])
   return true
 }
 
-const prompt = async botEvent => {
+const prompt = async (botEvent) => {
   if (!botEvent.message) return false
   if (botEvent.message.type !== 'text') return false
   if (botEvent.message.text !== env.messageEvent.register.prompt) return false
@@ -35,12 +35,12 @@ const prompt = async botEvent => {
     contents = [
       {
         type: 'text',
-        text: env.messageText.userIsVIP[0]
+        text: env.messageText.userIsVIP[0],
       },
       {
         type: 'text',
-        text: env.messageText.userIsVIP[1]
-      }
+        text: env.messageText.userIsVIP[1],
+      },
     ]
   } else {
     // create flex menu for another user
@@ -49,14 +49,14 @@ const prompt = async botEvent => {
     contents = [
       {
         type: 'text',
-        text: env.messageText.userIsExpiredAt[0]
+        text: env.messageText.userIsExpiredAt[0],
       },
       {
         type: 'text',
         text:
           env.messageText.userIsExpiredAt[1] +
           ' ' +
-          moment(user.expiredAt).format('DD MMMM YYYY')
+          moment(user.expiredAt).format('DD MMMM YYYY'),
       },
       {
         type: 'button',
@@ -64,9 +64,9 @@ const prompt = async botEvent => {
         action: {
           type: 'uri',
           label: env.messageText.increaseExpireDate,
-          uri: registerUrl
-        }
-      }
+          uri: registerUrl,
+        },
+      },
     ]
   }
 
@@ -81,38 +81,38 @@ const prompt = async botEvent => {
           type: 'box',
           layout: 'vertical',
           spacing: 'md',
-          contents
-        }
-      }
-    }
+          contents,
+        },
+      },
+    },
   ])
 
   return true
 }
 
-const random = async botEvent => {
+const random = async (botEvent) => {
   if (!botEvent.message) return false
   if (botEvent.message.type !== 'text') return false
   if (botEvent.message.text !== env.messageEvent.register.random) return false
   const code = Math.floor(100000 + Math.random() * 900000).toString()
-  let result = await tool
+  await tool
     .db('setting')
     .where({ option: 'REGISTER_CODE' })
     .update({ value: code })
   await tool.line.replyMessage(botEvent.replyToken, [
     {
       type: 'text',
-      text: env.messageText.randomRegisterCodeSuccess[0]
+      text: env.messageText.randomRegisterCodeSuccess[0],
     },
     {
       type: 'text',
-      text: env.messageText.randomRegisterCodeSuccess[1] + ': ' + code
-    }
+      text: env.messageText.randomRegisterCodeSuccess[1] + ': ' + code,
+    },
   ])
   return true
 }
 
-const set = async botEvent => {
+const set = async (botEvent) => {
   if (!botEvent.message) return false
   if (botEvent.message.type !== 'text') return false
   if (!/^([0-9]{6})$/.test(botEvent.message.text)) return false
@@ -123,7 +123,7 @@ const set = async botEvent => {
   // check register code
   let rows = await tool.db('setting').where({
     option: 'REGISTER_CODE',
-    value: botEvent.message.text
+    value: botEvent.message.text,
   })
   if (rows.length != 1) return false
 
@@ -131,12 +131,12 @@ const set = async botEvent => {
   let activeDate = 0
   if (user.groupCode === env.messageGroup.warningFriend) {
     rows = await tool.db('setting').where({
-      option: 'ACTIVE_DATE__WARNING_FRIEND'
+      option: 'ACTIVE_DATE__WARNING_FRIEND',
     })
     activeDate = rows[0].value
   } else {
     rows = await tool.db('setting').where({
-      option: 'ACTIVE_DATE__FRIEND'
+      option: 'ACTIVE_DATE__FRIEND',
     })
     activeDate = rows[0].value
   }
@@ -153,26 +153,26 @@ const set = async botEvent => {
           ? env.messageGroup.friend
           : user.groupCode,
       expired_at: expiredAt.toISOString().substr(0, 10),
-      updated_at: tool.db.fn.now()
+      updated_at: tool.db.fn.now(),
     })
 
   // reply success message
   await tool.line.replyMessage(botEvent.replyToken, [
     {
       type: 'text',
-      text: env.messageText.registerSuccess
+      text: env.messageText.registerSuccess,
     },
     {
       type: 'text',
-      text: env.messageText.userIsExpiredAt[0]
+      text: env.messageText.userIsExpiredAt[0],
     },
     {
       type: 'text',
       text:
         env.messageText.userIsExpiredAt[1] +
         ' ' +
-        moment(expiredAt).format('DD MMMM YYYY')
-    }
+        moment(expiredAt).format('DD MMMM YYYY'),
+    },
   ])
 
   return true
@@ -182,5 +182,5 @@ module.exports = {
   get,
   prompt,
   random,
-  set
+  set,
 }
