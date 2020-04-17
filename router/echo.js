@@ -2,10 +2,12 @@ const env = require('../env')
 const logic = require('../logic')
 const tool = require('../tool')
 
-const echo = async botEvent => {
+const echo = async (botEvent) => {
   // no echo message in master of bot group
   if (botEvent.source.groupId === process.env.LINE_MASTER_OF_BOT_GROUP_ID)
     return false
+  // echo support 'text' and 'image' only
+  if (['text', 'image'].indexOf(botEvent.message.type) === -1) return false
 
   // get user
   const user = await logic.line.getProfileById(botEvent.source.userId)
@@ -32,8 +34,8 @@ const echo = async botEvent => {
   await tool.line.pushMessage(process.env.LINE_MASTER_OF_BOT_GROUP_ID, [
     {
       type: 'text',
-      text
-    }
+      text,
+    },
   ])
 
   return true
