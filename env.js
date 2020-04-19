@@ -1,6 +1,7 @@
 const messageEvent = {
   contact: 'ติดต่อพนักงาน',
   guide: 'แนะนำการใช้งาน',
+  help: '/help',
   holiday: 'วันหยุด',
   location: 'ที่อยู่',
   price: 'ราคา',

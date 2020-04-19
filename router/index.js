@@ -1,6 +1,7 @@
 const contact = require('./contact')
 const echo = require('./echo')
 const guide = require('./guide')
+const help = require('./help')
 const holiday = require('./holiday')
 const location = require('./location')
 const price = require('./price')
@@ -12,6 +13,7 @@ module.exports = {
   contact,
   echo,
   guide,
+  help,
   holiday,
   location,
   price,
