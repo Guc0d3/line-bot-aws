@@ -1,7 +1,7 @@
 const env = require('../env')
 const tool = require('../tool')
 
-const prompt = async botEvent => {
+const prompt = async (botEvent) => {
   if (!botEvent.message) return false
   if (botEvent.message.type !== 'text') return false
   if (botEvent.message.text !== env.messageEvent.web.prompt) return false
@@ -26,8 +26,8 @@ const prompt = async botEvent => {
               action: {
                 type: 'uri',
                 label: env.messageText.friend,
-                uri: uri + '/#/friend'
-              }
+                uri: uri + '/#/friend',
+              },
             },
             {
               type: 'button',
@@ -35,8 +35,8 @@ const prompt = async botEvent => {
               action: {
                 type: 'uri',
                 label: env.messageText.history,
-                uri: uri + '/#/history'
-              }
+                uri: uri + '/#/history',
+              },
             },
             {
               type: 'button',
@@ -44,17 +44,17 @@ const prompt = async botEvent => {
               action: {
                 type: 'uri',
                 label: env.messageText.setting,
-                uri: uri + '/#/setting'
-              }
-            }
-          ]
-        }
-      }
-    }
+                uri: uri + '/#/setting',
+              },
+            },
+          ],
+        },
+      },
+    },
   ])
   return true
 }
 
 module.exports = {
-  prompt
+  prompt,
 }

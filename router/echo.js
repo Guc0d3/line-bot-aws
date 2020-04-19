@@ -2,7 +2,7 @@ const env = require('../env')
 const logic = require('../logic')
 const tool = require('../tool')
 
-const echo = async (botEvent) => {
+const set = async (botEvent) => {
   // no echo message in master of bot group
   if (botEvent.source.groupId === process.env.LINE_MASTER_OF_BOT_GROUP_ID)
     return false
@@ -41,4 +41,6 @@ const echo = async (botEvent) => {
   return true
 }
 
-module.exports = echo
+module.exports = {
+  set,
+}

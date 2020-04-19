@@ -1,7 +1,7 @@
 const env = require('../env')
 const tool = require('../tool')
 
-const get = async botEvent => {
+const get = async (botEvent) => {
   if (!botEvent.message) return false
   if (botEvent.message.type !== 'text') return false
   if (botEvent.message.text !== env.messageEvent.guide) return false
@@ -12,14 +12,14 @@ const get = async botEvent => {
     messages.push({
       type: 'image',
       originalContentUrl: rows[0].value,
-      previewImageUrl: rows[0].value
+      previewImageUrl: rows[0].value,
     })
   }
   rows = await tool.db('setting').where('option', 'GUIDE_MESSAGE')
   if (rows[0].value) {
     messages.push({
       type: 'text',
-      text: rows[0].value
+      text: rows[0].value,
     })
   }
   await tool.line.replyMessage(botEvent.replyToken, messages)
@@ -27,5 +27,5 @@ const get = async botEvent => {
 }
 
 module.exports = {
-  get
+  get,
 }

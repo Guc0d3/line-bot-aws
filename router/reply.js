@@ -41,7 +41,7 @@ const set = async (botEvent) => {
 
   if (hasUser && hasMessage) {
     user = await logic.line.getProfileByName(
-      botEvent.message.text.split('\n')[0].split(':')[1].trim()
+      botEvent.message.text.split('\n')[0].split(':')[1].trim(),
     )
     if (user) {
       await tool.line.pushMessage(user.friendId, [
@@ -67,7 +67,7 @@ const set = async (botEvent) => {
     }
   } else if (hasUser) {
     user = await logic.line.getProfileByName(
-      botEvent.message.text.split('\n')[0].split(':')[1].trim()
+      botEvent.message.text.split('\n')[0].split(':')[1].trim(),
     )
     await tool.line.replyMessage(botEvent.replyToken, [
       {

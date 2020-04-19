@@ -1,8 +1,7 @@
 const env = require('../env')
-const logic = require('../logic')
 const tool = require('../tool')
 
-const get = async botEvent => {
+const get = async (botEvent) => {
   if (!botEvent.message) return false
   if (botEvent.message.type !== 'text') return false
   if (botEvent.message.text !== env.messageEvent.location) return false
@@ -19,12 +18,12 @@ const get = async botEvent => {
   await tool.line.replyMessage(botEvent.replyToken, [
     {
       type: 'location',
-      ...location
-    }
+      ...location,
+    },
   ])
   return true
 }
 
 module.exports = {
-  get
+  get,
 }

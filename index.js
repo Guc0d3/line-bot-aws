@@ -14,7 +14,7 @@ if (process.env.APP_ENV === 'production') {
 
 tool.line.create(process.env.LINE_CHANNEL_ACCESS_TOKEN)
 
-exports.handler = async event => {
+exports.handler = async (event) => {
   // basic event
   // {
   //   "events": [{
@@ -53,12 +53,12 @@ exports.handler = async event => {
     await router.register.random(botEvent),
     await router.register.set(botEvent),
     await router.reply.set(botEvent),
-    await router.web.prompt(botEvent)
+    await router.web.prompt(botEvent),
   ]
   const noEvent = !works.reduce((result, work) => {
     return result || work
   }, false)
   if (noEvent) {
-    await router.echo(botEvent)
+    await router.echo.set(botEvent)
   }
 }
