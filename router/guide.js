@@ -5,7 +5,6 @@ const get = async (botEvent) => {
   if (!botEvent.message) return false
   if (botEvent.message.type !== 'text') return false
   if (botEvent.message.text !== env.messageEvent.guide) return false
-  console.debug('[-] botEvent.guide.get')
   let messages = []
   let rows = await tool.db('setting').where('option', 'GUIDE_IMAGE')
   if (rows[0].value) {
