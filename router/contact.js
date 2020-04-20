@@ -23,7 +23,7 @@ const get = async (botEvent) => {
       text: rows[0].value,
     })
   }
-  await lineBot.client.replyMessage(botEvent.replyToken, messages)
+  await lineBot.replyMessage(botEvent.replyToken, messages)
   return true
 }
 

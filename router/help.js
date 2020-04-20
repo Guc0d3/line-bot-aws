@@ -12,7 +12,7 @@ const get = async (botEvent) => {
     '\tสุ่มรหัสสมาชิก\n' +
     env.messageEvent.register.get +
     '\tแสดงรหัสสมาชิก\n'
-  await lineBot.client.replyMessage(botEvent.replyToken, [
+  await lineBot.replyMessage(botEvent.replyToken, [
     {
       type: 'text',
       text: text,

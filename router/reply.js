@@ -1,6 +1,8 @@
 const env = require('../env')
 const logic = require('../logic')
 const tool = require('../tool')
+const LineBotFactory = require('../factory/LineBotFactory')
+const lineBot = LineBotFactory(process.env.LINE_CHANNEL_ACCESS_TOKEN)
 
 var user = null
 
@@ -40,17 +42,17 @@ const set = async (botEvent) => {
   }
 
   if (hasUser && hasMessage) {
-    user = await logic.line.getProfileByName(
+    user = await lineBot.getProfileByName(
       botEvent.message.text.split('\n')[0].split(':')[1].trim(),
     )
     if (user) {
-      await tool.line.pushMessage(user.friendId, [
+      await lineBot.pushMessage(user.friendId, [
         {
           type: 'text',
           text: botEvent.message.text.split('\n')[2].split(':')[1].trim(),
         },
       ])
-      await tool.line.replyMessage(botEvent.replyToken, [
+      await lineBot.replyMessage(botEvent.replyToken, [
         {
           type: 'text',
           text: env.messageText.replyComplete,
@@ -58,7 +60,7 @@ const set = async (botEvent) => {
       ])
       user = null
     } else {
-      await tool.line.replyMessage(botEvent.replyToken, [
+      await lineBot.replyMessage(botEvent.replyToken, [
         {
           type: 'text',
           text: env.messageText.usernameIsMismatched,
@@ -66,10 +68,10 @@ const set = async (botEvent) => {
       ])
     }
   } else if (hasUser) {
-    user = await logic.line.getProfileByName(
+    user = await lineBot.getProfileByName(
       botEvent.message.text.split('\n')[0].split(':')[1].trim(),
     )
-    await tool.line.replyMessage(botEvent.replyToken, [
+    await lineBot.replyMessage(botEvent.replyToken, [
       {
         type: 'text',
         text: env.messageText.replyPrompt,
@@ -78,13 +80,13 @@ const set = async (botEvent) => {
   } else if (user) {
     switch (botEvent.message.type) {
       case 'text':
-        await tool.line.pushMessage(user.friendId, [
+        await lineBot.pushMessage(user.friendId, [
           {
             type: 'text',
             text: botEvent.message.text,
           },
         ])
-        await tool.line.replyMessage(botEvent.replyToken, [
+        await lineBot.replyMessage(botEvent.replyToken, [
           {
             type: 'text',
             text: env.messageText.replyComplete,
@@ -92,16 +94,16 @@ const set = async (botEvent) => {
         ])
         break
       case 'image':
-        const buffer = await tool.line.getMessageContent(botEvent.message.id)
+        const buffer = await lineBot.getMessageContent(botEvent.message.id)
         const url = await logic.s3.uploadBuffer(buffer)
-        await tool.line.pushMessage(user.friendId, [
+        await lineBot.pushMessage(user.friendId, [
           {
             type: botEvent.message.type,
             originalContentUrl: url,
             previewImageUrl: url,
           },
         ])
-        await tool.line.replyMessage(botEvent.replyToken, [
+        await lineBot.replyMessage(botEvent.replyToken, [
           {
             type: 'text',
             text: env.messageText.replyComplete,
@@ -109,7 +111,7 @@ const set = async (botEvent) => {
         ])
         break
       default:
-        await tool.line.replyMessage(botEvent.replyToken, [
+        await lineBot.replyMessage(botEvent.replyToken, [
           {
             type: 'text',
             text: env.messageText.messageTypeIsNoSupport,

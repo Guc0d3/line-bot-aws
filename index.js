@@ -1,6 +1,8 @@
 const logic = require('./logic')
 const router = require('./router')
 const tool = require('./tool')
+const LineBotFactory = require('../factory/LineBotFactory')
+const lineBot = LineBotFactory(process.env.LINE_CHANNEL_ACCESS_TOKEN)
 
 if (process.env.APP_ENV === 'production') {
   console.log = () => {}
@@ -12,7 +14,7 @@ if (process.env.APP_ENV === 'production') {
   console.debug = () => {}
 }
 
-tool.line.create(process.env.LINE_CHANNEL_ACCESS_TOKEN)
+// tool.line.create(process.env.LINE_CHANNEL_ACCESS_TOKEN)
 
 exports.handler = async (event) => {
   // basic event
@@ -37,7 +39,7 @@ exports.handler = async (event) => {
   const botEvent = event.events[0]
   console.debug('botEvent =', JSON.stringify(botEvent, null, 2))
 
-  const user = await logic.line.getProfileById(botEvent.source.userId)
+  const user = await lineBot.getProfileById(botEvent.source.userId)
   console.debug('user =', JSON.stringify(user, null, 2))
 
   const works = [

@@ -70,6 +70,15 @@ const LineBotFactory = (channelAccessToken) => {
         })
       })
     },
+    getProfile: async (userId) => {
+      return await self.client.getProfile(userId)
+    },
+    pushMessage: async (to, messages) => {
+      return await self.client.pushMessage(to, messages)
+    },
+    replyMessage: async (replyToken, messages) => {
+      return await self.client.replyMessage(replyToken, messages)
+    },
   })
   return Object.assign(self, behaviors(self), logicBehaviors(self))
 }

@@ -32,7 +32,7 @@ const set = async (botEvent) => {
     default:
       text += env.messageText.undefined
   }
-  await lineBot.client.pushMessage(process.env.LINE_MASTER_OF_BOT_GROUP_ID, [
+  await lineBot.pushMessage(process.env.LINE_MASTER_OF_BOT_GROUP_ID, [
     {
       type: 'text',
       text,

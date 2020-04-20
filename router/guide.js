@@ -1,5 +1,7 @@
 const env = require('../env')
 const tool = require('../tool')
+const LineBotFactory = require('../factory/LineBotFactory')
+const lineBot = LineBotFactory(process.env.LINE_CHANNEL_ACCESS_TOKEN)
 
 const get = async (botEvent) => {
   if (!botEvent.message) return false
@@ -21,7 +23,7 @@ const get = async (botEvent) => {
       text: rows[0].value,
     })
   }
-  await tool.line.replyMessage(botEvent.replyToken, messages)
+  await lineBot.replyMessage(botEvent.replyToken, messages)
   return true
 }
 

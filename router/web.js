@@ -1,5 +1,7 @@
 const env = require('../env')
 const tool = require('../tool')
+const LineBotFactory = require('../factory/LineBotFactory')
+const lineBot = LineBotFactory(process.env.LINE_CHANNEL_ACCESS_TOKEN)
 
 const prompt = async (botEvent) => {
   if (!botEvent.message) return false
@@ -8,7 +10,7 @@ const prompt = async (botEvent) => {
   let rows = await tool.db('setting').where({ option: 'WEB_URL' })
   if (rows.length !== 1) return false
   const uri = rows[0].value
-  await tool.line.replyMessage(botEvent.replyToken, [
+  await lineBot.replyMessage(botEvent.replyToken, [
     {
       type: 'flex',
       altText: 'bot send web menu',
