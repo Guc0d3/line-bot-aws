@@ -1,4 +1,5 @@
 const lineBotSdk = require('@line/bot-sdk')
+const lodash = require('lodash')
 
 const tool = require('../tool')
 
