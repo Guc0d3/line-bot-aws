@@ -1,8 +1,10 @@
 const lineBotSdk = require('@line/bot-sdk')
 
-const logicBehaviors = () => ({
+const tool = require('../tool')
+
+const logicBehaviors = (self) => ({
   getProfileById: async (userId) => {
-    let friend = await tool.line.getProfile(userId)
+    let friend = await self.client.getProfile(userId)
     friend.friendId = friend.userId
     delete friend.userId
     let rows = await tool.db('friend').where('friend_id', userId)
