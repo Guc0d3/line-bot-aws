@@ -1,7 +1,5 @@
-const logic = require('./logic')
 const router = require('./router')
-const tool = require('./tool')
-const LineBotFactory = require('../factory/LineBotFactory')
+const LineBotFactory = require('./factory/LineBotFactory')
 const lineBot = LineBotFactory(process.env.LINE_CHANNEL_ACCESS_TOKEN)
 
 if (process.env.APP_ENV === 'production') {
