@@ -1,6 +1,7 @@
 const env = require('../env')
 const logic = require('../logic')
-const tool = require('../tool')
+const LineBotFactory = require('../factory/LineBotFactory')
+const lineBot = LineBotFactory(process.env.LINE_CHANNEL_ACCESS_TOKEN)
 
 const set = async (botEvent) => {
   // no echo message in master of bot group
@@ -10,7 +11,7 @@ const set = async (botEvent) => {
   if (['text', 'image'].indexOf(botEvent.message.type) === -1) return false
 
   // get user
-  const user = await logic.line.getProfileById(botEvent.source.userId)
+  const user = await lineBot.getProfileById(botEvent.source.userId)
 
   // echo to master of bot
   let text =
@@ -24,14 +25,14 @@ const set = async (botEvent) => {
       text += botEvent.message.text
       break
     case 'image':
-      const buffer = await tool.line.getMessageContent(botEvent.message.id)
+      const buffer = await lineBot.getMessageContent(botEvent.message.id)
       const url = await logic.s3.uploadBuffer(buffer)
       text += url
       break
     default:
       text += env.messageText.undefined
   }
-  await tool.line.pushMessage(process.env.LINE_MASTER_OF_BOT_GROUP_ID, [
+  await lineBot.client.pushMessage(process.env.LINE_MASTER_OF_BOT_GROUP_ID, [
     {
       type: 'text',
       text,
