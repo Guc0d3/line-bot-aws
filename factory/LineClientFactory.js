@@ -3,7 +3,7 @@ const lodash = require('lodash')
 
 const tool = require('../tool')
 
-const logicBehaviors = (self) => ({
+const myBehaviors = (self) => ({
   getProfileById: async (userId) => {
     let friend = await self.client.getProfile(userId)
     friend.friendId = friend.userId
@@ -81,7 +81,7 @@ const LineClientFactory = (channelAccessToken) => {
       return await self.client.replyMessage(replyToken, messages)
     },
   })
-  return Object.assign(self, behaviors(self), logicBehaviors(self))
+  return Object.assign(self, behaviors(self), myBehaviors(self))
 }
 
 module.exports = LineClientFactory
