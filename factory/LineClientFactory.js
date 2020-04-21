@@ -3,7 +3,7 @@ const lodash = require('lodash')
 
 const tool = require('../tool')
 
-const LINE_CHANNEL_ACCESS_TOKEN = process.env.LINE_CHANNEL_ACCESS_TOKEN
+const CHANNEL_ACCESS_TOKEN = process.env.LINE_CHANNEL_ACCESS_TOKEN
 
 const myBehaviors = (self) => ({
   getProfileById: async (userId) => {
@@ -54,7 +54,7 @@ const myBehaviors = (self) => ({
 const LineClientFactory = () => {
   const self = {
     client: new lineBotSdk.Client({
-      channelAccessToken: LINE_CHANNEL_ACCESS_TOKEN,
+      channelAccessToken: CHANNEL_ACCESS_TOKEN,
     }),
   }
   const behaviors = (self) => ({
