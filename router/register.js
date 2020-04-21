@@ -1,8 +1,8 @@
 const moment = require('moment')
 const env = require('../env')
-const logic = require('../logic')
 const tool = require('../tool')
 const LineClientFactory = require('../factory/LineClientFactory')
+
 const line = LineClientFactory()
 
 moment.locale('th')
@@ -11,6 +11,8 @@ const get = async (botEvent) => {
   if (!botEvent.message) return false
   if (botEvent.message.type !== 'text') return false
   if (botEvent.message.text !== env.messageEvent.register.get) return false
+  if (botEvent.source.groupId !== process.env.LINE_MASTER_OF_BOT_GROUP_ID)
+    return false
   let rows = await tool.db('setting').where({ option: 'REGISTER_CODE' })
   if (rows.length != 1) return false
   await line.replyMessage(botEvent.replyToken, [
@@ -96,6 +98,8 @@ const random = async (botEvent) => {
   if (!botEvent.message) return false
   if (botEvent.message.type !== 'text') return false
   if (botEvent.message.text !== env.messageEvent.register.random) return false
+  if (botEvent.source.groupId !== process.env.LINE_MASTER_OF_BOT_GROUP_ID)
+    return false
   const code = Math.floor(100000 + Math.random() * 900000).toString()
   await tool
     .db('setting')

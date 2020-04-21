@@ -6,6 +6,8 @@ const get = async (botEvent) => {
   if (!botEvent.message) return false
   if (botEvent.message.type !== 'text') return false
   if (botEvent.message.text !== env.messageEvent.help) return false
+  if (botEvent.source.groupId !== process.env.LINE_MASTER_OF_BOT_GROUP_ID)
+    return false
 
   const text =
     env.messageEvent.register.random +

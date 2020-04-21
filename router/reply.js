@@ -1,6 +1,5 @@
 const env = require('../env')
 const logic = require('../logic')
-const tool = require('../tool')
 const LineClientFactory = require('../factory/LineClientFactory')
 const line = LineClientFactory()
 
