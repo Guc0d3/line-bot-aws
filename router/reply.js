@@ -2,7 +2,7 @@ const env = require('../env')
 const logic = require('../logic')
 const tool = require('../tool')
 const LineClientFactory = require('../factory/LineClientFactory')
-const line = LineClientFactory(process.env.LINE_CHANNEL_ACCESS_TOKEN)
+const line = LineClientFactory()
 
 var user = null
 

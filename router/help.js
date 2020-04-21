@@ -1,6 +1,6 @@
 const env = require('../env')
 const LineClientFactory = require('../factory/LineClientFactory')
-const line = LineClientFactory(process.env.LINE_CHANNEL_ACCESS_TOKEN)
+const line = LineClientFactory()
 
 const get = async (botEvent) => {
   if (!botEvent.message) return false
