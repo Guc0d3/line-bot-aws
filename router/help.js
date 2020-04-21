@@ -1,6 +1,6 @@
 const env = require('../env')
-const LineBotFactory = require('../factory/LineBotFactory')
-const lineBot = LineBotFactory(process.env.LINE_CHANNEL_ACCESS_TOKEN)
+const LineClientFactory = require('../factory/LineClientFactory')
+const line = LineClientFactory(process.env.LINE_CHANNEL_ACCESS_TOKEN)
 
 const get = async (botEvent) => {
   if (!botEvent.message) return false
@@ -12,7 +12,7 @@ const get = async (botEvent) => {
     '\tสุ่มรหัสสมาชิก\n' +
     env.messageEvent.register.get +
     '\tแสดงรหัสสมาชิก\n'
-  await lineBot.replyMessage(botEvent.replyToken, [
+  await line.replyMessage(botEvent.replyToken, [
     {
       type: 'text',
       text: text,

@@ -1,6 +1,6 @@
 const router = require('./router')
-const LineBotFactory = require('./factory/LineBotFactory')
-const lineBot = LineBotFactory(process.env.LINE_CHANNEL_ACCESS_TOKEN)
+const LineClientFactory = require('./factory/LineClientFactory')
+const line = LineClientFactory(process.env.LINE_CHANNEL_ACCESS_TOKEN)
 
 if (process.env.APP_ENV === 'production') {
   console.log = () => {}
@@ -37,7 +37,7 @@ exports.handler = async (event) => {
   const botEvent = event.events[0]
   console.debug('botEvent =', JSON.stringify(botEvent, null, 2))
 
-  const user = await lineBot.getProfileById(botEvent.source.userId)
+  const user = await line.getProfileById(botEvent.source.userId)
   console.debug('user =', JSON.stringify(user, null, 2))
 
   const works = [

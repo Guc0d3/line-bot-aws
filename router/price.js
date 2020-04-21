@@ -3,8 +3,8 @@ const moment = require('moment')
 const env = require('../env')
 const logic = require('../logic')
 const tool = require('../tool')
-const LineBotFactory = require('../factory/LineBotFactory')
-const lineBot = LineBotFactory(process.env.LINE_CHANNEL_ACCESS_TOKEN)
+const LineClientFactory = require('../factory/LineClientFactory')
+const line = LineClientFactory(process.env.LINE_CHANNEL_ACCESS_TOKEN)
 
 const get = async (botEvent) => {
   if (!botEvent.message) return false
@@ -12,12 +12,12 @@ const get = async (botEvent) => {
   if (botEvent.message.text !== env.messageEvent.price) return false
 
   // get user
-  const user = await lineBot.getProfileById(botEvent.source.userId)
+  const user = await line.getProfileById(botEvent.source.userId)
 
   // ban user prompt
   if (user.groupCode === env.messageGroup.banFriend) {
     console.log('This user is baned:', JSON.stringify(user))
-    await lineBot.replyMessage(botEvent.replyToken, [
+    await line.replyMessage(botEvent.replyToken, [
       {
         type: 'text',
         text: env.messageText.banFriend,
@@ -64,12 +64,12 @@ const get = async (botEvent) => {
       })
     }
 
-    await lineBot.replyMessage(botEvent.replyToken, messages)
+    await line.replyMessage(botEvent.replyToken, messages)
   }
 
   // expired user
   else {
-    await lineBot.replyMessage(botEvent.replyToken, [
+    await line.replyMessage(botEvent.replyToken, [
       {
         type: 'text',
         text: env.messageText.exipred,

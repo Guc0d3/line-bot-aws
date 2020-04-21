@@ -1,7 +1,7 @@
 const env = require('../env')
 const tool = require('../tool')
-const LineBotFactory = require('../factory/LineBotFactory')
-const lineBot = LineBotFactory(process.env.LINE_CHANNEL_ACCESS_TOKEN)
+const LineClientFactory = require('../factory/LineClientFactory')
+const line = LineClientFactory(process.env.LINE_CHANNEL_ACCESS_TOKEN)
 
 const get = async (botEvent) => {
   if (!botEvent.message) return false
@@ -16,7 +16,7 @@ const get = async (botEvent) => {
   location.longitude = parseFloat(rows[0].value)
   rows = await tool.db('setting').where('option', 'LOCATION_TITLE')
   location.title = rows[0].value
-  await lineBot.replyMessage(botEvent.replyToken, [
+  await line.replyMessage(botEvent.replyToken, [
     {
       type: 'location',
       ...location,

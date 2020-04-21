@@ -49,7 +49,7 @@ const logicBehaviors = (self) => ({
   },
 })
 
-const LineBotFactory = (channelAccessToken) => {
+const LineClientFactory = (channelAccessToken) => {
   const self = {
     client: new lineBotSdk.Client({ channelAccessToken }),
   }
@@ -84,4 +84,4 @@ const LineBotFactory = (channelAccessToken) => {
   return Object.assign(self, behaviors(self), logicBehaviors(self))
 }
 
-module.exports = LineBotFactory
+module.exports = LineClientFactory

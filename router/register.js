@@ -2,8 +2,8 @@ const moment = require('moment')
 const env = require('../env')
 const logic = require('../logic')
 const tool = require('../tool')
-const LineBotFactory = require('../factory/LineBotFactory')
-const lineBot = LineBotFactory(process.env.LINE_CHANNEL_ACCESS_TOKEN)
+const LineClientFactory = require('../factory/LineClientFactory')
+const line = LineClientFactory(process.env.LINE_CHANNEL_ACCESS_TOKEN)
 
 moment.locale('th')
 
@@ -13,7 +13,7 @@ const get = async (botEvent) => {
   if (botEvent.message.text !== env.messageEvent.register.get) return false
   let rows = await tool.db('setting').where({ option: 'REGISTER_CODE' })
   if (rows.length != 1) return false
-  await lineBot.replyMessage(botEvent.replyToken, [
+  await line.replyMessage(botEvent.replyToken, [
     {
       type: 'text',
       text: env.messageText.registerCode + ': ' + rows[0].value,
@@ -28,7 +28,7 @@ const prompt = async (botEvent) => {
   if (botEvent.message.text !== env.messageEvent.register.prompt) return false
 
   // get user
-  const user = await lineBot.getProfileById(botEvent.source.userId)
+  const user = await line.getProfileById(botEvent.source.userId)
 
   let contents = null
 
@@ -73,7 +73,7 @@ const prompt = async (botEvent) => {
   }
 
   // send flex menu to user
-  await lineBot.replyMessage(botEvent.replyToken, [
+  await line.replyMessage(botEvent.replyToken, [
     {
       type: 'flex',
       altText: env.messageText.botSendMessage,
@@ -101,7 +101,7 @@ const random = async (botEvent) => {
     .db('setting')
     .where({ option: 'REGISTER_CODE' })
     .update({ value: code })
-  await lineBot.replyMessage(botEvent.replyToken, [
+  await line.replyMessage(botEvent.replyToken, [
     {
       type: 'text',
       text: env.messageText.randomRegisterCodeSuccess[0],
@@ -120,7 +120,7 @@ const set = async (botEvent) => {
   if (!/^([0-9]{6})$/.test(botEvent.message.text)) return false
 
   // get user
-  const user = await lineBot.getProfileById(botEvent.source.userId)
+  const user = await line.getProfileById(botEvent.source.userId)
 
   // check register code
   let rows = await tool.db('setting').where({
@@ -159,7 +159,7 @@ const set = async (botEvent) => {
     })
 
   // reply success message
-  await lineBot.replyMessage(botEvent.replyToken, [
+  await line.replyMessage(botEvent.replyToken, [
     {
       type: 'text',
       text: env.messageText.registerSuccess,
