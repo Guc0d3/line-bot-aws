@@ -1,8 +1,8 @@
 const moment = require('moment')
 const env = require('../env')
-const tool = require('../tool')
+const DatabaseFactory = require('../factory/DatabaseFactory')
+const database = DatabaseFactory()
 const LineClientFactory = require('../factory/LineClientFactory')
-
 const line = LineClientFactory()
 
 moment.locale('th')
@@ -13,7 +13,7 @@ const get = async (botEvent) => {
   if (botEvent.message.text !== env.messageEvent.register.get) return false
   if (botEvent.source.groupId !== process.env.LINE_MASTER_OF_BOT_GROUP_ID)
     return false
-  let rows = await tool.db('setting').where({ option: 'REGISTER_CODE' })
+  let rows = await database('setting').where({ option: 'REGISTER_CODE' })
   if (rows.length != 1) return false
   await line.replyMessage(botEvent.replyToken, [
     {
@@ -48,7 +48,7 @@ const prompt = async (botEvent) => {
     ]
   } else {
     // create flex menu for another user
-    let rows = await tool.db('setting').where({ option: 'WEB_URL' })
+    let rows = await database('setting').where({ option: 'WEB_URL' })
     const registerUrl = rows[0].value + '/#/register?id=' + user.friendId
     contents = [
       {
@@ -101,8 +101,7 @@ const random = async (botEvent) => {
   if (botEvent.source.groupId !== process.env.LINE_MASTER_OF_BOT_GROUP_ID)
     return false
   const code = Math.floor(100000 + Math.random() * 900000).toString()
-  await tool
-    .db('setting')
+  await database('setting')
     .where({ option: 'REGISTER_CODE' })
     .update({ value: code })
   await line.replyMessage(botEvent.replyToken, [
@@ -127,7 +126,7 @@ const set = async (botEvent) => {
   const user = await line.getProfileById(botEvent.source.userId)
 
   // check register code
-  let rows = await tool.db('setting').where({
+  let rows = await database('setting').where({
     option: 'REGISTER_CODE',
     value: botEvent.message.text,
   })
@@ -136,12 +135,12 @@ const set = async (botEvent) => {
   // get active date by user groupcode
   let activeDate = 0
   if (user.groupCode === env.messageGroup.warningFriend) {
-    rows = await tool.db('setting').where({
+    rows = await database('setting').where({
       option: 'ACTIVE_DATE__WARNING_FRIEND',
     })
     activeDate = rows[0].value
   } else {
-    rows = await tool.db('setting').where({
+    rows = await database('setting').where({
       option: 'ACTIVE_DATE__FRIEND',
     })
     activeDate = rows[0].value
@@ -150,8 +149,7 @@ const set = async (botEvent) => {
   // set expired date
   let expiredAt = new Date()
   expiredAt.setDate(expiredAt.getDate() + 1 + parseInt(activeDate, 10))
-  await tool
-    .db('friend')
+  await database('friend')
     .where('friend_id', user.friendId)
     .update({
       group_code:
@@ -159,7 +157,7 @@ const set = async (botEvent) => {
           ? env.messageGroup.friend
           : user.groupCode,
       expired_at: expiredAt.toISOString().substr(0, 10),
-      updated_at: tool.db.fn.now(),
+      updated_at: database.fn.now(),
     })
 
   // reply success message

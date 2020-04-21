@@ -1,6 +1,7 @@
 const env = require('../env')
 const logic = require('../logic')
 const LineClientFactory = require('../factory/LineClientFactory')
+
 const line = LineClientFactory()
 
 const set = async (botEvent) => {

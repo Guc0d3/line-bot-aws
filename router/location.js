@@ -1,5 +1,6 @@
 const env = require('../env')
-const tool = require('../tool')
+const DatabaseFactory = require('../factory/DatabaseFactory')
+const database = DatabaseFactory()
 const LineClientFactory = require('../factory/LineClientFactory')
 const line = LineClientFactory()
 
@@ -8,13 +9,13 @@ const get = async (botEvent) => {
   if (botEvent.message.type !== 'text') return false
   if (botEvent.message.text !== env.messageEvent.location) return false
   let location = {}
-  let rows = await tool.db('setting').where('option', 'LOCATION_ADDRESS')
+  let rows = await database('setting').where('option', 'LOCATION_ADDRESS')
   location.address = rows[0].value
-  rows = await tool.db('setting').where('option', 'LOCATION_LATITUDE')
+  rows = await database('setting').where('option', 'LOCATION_LATITUDE')
   location.latitude = parseFloat(rows[0].value)
-  rows = await tool.db('setting').where('option', 'LOCATION_LONGITUDE')
+  rows = await database('setting').where('option', 'LOCATION_LONGITUDE')
   location.longitude = parseFloat(rows[0].value)
-  rows = await tool.db('setting').where('option', 'LOCATION_TITLE')
+  rows = await database('setting').where('option', 'LOCATION_TITLE')
   location.title = rows[0].value
   await line.replyMessage(botEvent.replyToken, [
     {

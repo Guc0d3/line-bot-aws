@@ -1,8 +1,8 @@
 const moment = require('moment')
 
 const env = require('../env')
-const logic = require('../logic')
-const tool = require('../tool')
+const DatabaseFactory = require('../factory/DatabaseFactory')
+const database = DatabaseFactory()
 const LineClientFactory = require('../factory/LineClientFactory')
 const line = LineClientFactory()
 
@@ -33,8 +33,7 @@ const get = async (botEvent) => {
     user.groupCode === env.messageGroup.vipFriend ||
     current <= user.expiredAt
   ) {
-    let rows = await tool
-      .db('setting')
+    let rows = await database('setting')
       .where('option', 'PRICE_IMAGE')
       .orWhere('option', 'PRICE_MESSAGE')
       .orderBy('option')

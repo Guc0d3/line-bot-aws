@@ -1,7 +1,7 @@
 const lineBotSdk = require('@line/bot-sdk')
 const lodash = require('lodash')
-
-const tool = require('../tool')
+const DatabaseFactory = require('../factory/DatabaseFactory')
+const database = DatabaseFactory()
 
 const CHANNEL_ACCESS_TOKEN = process.env.LINE_CHANNEL_ACCESS_TOKEN
 
@@ -10,17 +10,17 @@ const myBehaviors = (self) => ({
     let friend = await self.client.getProfile(userId)
     friend.friendId = friend.userId
     delete friend.userId
-    let rows = await tool.db('friend').where('friend_id', userId)
+    let rows = await database('friend').where('friend_id', userId)
     if (rows.length == 0) {
-      rows = await tool
-        .db('setting')
-        .where({ option: 'ACTIVE_DATE__NEW_FRIEND' })
+      rows = await database('setting').where({
+        option: 'ACTIVE_DATE__NEW_FRIEND',
+      })
       const activeDateNewFriend = parseInt(rows[0].value, 10)
       friend.expiredAt = new Date()
       friend.expiredAt.setDate(
         friend.expiredAt.getDate() + 1 + activeDateNewFriend,
       )
-      await tool.db('friend').insert({
+      await database('friend').insert({
         display_name: friend.displayName,
         expired_at: friend.expiredAt.toISOString().substr(0, 10),
         friend_id: userId,
@@ -32,19 +32,18 @@ const myBehaviors = (self) => ({
       friend.groupCode = env.messageGroup.newFriend
     } else {
       friend.expiredAt = new Date(rows[0].expired_at)
-      await tool.db('friend').where('friend_id', userId).update({
+      await database('friend').where('friend_id', userId).update({
         display_name: friend.displayName,
         picture_url: friend.pictureUrl,
         status_message: friend.statusMessage,
-        updated_at: tool.db.fn.now(),
+        updated_at: database.fn.now(),
       })
       friend.groupCode = rows[0].group_code
     }
     return friend
   },
   getProfileByName: async (userDisplayName) => {
-    let rows = await tool
-      .db('friend')
+    let rows = await database('friend')
       .where('display_name', userDisplayName)
       .orderBy('updated_at', 'desc')
     return lodash.mapKeys(rows[0], (v, k) => lodash.camelCase(k))

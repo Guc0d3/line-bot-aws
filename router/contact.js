@@ -1,5 +1,6 @@
 const env = require('../env')
-const tool = require('../tool')
+const DatabaseFactory = require('../factory/DatabaseFactory')
+const database = DatabaseFactory()
 const LineClientFactory = require('../factory/LineClientFactory')
 const line = LineClientFactory()
 
@@ -8,7 +9,7 @@ const get = async (botEvent) => {
   if (botEvent.message.type !== 'text') return false
   if (botEvent.message.text !== env.messageEvent.contact) return false
   let messages = []
-  let rows = await tool.db('setting').where('option', 'CONTACT_IMAGE')
+  let rows = await database('setting').where('option', 'CONTACT_IMAGE')
   if (rows[0].value) {
     messages.push({
       type: 'image',
@@ -16,7 +17,7 @@ const get = async (botEvent) => {
       previewImageUrl: rows[0].value,
     })
   }
-  rows = await tool.db('setting').where('option', 'CONTACT_MESSAGE')
+  rows = await database('setting').where('option', 'CONTACT_MESSAGE')
   if (rows[0].value) {
     messages.push({
       type: 'text',

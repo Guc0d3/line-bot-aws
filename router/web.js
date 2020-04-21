@@ -1,5 +1,6 @@
 const env = require('../env')
-const tool = require('../tool')
+const DatabaseFactory = require('../factory/DatabaseFactory')
+const database = DatabaseFactory()
 const LineClientFactory = require('../factory/LineClientFactory')
 const line = LineClientFactory()
 
@@ -9,7 +10,7 @@ const prompt = async (botEvent) => {
   if (botEvent.message.text !== env.messageEvent.web.prompt) return false
   if (botEvent.source.groupId !== process.env.LINE_MASTER_OF_BOT_GROUP_ID)
     return false
-  let rows = await tool.db('setting').where({ option: 'WEB_URL' })
+  let rows = await database('setting').where({ option: 'WEB_URL' })
   if (rows.length !== 1) return false
   const uri = rows[0].value
   await line.replyMessage(botEvent.replyToken, [
