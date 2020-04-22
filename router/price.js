@@ -2,8 +2,8 @@ const moment = require('moment')
 const database = require('../database')
 const env = require('../env')
 const line = require('../line')
-const CommandType = require('../type/CommandType')
-const UserType = require('../type/UserType')
+const CommandType = require('../Type/CommandType')
+const UserType = require('../Type/UserType')
 
 const get = async (botEvent) => {
   if (!botEvent.message) return false

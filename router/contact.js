@@ -1,6 +1,6 @@
 const line = require('../line')
 const database = require('../database')
-const CommandType = require('../type/CommandType')
+const CommandType = require('../Type/CommandType')
 
 const get = async (botEvent) => {
   if (!botEvent.message) return false

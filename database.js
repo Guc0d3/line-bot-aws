@@ -1,4 +1,4 @@
-const DatabaseFactory = require('./factory/DatabaseFactory')
+const DatabaseFactory = require('./Factory/DatabaseFactory')
 
 const database = DatabaseFactory(
   process.env.POSTGRESQL_HOST,
