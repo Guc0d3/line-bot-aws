@@ -1,6 +1,6 @@
 const lodash = require('lodash')
 const tool = require('../tool')
-const UserType = require('../type/UserType')
+const UserType = require('../Type/UserType')
 
 const getProfileById = async (userId) => {
   let friend = await tool.line.getProfile(userId)
