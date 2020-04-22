@@ -1,17 +1,17 @@
-const env = require('../env')
 const line = require('../line')
+const CommandType = require('../type/CommandType')
 
 const get = async (botEvent) => {
   if (!botEvent.message) return false
   if (botEvent.message.type !== 'text') return false
-  if (botEvent.message.text !== env.messageEvent.help) return false
+  if (botEvent.message.text !== CommandType.help) return false
   if (botEvent.source.groupId !== process.env.LINE_MASTER_OF_BOT_GROUP_ID)
     return false
 
   const text =
-    env.messageEvent.register.random +
+    CommandType.register.random +
     '\tสุ่มรหัสสมาชิก\n' +
-    env.messageEvent.register.get +
+    CommandType.register.get +
     '\tแสดงรหัสสมาชิก\n'
   await line.replyMessage(botEvent.replyToken, [
     {

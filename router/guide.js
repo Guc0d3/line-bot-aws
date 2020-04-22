@@ -1,11 +1,11 @@
 const database = require('../database')
-const env = require('../env')
 const line = require('../line')
+const CommandType = require('../type/CommandType')
 
 const get = async (botEvent) => {
   if (!botEvent.message) return false
   if (botEvent.message.type !== 'text') return false
-  if (botEvent.message.text !== env.messageEvent.guide) return false
+  if (botEvent.message.text !== CommandType.guide) return false
   let messages = []
   let rows = await database('setting').where('option', 'GUIDE_IMAGE')
   if (rows[0].value) {

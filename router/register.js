@@ -2,13 +2,15 @@ const moment = require('moment')
 const database = require('../database')
 const env = require('../env')
 const line = require('../line')
+const CommandType = require('../type/CommandType')
+const UserType = require('../type/UserType')
 
 moment.locale('th')
 
 const get = async (botEvent) => {
   if (!botEvent.message) return false
   if (botEvent.message.type !== 'text') return false
-  if (botEvent.message.text !== env.messageEvent.register.get) return false
+  if (botEvent.message.text !== CommandType.register.get) return false
   if (botEvent.source.groupId !== process.env.LINE_MASTER_OF_BOT_GROUP_ID)
     return false
   let rows = await database('setting').where({ option: 'REGISTER_CODE' })
@@ -25,14 +27,14 @@ const get = async (botEvent) => {
 const prompt = async (botEvent) => {
   if (!botEvent.message) return false
   if (botEvent.message.type !== 'text') return false
-  if (botEvent.message.text !== env.messageEvent.register.prompt) return false
+  if (botEvent.message.text !== CommandType.register.prompt) return false
 
   // get user
   const user = await line.getProfileById(botEvent.source.userId)
 
   let contents = null
 
-  if (user.groupCode === env.messageGroup.vipFriend) {
+  if (user.groupCode === UserType.vipFriend) {
     // create flex menu for VIP user
     contents = [
       {
@@ -95,7 +97,7 @@ const prompt = async (botEvent) => {
 const random = async (botEvent) => {
   if (!botEvent.message) return false
   if (botEvent.message.type !== 'text') return false
-  if (botEvent.message.text !== env.messageEvent.register.random) return false
+  if (botEvent.message.text !== CommandType.register.random) return false
   if (botEvent.source.groupId !== process.env.LINE_MASTER_OF_BOT_GROUP_ID)
     return false
   const code = Math.floor(100000 + Math.random() * 900000).toString()
@@ -132,7 +134,7 @@ const set = async (botEvent) => {
 
   // get active date by user groupcode
   let activeDate = 0
-  if (user.groupCode === env.messageGroup.warningFriend) {
+  if (user.groupCode === UserType.warningFriend) {
     rows = await database('setting').where({
       option: 'ACTIVE_DATE__WARNING_FRIEND',
     })
@@ -151,8 +153,8 @@ const set = async (botEvent) => {
     .where('friend_id', user.friendId)
     .update({
       group_code:
-        user.groupCode === env.messageGroup.newFriend
-          ? env.messageGroup.friend
+        user.groupCode === UserType.newFriend
+          ? UserType.friend
           : user.groupCode,
       expired_at: expiredAt.toISOString().substr(0, 10),
       updated_at: database.fn.now(),

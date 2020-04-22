@@ -1,11 +1,12 @@
 const database = require('../database')
 const env = require('../env')
 const line = require('../line')
+const CommandType = require('../type/CommandType')
 
 const prompt = async (botEvent) => {
   if (!botEvent.message) return false
   if (botEvent.message.type !== 'text') return false
-  if (botEvent.message.text !== env.messageEvent.web.prompt) return false
+  if (botEvent.message.text !== CommandType.web) return false
   if (botEvent.source.groupId !== process.env.LINE_MASTER_OF_BOT_GROUP_ID)
     return false
   let rows = await database('setting').where({ option: 'WEB_URL' })

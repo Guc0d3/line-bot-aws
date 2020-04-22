@@ -2,17 +2,19 @@ const moment = require('moment')
 const database = require('../database')
 const env = require('../env')
 const line = require('../line')
+const CommandType = require('../type/CommandType')
+const UserType = require('../type/UserType')
 
 const get = async (botEvent) => {
   if (!botEvent.message) return false
   if (botEvent.message.type !== 'text') return false
-  if (botEvent.message.text !== env.messageEvent.price) return false
+  if (botEvent.message.text !== CommandType.price) return false
 
   // get user
   const user = await line.getProfileById(botEvent.source.userId)
 
   // ban user prompt
-  if (user.groupCode === env.messageGroup.banFriend) {
+  if (user.groupCode === UserType.banFriend) {
     console.log('This user is baned:', JSON.stringify(user))
     await line.replyMessage(botEvent.replyToken, [
       {
@@ -26,10 +28,7 @@ const get = async (botEvent) => {
   const current = new Date()
 
   // not expired or vip user
-  if (
-    user.groupCode === env.messageGroup.vipFriend ||
-    current <= user.expiredAt
-  ) {
+  if (user.groupCode === UserType.vipFriend || current <= user.expiredAt) {
     let rows = await database('setting')
       .where('option', 'PRICE_IMAGE')
       .orWhere('option', 'PRICE_MESSAGE')

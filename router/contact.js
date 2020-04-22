@@ -1,11 +1,11 @@
-const env = require('../env')
 const line = require('../line')
 const database = require('../database')
+const CommandType = require('../type/CommandType')
 
 const get = async (botEvent) => {
   if (!botEvent.message) return false
   if (botEvent.message.type !== 'text') return false
-  if (botEvent.message.text !== env.messageEvent.contact) return false
+  if (botEvent.message.text !== CommandType.contact) return false
   let messages = []
   let rows = await database('setting').where('option', 'CONTACT_IMAGE')
   if (rows[0].value) {

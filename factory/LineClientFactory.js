@@ -1,6 +1,7 @@
 const lineBotSdk = require('@line/bot-sdk')
 const lodash = require('lodash')
 const database = require('../database')
+const UserType = require('../type/UserType')
 
 const myBehaviors = (self) => ({
   getProfileById: async (userId) => {
@@ -22,11 +23,11 @@ const myBehaviors = (self) => ({
         expired_at: friend.expiredAt.toISOString().substr(0, 10),
         friend_id: userId,
         name: friend.displayName,
-        group_code: env.messageGroup.newFriend,
+        group_code: UserType.newFriend,
         picture_url: friend.pictureUrl,
         status_message: friend.statusMessage,
       })
-      friend.groupCode = env.messageGroup.newFriend
+      friend.groupCode = UserType.newFriend
     } else {
       friend.expiredAt = new Date(rows[0].expired_at)
       await database('friend').where('friend_id', userId).update({

@@ -1,28 +1,3 @@
-const messageEvent = {
-  contact: 'ติดต่อพนักงาน',
-  guide: 'แนะนำการใช้งาน',
-  help: '/help',
-  holiday: 'วันหยุด',
-  location: 'ที่อยู่',
-  price: 'ราคา',
-  register: {
-    prompt: 'ต่ออายุการใช้งาน',
-    random: '/rc',
-    get: '/c',
-  },
-  web: {
-    prompt: '/web',
-  },
-}
-
-const messageGroup = {
-  banFriend: 'b',
-  friend: 'f',
-  newFriend: 'n',
-  vipFriend: 'v',
-  warningFriend: 'w',
-}
-
 const messageText = {
   banFriend:
     'ขออภัย บอทอยู่ในช่วงกำลังพัฒนา ติดต่อเพิ่มเติมที่เมนูด้านล่างขวามือ',
@@ -51,7 +26,5 @@ const messageText = {
 }
 
 module.exports = {
-  messageEvent,
-  messageGroup,
   messageText,
 }

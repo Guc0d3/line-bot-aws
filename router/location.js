@@ -1,11 +1,11 @@
 const database = require('../database')
-const env = require('../env')
 const line = require('../line')
+const CommandType = require('../type/CommandType')
 
 const get = async (botEvent) => {
   if (!botEvent.message) return false
   if (botEvent.message.type !== 'text') return false
-  if (botEvent.message.text !== env.messageEvent.location) return false
+  if (botEvent.message.text !== CommandType.location) return false
   let location = {}
   let rows = await database('setting').where('option', 'LOCATION_ADDRESS')
   location.address = rows[0].value

@@ -1,11 +1,11 @@
 const database = require('../database')
-const env = require('../env')
 const line = require('../line')
+const CommandType = require('../type/CommandType')
 
 const get = async (botEvent) => {
   if (!botEvent.message) return false
   if (botEvent.message.type !== 'text') return false
-  if (botEvent.message.text !== env.messageEvent.holiday) return false
+  if (botEvent.message.text !== CommandType.holiday) return false
   let messages = []
   let rows = await database('setting').where('option', 'HOLIDAY_IMAGE')
   if (rows[0].value) {
