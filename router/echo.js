@@ -1,6 +1,6 @@
 const env = require('../env')
 const line = require('../line')
-const logic = require('../logic')
+const s3 = require('../s3')
 
 const set = async (botEvent) => {
   // no echo message in master of bot group
@@ -25,7 +25,8 @@ const set = async (botEvent) => {
       break
     case 'image':
       const buffer = await line.getMessageContent(botEvent.message.id)
-      const url = await logic.s3.uploadBuffer(buffer)
+      // const url = await logic.s3.uploadBuffer(buffer)
+      const url = await s3.upload(buffer)
       text += url
       break
     default:
