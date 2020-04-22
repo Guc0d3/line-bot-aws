@@ -1,8 +1,7 @@
 const env = require('../env')
+const line = require('../line')
 const DatabaseFactory = require('../factory/DatabaseFactory')
 const database = DatabaseFactory()
-const LineClientFactory = require('../factory/LineClientFactory')
-const line = LineClientFactory()
 
 const get = async (botEvent) => {
   if (!botEvent.message) return false

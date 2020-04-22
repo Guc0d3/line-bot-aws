@@ -1,7 +1,6 @@
 const env = require('../env')
+const line = require('../line')
 const logic = require('../logic')
-const LineClientFactory = require('../factory/LineClientFactory')
-const line = LineClientFactory()
 
 var user = null
 

@@ -1,8 +1,6 @@
 const env = require('../env')
+const line = require('../line')
 const logic = require('../logic')
-const LineClientFactory = require('../factory/LineClientFactory')
-
-const line = LineClientFactory()
 
 const set = async (botEvent) => {
   // no echo message in master of bot group

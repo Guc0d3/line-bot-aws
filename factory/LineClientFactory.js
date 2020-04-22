@@ -3,8 +3,6 @@ const lodash = require('lodash')
 const DatabaseFactory = require('../factory/DatabaseFactory')
 const database = DatabaseFactory()
 
-const CHANNEL_ACCESS_TOKEN = process.env.LINE_CHANNEL_ACCESS_TOKEN
-
 const myBehaviors = (self) => ({
   getProfileById: async (userId) => {
     let friend = await self.client.getProfile(userId)
@@ -50,11 +48,9 @@ const myBehaviors = (self) => ({
   },
 })
 
-const LineClientFactory = () => {
+const LineClientFactory = (channelAccessToken) => {
   const self = {
-    client: new lineBotSdk.Client({
-      channelAccessToken: CHANNEL_ACCESS_TOKEN,
-    }),
+    client: new lineBotSdk.Client({ channelAccessToken }),
   }
   const behaviors = (self) => ({
     getMessageContent: async (messageId) => {
