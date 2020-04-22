@@ -1,6 +1,6 @@
-const env = require('../env')
 const line = require('../line')
 const s3 = require('../s3')
+const TextType = require('../Type/TextType')
 
 var user = null
 
@@ -53,7 +53,7 @@ const set = async (botEvent) => {
       await line.replyMessage(botEvent.replyToken, [
         {
           type: 'text',
-          text: env.messageText.replyComplete,
+          text: TextType.replyIsSuccessed,
         },
       ])
       user = null
@@ -61,7 +61,7 @@ const set = async (botEvent) => {
       await line.replyMessage(botEvent.replyToken, [
         {
           type: 'text',
-          text: env.messageText.usernameIsMismatched,
+          text: TextType.userIsMismatched,
         },
       ])
     }
@@ -72,7 +72,7 @@ const set = async (botEvent) => {
     await line.replyMessage(botEvent.replyToken, [
       {
         type: 'text',
-        text: env.messageText.replyPrompt,
+        text: TextType.replyPrompt,
       },
     ])
   } else if (user) {
@@ -87,7 +87,7 @@ const set = async (botEvent) => {
         await line.replyMessage(botEvent.replyToken, [
           {
             type: 'text',
-            text: env.messageText.replyComplete,
+            text: TextType.replyIsSuccessed,
           },
         ])
         break
@@ -104,7 +104,7 @@ const set = async (botEvent) => {
         await line.replyMessage(botEvent.replyToken, [
           {
             type: 'text',
-            text: env.messageText.replyComplete,
+            text: TextType.replyIsSuccessed,
           },
         ])
         break
@@ -112,7 +112,7 @@ const set = async (botEvent) => {
         await line.replyMessage(botEvent.replyToken, [
           {
             type: 'text',
-            text: env.messageText.messageTypeIsNoSupport,
+            text: TextType.messageTypeIsNotInstall,
           },
         ])
     }

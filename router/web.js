@@ -1,7 +1,7 @@
 const database = require('../database')
-const env = require('../env')
 const line = require('../line')
 const CommandType = require('../Type/CommandType')
+const TextType = require('../Type/TextType')
 
 const prompt = async (botEvent) => {
   if (!botEvent.message) return false
@@ -28,7 +28,7 @@ const prompt = async (botEvent) => {
               style: 'primary',
               action: {
                 type: 'uri',
-                label: env.messageText.friend,
+                label: TextType.friend,
                 uri: uri + '/#/friend',
               },
             },
@@ -37,7 +37,7 @@ const prompt = async (botEvent) => {
               style: 'primary',
               action: {
                 type: 'uri',
-                label: env.messageText.history,
+                label: TextType.history,
                 uri: uri + '/#/history',
               },
             },
@@ -46,7 +46,7 @@ const prompt = async (botEvent) => {
               style: 'primary',
               action: {
                 type: 'uri',
-                label: env.messageText.setting,
+                label: TextType.setting,
                 uri: uri + '/#/setting',
               },
             },

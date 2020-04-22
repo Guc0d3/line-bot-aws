@@ -1,8 +1,8 @@
 const moment = require('moment')
 const database = require('../database')
-const env = require('../env')
 const line = require('../line')
 const CommandType = require('../Type/CommandType')
+const TextType = require('../Type/TextType')
 const UserType = require('../Type/UserType')
 
 moment.locale('th')
@@ -18,7 +18,7 @@ const get = async (botEvent) => {
   await line.replyMessage(botEvent.replyToken, [
     {
       type: 'text',
-      text: env.messageText.registerCode + ': ' + rows[0].value,
+      text: TextType.registerCode + ': ' + rows[0].value,
     },
   ])
   return true
@@ -39,11 +39,11 @@ const prompt = async (botEvent) => {
     contents = [
       {
         type: 'text',
-        text: env.messageText.userIsVIP[0],
+        text: TextType.userIsVIP[0],
       },
       {
         type: 'text',
-        text: env.messageText.userIsVIP[1],
+        text: TextType.userIsVIP[1],
       },
     ]
   } else {
@@ -53,12 +53,12 @@ const prompt = async (botEvent) => {
     contents = [
       {
         type: 'text',
-        text: env.messageText.userIsExpiredAt[0],
+        text: TextType.userIsExpiredAt[0],
       },
       {
         type: 'text',
         text:
-          env.messageText.userIsExpiredAt[1] +
+          TextType.userIsExpiredAt[1] +
           ' ' +
           moment(user.expiredAt).format('DD MMMM YYYY'),
       },
@@ -67,7 +67,7 @@ const prompt = async (botEvent) => {
         style: 'primary',
         action: {
           type: 'uri',
-          label: env.messageText.increaseExpireDate,
+          label: TextType.reNewMembership,
           uri: registerUrl,
         },
       },
@@ -78,7 +78,7 @@ const prompt = async (botEvent) => {
   await line.replyMessage(botEvent.replyToken, [
     {
       type: 'flex',
-      altText: env.messageText.botSendMessage,
+      altText: TextType.botSendMessage,
       contents: {
         type: 'bubble',
         body: {
@@ -107,11 +107,11 @@ const random = async (botEvent) => {
   await line.replyMessage(botEvent.replyToken, [
     {
       type: 'text',
-      text: env.messageText.randomRegisterCodeSuccess[0],
+      text: TextType.randomRegisterCodeSuccess[0],
     },
     {
       type: 'text',
-      text: env.messageText.randomRegisterCodeSuccess[1] + ': ' + code,
+      text: TextType.randomRegisterCodeSuccess[1] + ': ' + code,
     },
   ])
   return true
@@ -164,16 +164,16 @@ const set = async (botEvent) => {
   await line.replyMessage(botEvent.replyToken, [
     {
       type: 'text',
-      text: env.messageText.registerSuccess,
+      text: TextType.registerIsSuccessed,
     },
     {
       type: 'text',
-      text: env.messageText.userIsExpiredAt[0],
+      text: TextType.userIsExpiredAt[0],
     },
     {
       type: 'text',
       text:
-        env.messageText.userIsExpiredAt[1] +
+        TextType.userIsExpiredAt[1] +
         ' ' +
         moment(expiredAt).format('DD MMMM YYYY'),
     },

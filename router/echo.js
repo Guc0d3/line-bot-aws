@@ -1,6 +1,6 @@
-const env = require('../env')
 const line = require('../line')
 const s3 = require('../s3')
+const TextType = require('../Type/TextType')
 
 const set = async (botEvent) => {
   // no echo message in master of bot group
@@ -29,7 +29,7 @@ const set = async (botEvent) => {
       text += url
       break
     default:
-      text += env.messageText.undefined
+      text += TextType.undefined
   }
   await line.pushMessage(process.env.LINE_MASTER_OF_BOT_GROUP_ID, [
     {

@@ -1,8 +1,8 @@
 const moment = require('moment')
 const database = require('../database')
-const env = require('../env')
 const line = require('../line')
 const CommandType = require('../Type/CommandType')
+const TextType = require('../Type/TextType')
 const UserType = require('../Type/UserType')
 
 const get = async (botEvent) => {
@@ -19,7 +19,7 @@ const get = async (botEvent) => {
     await line.replyMessage(botEvent.replyToken, [
       {
         type: 'text',
-        text: env.messageText.banFriend,
+        text: TextType.userIsBaned,
       },
     ])
     return true
@@ -55,7 +55,7 @@ const get = async (botEvent) => {
     if (moment(user.expiredAt).diff(moment(new Date()), 'days') <= 5) {
       messages.push({
         type: 'text',
-        text: env.messageText.userNearlyExpired,
+        text: TextType.userIsExpiringSoon,
       })
     }
 
@@ -67,11 +67,11 @@ const get = async (botEvent) => {
     await line.replyMessage(botEvent.replyToken, [
       {
         type: 'text',
-        text: env.messageText.exipred,
+        text: TextType.userIsExpired,
       },
       {
         type: 'text',
-        text: env.messageText.registerDemoLink,
+        text: TextType.registerDemoLink,
       },
     ])
   }

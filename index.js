@@ -11,8 +11,6 @@ if (process.env.APP_ENV === 'production') {
   console.debug = () => {}
 }
 
-// tool.line.create(process.env.LINE_CHANNEL_ACCESS_TOKEN)
-
 exports.handler = async (event) => {
   // basic event
   // {
