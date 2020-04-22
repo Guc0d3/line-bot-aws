@@ -93,7 +93,6 @@ const set = async (botEvent) => {
         break
       case 'image':
         const buffer = await line.getMessageContent(botEvent.message.id)
-        // const url = await logic.s3.uploadBuffer(buffer)
         const url = await s3.upload(buffer)
         await line.pushMessage(user.friendId, [
           {
