@@ -1,11 +1,6 @@
 const KnexQueryBuilder = require('knex/lib/query/builder')
 const lodash = require('lodash')
 
-const HOST = process.env.POSTGRESQL_HOST
-const USER = process.env.POSTGRESQL_USER
-const PASSWORD = process.env.POSTGRESQL_PASSWORD
-const DATABASE = process.env.POSTGRESQL_DATABASE
-
 KnexQueryBuilder.prototype.selectPagination = function ({
   fields = '',
   page,
@@ -52,15 +47,15 @@ KnexQueryBuilder.prototype.selectSearch = function (columns, search) {
   return this
 }
 
-const DatabaseFactory = () => {
+const DatabaseFactory = (host, user, password, database) => {
   const self = require('knex')({
     acquireConnectionTimeout: 300000,
     client: 'pg',
     connection: {
-      host: HOST,
-      user: USER,
-      password: PASSWORD,
-      database: DATABASE,
+      host,
+      user,
+      password,
+      database,
     },
     pool: { min: 2, max: 20 },
   })

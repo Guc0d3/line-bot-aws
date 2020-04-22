@@ -1,7 +1,6 @@
+const database = require('../database')
 const env = require('../env')
 const line = require('../line')
-const DatabaseFactory = require('../factory/DatabaseFactory')
-const database = DatabaseFactory()
 
 const prompt = async (botEvent) => {
   if (!botEvent.message) return false

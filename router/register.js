@@ -1,8 +1,7 @@
 const moment = require('moment')
+const database = require('../database')
 const env = require('../env')
 const line = require('../line')
-const DatabaseFactory = require('../factory/DatabaseFactory')
-const database = DatabaseFactory()
 
 moment.locale('th')
 

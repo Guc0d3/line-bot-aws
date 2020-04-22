@@ -1,7 +1,6 @@
 const lineBotSdk = require('@line/bot-sdk')
 const lodash = require('lodash')
-const DatabaseFactory = require('../factory/DatabaseFactory')
-const database = DatabaseFactory()
+const database = require('../database')
 
 const myBehaviors = (self) => ({
   getProfileById: async (userId) => {
