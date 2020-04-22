@@ -1,5 +1,5 @@
-const lineBotSdk = require('./node_modules/@line/bot-sdk')
-const lodash = require('./node_modules/lodash')
+const lineBotSdk = require('@line/bot-sdk')
+const lodash = require('lodash')
 const database = require('../database')
 const UserType = require('../Type/UserType')
 
