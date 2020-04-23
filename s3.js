@@ -1,4 +1,4 @@
-const S3Factory = require('./Factory/S3Factory')
+const S3Factory = require('./Factory/S3')
 
 const upload = async (buffer) => {
   const url = await S3Factory().upload(
