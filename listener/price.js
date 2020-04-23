@@ -5,14 +5,12 @@ const CommandType = require('../Type/CommandType')
 const TextType = require('../Type/TextType')
 const UserType = require('../Type/UserType')
 
-const get = async (botEvent) => {
+const listener = async (botEvent) => {
   if (!botEvent.message) return false
   if (botEvent.message.type !== 'text') return false
   if (botEvent.message.text !== CommandType.price) return false
-
   // get user
   const user = await line.getProfileById(botEvent.source.userId)
-
   // ban user prompt
   if (user.groupCode === UserType.banFriend) {
     console.log('This user is baned:', JSON.stringify(user))
@@ -24,10 +22,8 @@ const get = async (botEvent) => {
     ])
     return true
   }
-
-  const current = new Date()
-
   // not expired or vip user
+  const current = new Date()
   if (user.groupCode === UserType.vipFriend || current <= user.expiredAt) {
     let rows = await database('setting')
       .where('option', 'PRICE_IMAGE')
@@ -50,7 +46,6 @@ const get = async (botEvent) => {
       }
       return total
     }, [])
-
     // add message to user when nearly expired date
     if (moment(user.expiredAt).diff(moment(new Date()), 'days') <= 5) {
       messages.push({
@@ -61,7 +56,6 @@ const get = async (botEvent) => {
 
     await line.replyMessage(botEvent.replyToken, messages)
   }
-
   // expired user
   else {
     await line.replyMessage(botEvent.replyToken, [
@@ -75,10 +69,7 @@ const get = async (botEvent) => {
       },
     ])
   }
-
   return true
 }
 
-module.exports = {
-  get,
-}
+module.exports = listener

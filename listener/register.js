@@ -7,7 +7,7 @@ const UserType = require('../Type/UserType')
 
 moment.locale('th')
 
-const get = async (botEvent) => {
+const getCode = async (botEvent) => {
   if (!botEvent.message) return false
   if (botEvent.message.type !== 'text') return false
   if (botEvent.message.text !== CommandType.register.get) return false
@@ -24,16 +24,13 @@ const get = async (botEvent) => {
   return true
 }
 
-const prompt = async (botEvent) => {
+const getPrompt = async (botEvent) => {
   if (!botEvent.message) return false
   if (botEvent.message.type !== 'text') return false
   if (botEvent.message.text !== CommandType.register.prompt) return false
-
   // get user
   const user = await line.getProfileById(botEvent.source.userId)
-
   let contents = null
-
   if (user.groupCode === UserType.vipFriend) {
     // create flex menu for VIP user
     contents = [
@@ -73,7 +70,6 @@ const prompt = async (botEvent) => {
       },
     ]
   }
-
   // send flex menu to user
   await line.replyMessage(botEvent.replyToken, [
     {
@@ -90,11 +86,10 @@ const prompt = async (botEvent) => {
       },
     },
   ])
-
   return true
 }
 
-const random = async (botEvent) => {
+const randomCode = async (botEvent) => {
   if (!botEvent.message) return false
   if (botEvent.message.type !== 'text') return false
   if (botEvent.message.text !== CommandType.register.random) return false
@@ -117,21 +112,18 @@ const random = async (botEvent) => {
   return true
 }
 
-const set = async (botEvent) => {
+const activate = async (botEvent) => {
   if (!botEvent.message) return false
   if (botEvent.message.type !== 'text') return false
   if (!/^([0-9]{6})$/.test(botEvent.message.text)) return false
-
   // get user
   const user = await line.getProfileById(botEvent.source.userId)
-
   // check register code
   let rows = await database('setting').where({
     option: 'REGISTER_CODE',
     value: botEvent.message.text,
   })
   if (rows.length != 1) return false
-
   // get active date by user groupcode
   let activeDate = 0
   if (user.groupCode === UserType.warningFriend) {
@@ -145,7 +137,6 @@ const set = async (botEvent) => {
     })
     activeDate = rows[0].value
   }
-
   // set expired date
   let expiredAt = new Date()
   expiredAt.setDate(expiredAt.getDate() + 1 + parseInt(activeDate, 10))
@@ -159,7 +150,6 @@ const set = async (botEvent) => {
       expired_at: expiredAt.toISOString().substr(0, 10),
       updated_at: database.fn.now(),
     })
-
   // reply success message
   await line.replyMessage(botEvent.replyToken, [
     {
@@ -178,13 +168,12 @@ const set = async (botEvent) => {
         moment(expiredAt).format('DD MMMM YYYY'),
     },
   ])
-
   return true
 }
 
 module.exports = {
-  get,
-  prompt,
-  random,
-  set,
+  activate,
+  getCode,
+  getPrompt,
+  randomCode,
 }

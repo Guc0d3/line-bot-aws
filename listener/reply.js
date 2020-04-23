@@ -4,11 +4,10 @@ const TextType = require('../Type/TextType')
 
 var user = null
 
-const set = async (botEvent) => {
+const listener = async (botEvent) => {
   if (!botEvent.message) return false
   if (botEvent.source.groupId !== process.env.LINE_MASTER_OF_BOT_GROUP_ID)
     return false
-
   // check User and Message
   let hasUser = false
   let hasMessage = false
@@ -38,7 +37,6 @@ const set = async (botEvent) => {
       }
     } catch (error) {}
   }
-
   if (hasUser && hasMessage) {
     user = await line.getProfileByName(
       botEvent.message.text.split('\n')[0].split(':')[1].trim(),
@@ -120,6 +118,4 @@ const set = async (botEvent) => {
   }
 }
 
-module.exports = {
-  set,
-}
+module.exports = listener

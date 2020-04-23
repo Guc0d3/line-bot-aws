@@ -2,12 +2,12 @@ const database = require('../database')
 const line = require('../line')
 const CommandType = require('../Type/CommandType')
 
-const get = async (botEvent) => {
+const listener = async (botEvent) => {
   if (!botEvent.message) return false
   if (botEvent.message.type !== 'text') return false
-  if (botEvent.message.text !== CommandType.guide) return false
+  if (botEvent.message.text !== CommandType.holiday) return false
   let messages = []
-  let rows = await database('setting').where('option', 'GUIDE_IMAGE')
+  let rows = await database('setting').where('option', 'HOLIDAY_IMAGE')
   if (rows[0].value) {
     messages.push({
       type: 'image',
@@ -15,7 +15,7 @@ const get = async (botEvent) => {
       previewImageUrl: rows[0].value,
     })
   }
-  rows = await database('setting').where('option', 'GUIDE_MESSAGE')
+  rows = await database('setting').where('option', 'HOLIDAY_MESSAGE')
   if (rows[0].value) {
     messages.push({
       type: 'text',
@@ -26,6 +26,4 @@ const get = async (botEvent) => {
   return true
 }
 
-module.exports = {
-  get,
-}
+module.exports = listener

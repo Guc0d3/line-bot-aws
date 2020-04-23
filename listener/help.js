@@ -1,13 +1,12 @@
 const line = require('../line')
 const CommandType = require('../Type/CommandType')
 
-const get = async (botEvent) => {
+const listener = async (botEvent) => {
   if (!botEvent.message) return false
   if (botEvent.message.type !== 'text') return false
   if (botEvent.message.text !== CommandType.help) return false
   if (botEvent.source.groupId !== process.env.LINE_MASTER_OF_BOT_GROUP_ID)
     return false
-
   const text =
     CommandType.register.random +
     '\tสุ่มรหัสสมาชิก\n' +
@@ -22,6 +21,4 @@ const get = async (botEvent) => {
   return true
 }
 
-module.exports = {
-  get,
-}
+module.exports = listener

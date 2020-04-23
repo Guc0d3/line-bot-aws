@@ -1,5 +1,5 @@
 const line = require('./line')
-const router = require('./router')
+const listener = require('./listener')
 
 if (process.env.APP_ENV === 'production') {
   console.log = () => {}
@@ -38,25 +38,25 @@ exports.handler = async (event) => {
   console.debug('user =', JSON.stringify(user, null, 2))
 
   const works = [
-    // public router
-    await router.price.get(botEvent),
-    await router.holiday.get(botEvent),
-    await router.location.get(botEvent),
-    await router.guide.get(botEvent),
-    await router.register.prompt(botEvent),
-    await router.register.set(botEvent),
-    await router.contact.get(botEvent),
-    // private router
-    await router.help.get(botEvent),
-    await router.register.get(botEvent),
-    await router.register.random(botEvent),
-    await router.reply.set(botEvent),
-    await router.web.prompt(botEvent),
+    // public listener
+    await listener.price(botEvent),
+    await listener.holiday(botEvent),
+    await listener.location(botEvent),
+    await listener.guide(botEvent),
+    await listener.register.getPrompt(botEvent),
+    await listener.register.activate(botEvent),
+    await listener.contact(botEvent),
+    // private listener
+    await listener.help(botEvent),
+    await listener.register.getCode(botEvent),
+    await listener.register.randomCode(botEvent),
+    await listener.reply(botEvent),
+    await listener.web(botEvent),
   ]
   const noEvent = !works.reduce((result, work) => {
     return result || work
   }, false)
   if (noEvent) {
-    await router.echo.set(botEvent)
+    await listener.echo(botEvent)
   }
 }

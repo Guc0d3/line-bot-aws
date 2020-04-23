@@ -3,7 +3,7 @@ const line = require('../line')
 const CommandType = require('../Type/CommandType')
 const TextType = require('../Type/TextType')
 
-const prompt = async (botEvent) => {
+const listener = async (botEvent) => {
   if (!botEvent.message) return false
   if (botEvent.message.type !== 'text') return false
   if (botEvent.message.text !== CommandType.web) return false
@@ -58,6 +58,4 @@ const prompt = async (botEvent) => {
   return true
 }
 
-module.exports = {
-  prompt,
-}
+module.exports = listener
