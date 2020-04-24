@@ -33,7 +33,7 @@ const listener = async (botEvent) => {
                   action: {
                     type: 'uri',
                     label: 'TextType.friend',
-                    uri: uri + '/#/friend',
+                    uri: '/#/friend',
                   },
                 },
                 {
@@ -42,7 +42,7 @@ const listener = async (botEvent) => {
                   action: {
                     type: 'uri',
                     label: 'TextType.history',
-                    uri: uri + '/#/history',
+                    uri: '/#/history',
                   },
                 },
               ],
@@ -62,7 +62,7 @@ const listener = async (botEvent) => {
                   action: {
                     type: 'uri',
                     label: 'TextType.friend',
-                    uri: uri + '/#/friend',
+                    uri: '/#/friend',
                   },
                 },
                 {
@@ -71,7 +71,7 @@ const listener = async (botEvent) => {
                   action: {
                     type: 'uri',
                     label: 'TextType.history',
-                    uri: uri + '/#/history',
+                    uri: '/#/history',
                   },
                 },
               ],
