@@ -80,6 +80,7 @@ const LineClientFactory = (channelAccessToken) => {
       return await self.client.replyMessage(replyToken, messages)
     },
   })
+  return Object.assign(self, behaviors(self), myBehaviors(self))
 }
 
 module.exports = LineClientFactory
