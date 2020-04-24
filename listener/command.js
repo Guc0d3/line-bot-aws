@@ -1,14 +1,16 @@
 const line = require('../line')
 const CommandType = require('../Type/CommandType')
+const TextType = require('../Type/TextType')
 
-const listener = async (botEvent) => {
-  if (!botEvent.message) return false
-  if (botEvent.message.type !== 'text') return false
-  if (botEvent.message.text !== CommandType.command) return false
-  if (botEvent.source.groupId !== process.env.LINE_MASTER_OF_BOT_GROUP_ID)
+const listener = async (event) => {
+  if (!event.message) return false
+  if (event.message.type !== 'text') return false
+  if (event.message.text !== CommandType.command) return false
+  if (event.source.groupId !== process.env.LINE_MASTER_OF_BOT_GROUP_ID)
     return false
-  console.log('test command')
-  await line.replyMessage(botEvent.replyToken, [
+  console.log('test command2')
+  const uri = 'http://www.google.com'
+  await line.replyMessage(event.replyToken, [
     {
       type: 'flex',
       altText: 'bot send web menu',
@@ -20,64 +22,32 @@ const listener = async (botEvent) => {
           spacing: 'md',
           contents: [
             {
-              type: 'box',
-              layout: 'horizontal',
-              contents: [
-                {
-                  type: 'button',
-                  type: 'text',
-                  text: 'hello, world',
-                },
-                {
-                  type: 'button',
-                  style: 'primary',
-                  action: {
-                    type: 'uri',
-                    label: 'TextType.friend',
-                    uri: '/#/friend',
-                  },
-                },
-                {
-                  type: 'button',
-                  style: 'primary',
-                  action: {
-                    type: 'uri',
-                    label: 'TextType.history',
-                    uri: '/#/history',
-                  },
-                },
-              ],
-              backgroundColor: '#ffffff',
+              type: 'button',
+              style: 'primary',
+              action: {
+                type: 'message',
+                label: 'รหัสสมาชิก',
+                text: CommandType.register.get,
+              },
             },
-            // {
-            //   type: 'box',
-            //   layout: 'horizontal',
-            //   contents: [
-            //     {
-            //       type: 'text',
-            //       text: 'hello, world',
-            //     },
-            //     {
-            //       type: 'button',
-            //       style: 'primary',
-            //       action: {
-            //         type: 'uri',
-            //         label: 'TextType.friend',
-            //         uri: '/#/friend',
-            //       },
-            //     },
-            //     {
-            //       type: 'button',
-            //       style: 'primary',
-            //       action: {
-            //         type: 'uri',
-            //         label: 'TextType.history',
-            //         uri: '/#/history',
-            //       },
-            //     },
-            //   ],
-            //   backgroundColor: '#000000',
-            // },
+            {
+              type: 'button',
+              style: 'primary',
+              action: {
+                type: 'uri',
+                label: TextType.history,
+                uri: uri + '/#/history',
+              },
+            },
+            {
+              type: 'button',
+              style: 'primary',
+              action: {
+                type: 'uri',
+                label: TextType.setting,
+                uri: uri + '/#/setting',
+              },
+            },
           ],
         },
       },
