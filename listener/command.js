@@ -20,10 +20,11 @@ const listener = async (botEvent) => {
           spacing: 'md',
           contents: [
             {
-              type: 'button',
+              type: 'box',
               layout: 'horizontal',
               contents: [
                 {
+                  type: 'button',
                   type: 'text',
                   text: 'hello, world',
                 },
@@ -48,35 +49,35 @@ const listener = async (botEvent) => {
               ],
               backgroundColor: '#ffffff',
             },
-            {
-              type: 'button',
-              layout: 'horizontal',
-              contents: [
-                {
-                  type: 'text',
-                  text: 'hello, world',
-                },
-                {
-                  type: 'button',
-                  style: 'primary',
-                  action: {
-                    type: 'uri',
-                    label: 'TextType.friend',
-                    uri: '/#/friend',
-                  },
-                },
-                {
-                  type: 'button',
-                  style: 'primary',
-                  action: {
-                    type: 'uri',
-                    label: 'TextType.history',
-                    uri: '/#/history',
-                  },
-                },
-              ],
-              backgroundColor: '#000000',
-            },
+            // {
+            //   type: 'box',
+            //   layout: 'horizontal',
+            //   contents: [
+            //     {
+            //       type: 'text',
+            //       text: 'hello, world',
+            //     },
+            //     {
+            //       type: 'button',
+            //       style: 'primary',
+            //       action: {
+            //         type: 'uri',
+            //         label: 'TextType.friend',
+            //         uri: '/#/friend',
+            //       },
+            //     },
+            //     {
+            //       type: 'button',
+            //       style: 'primary',
+            //       action: {
+            //         type: 'uri',
+            //         label: 'TextType.history',
+            //         uri: '/#/history',
+            //       },
+            //     },
+            //   ],
+            //   backgroundColor: '#000000',
+            // },
           ],
         },
       },
