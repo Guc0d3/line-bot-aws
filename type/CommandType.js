@@ -1,5 +1,5 @@
 module.exports = {
-  contact: '/cmd',
+  command: '/cmd',
   contact: 'ติดต่อพนักงาน',
   guide: 'แนะนำการใช้งาน',
   help: '/help',
