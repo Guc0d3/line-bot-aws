@@ -47,6 +47,7 @@ exports.handler = async (event) => {
     await listener.register.activate(botEvent),
     await listener.contact(botEvent),
     // private listener
+    await listener.command(botEvent),
     await listener.help(botEvent),
     await listener.register.getCode(botEvent),
     await listener.register.randomCode(botEvent),
