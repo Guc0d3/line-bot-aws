@@ -2,14 +2,14 @@ const line = require('../line')
 const s3 = require('../s3')
 const TextType = require('../Type/TextType')
 
-const listener = async (botEvent) => {
+const listener = async (event) => {
   // no echo message in master of bot group
-  if (botEvent.source.groupId === process.env.LINE_MASTER_OF_BOT_GROUP_ID)
+  if (event.source.groupId === process.env.LINE_MASTER_OF_BOT_GROUP_ID)
     return false
   // echo support 'text' and 'image' only
-  if (['text', 'image'].indexOf(botEvent.message.type) === -1) return false
+  if (['text', 'image'].indexOf(event.message.type) === -1) return false
   // get user
-  const user = await line.getProfileById(botEvent.source.userId)
+  const user = await line.getProfileById(event.source.userId)
   // echo to master of bot
   let text =
     'User: ' +
@@ -17,12 +17,12 @@ const listener = async (botEvent) => {
     '\nDisplay: ' +
     user.pictureUrl +
     '\nMessage: '
-  switch (botEvent.message.type) {
+  switch (event.message.type) {
     case 'text':
-      text += botEvent.message.text
+      text += event.message.text
       break
     case 'image':
-      const buffer = await line.getMessageContent(botEvent.message.id)
+      const buffer = await line.getMessageContent(event.message.id)
       const url = await s3.upload(buffer)
       text += url
       break

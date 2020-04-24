@@ -7,15 +7,15 @@ const UserType = require('../Type/UserType')
 
 moment.locale('th')
 
-const getCode = async (botEvent) => {
-  if (!botEvent.message) return false
-  if (botEvent.message.type !== 'text') return false
-  if (botEvent.message.text !== CommandType.register.get) return false
-  if (botEvent.source.groupId !== process.env.LINE_MASTER_OF_BOT_GROUP_ID)
+const getCode = async (event) => {
+  if (!event.message) return false
+  if (event.message.type !== 'text') return false
+  if (event.message.text !== CommandType.register.get) return false
+  if (event.source.groupId !== process.env.LINE_MASTER_OF_BOT_GROUP_ID)
     return false
   let rows = await database('setting').where({ option: 'REGISTER_CODE' })
   if (rows.length != 1) return false
-  await line.replyMessage(botEvent.replyToken, [
+  await line.replyMessage(event.replyToken, [
     {
       type: 'text',
       text: TextType.registerCode + ': ' + rows[0].value,
@@ -24,12 +24,12 @@ const getCode = async (botEvent) => {
   return true
 }
 
-const getPrompt = async (botEvent) => {
-  if (!botEvent.message) return false
-  if (botEvent.message.type !== 'text') return false
-  if (botEvent.message.text !== CommandType.register.prompt) return false
+const getPrompt = async (event) => {
+  if (!event.message) return false
+  if (event.message.type !== 'text') return false
+  if (event.message.text !== CommandType.register.prompt) return false
   // get user
-  const user = await line.getProfileById(botEvent.source.userId)
+  const user = await line.getProfileById(event.source.userId)
   let contents = null
   if (user.groupCode === UserType.vipFriend) {
     // create flex menu for VIP user
@@ -71,7 +71,7 @@ const getPrompt = async (botEvent) => {
     ]
   }
   // send flex menu to user
-  await line.replyMessage(botEvent.replyToken, [
+  await line.replyMessage(event.replyToken, [
     {
       type: 'flex',
       altText: TextType.botSendMessage,
@@ -89,17 +89,17 @@ const getPrompt = async (botEvent) => {
   return true
 }
 
-const randomCode = async (botEvent) => {
-  if (!botEvent.message) return false
-  if (botEvent.message.type !== 'text') return false
-  if (botEvent.message.text !== CommandType.register.random) return false
-  if (botEvent.source.groupId !== process.env.LINE_MASTER_OF_BOT_GROUP_ID)
+const randomCode = async (event) => {
+  if (!event.message) return false
+  if (event.message.type !== 'text') return false
+  if (event.message.text !== CommandType.register.random) return false
+  if (event.source.groupId !== process.env.LINE_MASTER_OF_BOT_GROUP_ID)
     return false
   const code = Math.floor(100000 + Math.random() * 900000).toString()
   await database('setting')
     .where({ option: 'REGISTER_CODE' })
     .update({ value: code })
-  await line.replyMessage(botEvent.replyToken, [
+  await line.replyMessage(event.replyToken, [
     {
       type: 'text',
       text: TextType.randomRegisterCodeSuccess[0],
@@ -112,16 +112,16 @@ const randomCode = async (botEvent) => {
   return true
 }
 
-const activate = async (botEvent) => {
-  if (!botEvent.message) return false
-  if (botEvent.message.type !== 'text') return false
-  if (!/^([0-9]{6})$/.test(botEvent.message.text)) return false
+const activate = async (event) => {
+  if (!event.message) return false
+  if (event.message.type !== 'text') return false
+  if (!/^([0-9]{6})$/.test(event.message.text)) return false
   // get user
-  const user = await line.getProfileById(botEvent.source.userId)
+  const user = await line.getProfileById(event.source.userId)
   // check register code
   let rows = await database('setting').where({
     option: 'REGISTER_CODE',
-    value: botEvent.message.text,
+    value: event.message.text,
   })
   if (rows.length != 1) return false
   // get active date by user groupcode
@@ -151,7 +151,7 @@ const activate = async (botEvent) => {
       updated_at: database.fn.now(),
     })
   // reply success message
-  await line.replyMessage(botEvent.replyToken, [
+  await line.replyMessage(event.replyToken, [
     {
       type: 'text',
       text: TextType.registerIsSuccessed,

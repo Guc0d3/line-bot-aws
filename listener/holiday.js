@@ -2,10 +2,10 @@ const database = require('../database')
 const line = require('../line')
 const CommandType = require('../Type/CommandType')
 
-const listener = async (botEvent) => {
-  if (!botEvent.message) return false
-  if (botEvent.message.type !== 'text') return false
-  if (botEvent.message.text !== CommandType.holiday) return false
+const listener = async (event) => {
+  if (!event.message) return false
+  if (event.message.type !== 'text') return false
+  if (event.message.text !== CommandType.holiday) return false
   let messages = []
   let rows = await database('setting').where('option', 'HOLIDAY_IMAGE')
   if (rows[0].value) {
@@ -22,7 +22,7 @@ const listener = async (botEvent) => {
       text: rows[0].value,
     })
   }
-  await line.replyMessage(botEvent.replyToken, messages)
+  await line.replyMessage(event.replyToken, messages)
   return true
 }
 

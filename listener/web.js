@@ -3,16 +3,16 @@ const line = require('../line')
 const CommandType = require('../Type/CommandType')
 const TextType = require('../Type/TextType')
 
-const listener = async (botEvent) => {
-  if (!botEvent.message) return false
-  if (botEvent.message.type !== 'text') return false
-  if (botEvent.message.text !== CommandType.web) return false
-  if (botEvent.source.groupId !== process.env.LINE_MASTER_OF_BOT_GROUP_ID)
+const listener = async (event) => {
+  if (!event.message) return false
+  if (event.message.type !== 'text') return false
+  if (event.message.text !== CommandType.web) return false
+  if (event.source.groupId !== process.env.LINE_MASTER_OF_BOT_GROUP_ID)
     return false
   let rows = await database('setting').where({ option: 'WEB_URL' })
   if (rows.length !== 1) return false
   const uri = rows[0].value
-  await line.replyMessage(botEvent.replyToken, [
+  await line.replyMessage(event.replyToken, [
     {
       type: 'flex',
       altText: 'bot send web menu',

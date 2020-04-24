@@ -4,34 +4,28 @@ const TextType = require('../Type/TextType')
 
 var user = null
 
-const listener = async (botEvent) => {
-  if (!botEvent.message) return false
-  if (botEvent.source.groupId !== process.env.LINE_MASTER_OF_BOT_GROUP_ID)
+const listener = async (event) => {
+  if (!event.message) return false
+  if (event.source.groupId !== process.env.LINE_MASTER_OF_BOT_GROUP_ID)
     return false
   // check User and Message
   let hasUser = false
   let hasMessage = false
-  if (botEvent.message.text) {
+  if (event.message.text) {
     try {
       if (
-        botEvent.message.text
-          .split('\n')[0]
-          .split(':')[0]
-          .trim()
-          .toLowerCase() === 'user' &&
-        botEvent.message.text.split('\n')[0].split(':')[1].trim().length > 0
+        event.message.text.split('\n')[0].split(':')[0].trim().toLowerCase() ===
+          'user' &&
+        event.message.text.split('\n')[0].split(':')[1].trim().length > 0
       ) {
         hasUser = true
       }
     } catch (error) {}
     try {
       if (
-        botEvent.message.text
-          .split('\n')[2]
-          .split(':')[0]
-          .trim()
-          .toLowerCase() === 'message' &&
-        botEvent.message.text.split('\n')[2].split(':')[1].trim().length > 0
+        event.message.text.split('\n')[2].split(':')[0].trim().toLowerCase() ===
+          'message' &&
+        event.message.text.split('\n')[2].split(':')[1].trim().length > 0
       ) {
         hasMessage = true
       }
@@ -39,16 +33,16 @@ const listener = async (botEvent) => {
   }
   if (hasUser && hasMessage) {
     user = await line.getProfileByName(
-      botEvent.message.text.split('\n')[0].split(':')[1].trim(),
+      event.message.text.split('\n')[0].split(':')[1].trim(),
     )
     if (user) {
       await line.pushMessage(user.friendId, [
         {
           type: 'text',
-          text: botEvent.message.text.split('\n')[2].split(':')[1].trim(),
+          text: event.message.text.split('\n')[2].split(':')[1].trim(),
         },
       ])
-      await line.replyMessage(botEvent.replyToken, [
+      await line.replyMessage(event.replyToken, [
         {
           type: 'text',
           text: TextType.replyIsSuccessed,
@@ -56,7 +50,7 @@ const listener = async (botEvent) => {
       ])
       user = null
     } else {
-      await line.replyMessage(botEvent.replyToken, [
+      await line.replyMessage(event.replyToken, [
         {
           type: 'text',
           text: TextType.userIsMismatched,
@@ -65,24 +59,24 @@ const listener = async (botEvent) => {
     }
   } else if (hasUser) {
     user = await line.getProfileByName(
-      botEvent.message.text.split('\n')[0].split(':')[1].trim(),
+      event.message.text.split('\n')[0].split(':')[1].trim(),
     )
-    await line.replyMessage(botEvent.replyToken, [
+    await line.replyMessage(event.replyToken, [
       {
         type: 'text',
         text: TextType.replyPrompt,
       },
     ])
   } else if (user) {
-    switch (botEvent.message.type) {
+    switch (event.message.type) {
       case 'text':
         await line.pushMessage(user.friendId, [
           {
             type: 'text',
-            text: botEvent.message.text,
+            text: event.message.text,
           },
         ])
-        await line.replyMessage(botEvent.replyToken, [
+        await line.replyMessage(event.replyToken, [
           {
             type: 'text',
             text: TextType.replyIsSuccessed,
@@ -90,16 +84,16 @@ const listener = async (botEvent) => {
         ])
         break
       case 'image':
-        const buffer = await line.getMessageContent(botEvent.message.id)
+        const buffer = await line.getMessageContent(event.message.id)
         const url = await s3.upload(buffer)
         await line.pushMessage(user.friendId, [
           {
-            type: botEvent.message.type,
+            type: event.message.type,
             originalContentUrl: url,
             previewImageUrl: url,
           },
         ])
-        await line.replyMessage(botEvent.replyToken, [
+        await line.replyMessage(event.replyToken, [
           {
             type: 'text',
             text: TextType.replyIsSuccessed,
@@ -107,7 +101,7 @@ const listener = async (botEvent) => {
         ])
         break
       default:
-        await line.replyMessage(botEvent.replyToken, [
+        await line.replyMessage(event.replyToken, [
           {
             type: 'text',
             text: TextType.messageTypeIsNotInstall,

@@ -5,16 +5,16 @@ const CommandType = require('../Type/CommandType')
 const TextType = require('../Type/TextType')
 const UserType = require('../Type/UserType')
 
-const listener = async (botEvent) => {
-  if (!botEvent.message) return false
-  if (botEvent.message.type !== 'text') return false
-  if (botEvent.message.text !== CommandType.price) return false
+const listener = async (event) => {
+  if (!event.message) return false
+  if (event.message.type !== 'text') return false
+  if (event.message.text !== CommandType.price) return false
   // get user
-  const user = await line.getProfileById(botEvent.source.userId)
+  const user = await line.getProfileById(event.source.userId)
   // ban user prompt
   if (user.groupCode === UserType.banFriend) {
     console.log('This user is baned:', JSON.stringify(user))
-    await line.replyMessage(botEvent.replyToken, [
+    await line.replyMessage(event.replyToken, [
       {
         type: 'text',
         text: TextType.userIsBaned,
@@ -54,11 +54,11 @@ const listener = async (botEvent) => {
       })
     }
 
-    await line.replyMessage(botEvent.replyToken, messages)
+    await line.replyMessage(event.replyToken, messages)
   }
   // expired user
   else {
-    await line.replyMessage(botEvent.replyToken, [
+    await line.replyMessage(event.replyToken, [
       {
         type: 'text',
         text: TextType.userIsExpired,
