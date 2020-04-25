@@ -56,7 +56,7 @@ const listener = async (event) => {
                   action: {
                     type: 'message',
                     label: 'เวป',
-                    text: CommandType.register.web,
+                    text: CommandType.web,
                   },
                 },
                 {
