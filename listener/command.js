@@ -65,7 +65,7 @@ const listener = async (event) => {
                   action: {
                     type: 'message',
                     label: 'คู่มือ',
-                    text: CommandType.register.help,
+                    text: CommandType.help,
                   },
                 },
               ],
