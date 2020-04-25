@@ -10,7 +10,7 @@ moment.locale('th')
 const getCode = async (event) => {
   if (!event.message) return false
   if (event.message.type !== 'text') return false
-  if (event.message.text !== CommandType.register.get) return false
+  if (event.message.text !== CommandType.register.getCode) return false
   if (event.source.groupId !== process.env.LINE_MASTER_OF_BOT_GROUP_ID)
     return false
   let rows = await database('setting').where({ option: 'REGISTER_CODE' })
@@ -27,7 +27,7 @@ const getCode = async (event) => {
 const getPrompt = async (event) => {
   if (!event.message) return false
   if (event.message.type !== 'text') return false
-  if (event.message.text !== CommandType.register.prompt) return false
+  if (event.message.text !== CommandType.register.getPrompt) return false
   // get user
   const user = await line.getProfileById(event.source.userId)
   let contents = null
@@ -92,7 +92,7 @@ const getPrompt = async (event) => {
 const randomCode = async (event) => {
   if (!event.message) return false
   if (event.message.type !== 'text') return false
-  if (event.message.text !== CommandType.register.random) return false
+  if (event.message.text !== CommandType.register.randomCode) return false
   if (event.source.groupId !== process.env.LINE_MASTER_OF_BOT_GROUP_ID)
     return false
   const code = Math.floor(100000 + Math.random() * 900000).toString()

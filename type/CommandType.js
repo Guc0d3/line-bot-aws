@@ -7,9 +7,9 @@ module.exports = {
   location: 'ที่อยู่',
   price: 'ราคา',
   register: {
-    prompt: 'ต่ออายุการใช้งาน',
-    random: '/rc',
-    get: '/c',
+    getCode: '/c',
+    getPrompt: 'ต่ออายุการใช้งาน',
+    randomCode: '/rc',
   },
   web: '/web',
 }
