@@ -45,6 +45,31 @@ const listener = async (event) => {
                 },
               ],
             },
+            {
+              type: 'box',
+              layout: 'horizontal',
+              spacing: 'md',
+              contents: [
+                {
+                  type: 'button',
+                  style: 'primary',
+                  action: {
+                    type: 'message',
+                    label: 'เวป',
+                    text: CommandType.register.web,
+                  },
+                },
+                {
+                  type: 'button',
+                  style: 'primary',
+                  action: {
+                    type: 'message',
+                    label: 'คู่มือ',
+                    text: CommandType.register.help,
+                  },
+                },
+              ],
+            },
             // {
             //   type: 'button',
             //   style: 'primary',
