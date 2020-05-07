@@ -8,6 +8,7 @@ const listener = async (event) => {
   if (event.message.text !== CommandType.command) return false
   if (event.source.groupId !== process.env.LINE_MASTER_OF_BOT_GROUP_ID)
     return false
+  console.debug('call listener.command')
   await line.replyMessage(event.replyToken, [
     {
       type: 'flex',

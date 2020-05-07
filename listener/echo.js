@@ -8,6 +8,7 @@ const listener = async (event) => {
     return false
   // echo support 'text' and 'image' only
   if (['text', 'image'].indexOf(event.message.type) === -1) return false
+  console.debug('call listener.echo')
   // get user
   const user = await line.getProfileById(event.source.userId)
   // echo to master of bot

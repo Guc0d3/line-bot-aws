@@ -9,6 +9,7 @@ const listener = async (event) => {
   if (event.message.text !== CommandType.web) return false
   if (event.source.groupId !== process.env.LINE_MASTER_OF_BOT_GROUP_ID)
     return false
+  console.debug('call listener.web')
   let rows = await database('setting').where({ option: 'WEB_URL' })
   if (rows.length !== 1) return false
   const uri = rows[0].value

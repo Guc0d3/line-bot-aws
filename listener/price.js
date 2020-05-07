@@ -9,6 +9,7 @@ const listener = async (event) => {
   if (!event.message) return false
   if (event.message.type !== 'text') return false
   if (event.message.text !== CommandType.price) return false
+  console.debug('call listener.price')
   // get user
   const user = await line.getProfileById(event.source.userId)
   // ban user prompt

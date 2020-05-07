@@ -6,6 +6,7 @@ const listener = async (event) => {
   if (!event.message) return false
   if (event.message.type !== 'text') return false
   if (event.message.text !== CommandType.location) return false
+  console.debug('call listener.location')
   let location = {}
   let rows = await database('setting').where('option', 'LOCATION_ADDRESS')
   location.address = rows[0].value

@@ -6,6 +6,7 @@ const listener = async (event) => {
   if (!event.message) return false
   if (event.message.type !== 'text') return false
   if (event.message.text !== CommandType.holiday) return false
+  console.debug('call listener.holiday')
   let messages = []
   let rows = await database('setting').where('option', 'HOLIDAY_IMAGE')
   if (rows[0].value) {

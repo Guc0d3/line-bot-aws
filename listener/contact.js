@@ -6,6 +6,7 @@ const listener = async (event) => {
   if (!event.message) return false
   if (event.message.type !== 'text') return false
   if (event.message.text !== CommandType.contact) return false
+  console.debug('call listener.contact')
   let messages = []
   let rows = await database('setting').where('option', 'CONTACT_IMAGE')
   if (rows[0].value) {

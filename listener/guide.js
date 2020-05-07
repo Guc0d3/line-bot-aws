@@ -6,6 +6,7 @@ const listener = async (event) => {
   if (!event.message) return false
   if (event.message.type !== 'text') return false
   if (event.message.text !== CommandType.guide) return false
+  console.debug('call listener.guide')
   let messages = []
   let rows = await database('setting').where('option', 'GUIDE_IMAGE')
   if (rows[0].value) {
