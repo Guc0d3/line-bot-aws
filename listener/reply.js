@@ -8,38 +8,29 @@ const listener = async (event) => {
   if (!event.message) return false
   if (event.source.groupId !== process.env.LINE_MASTER_OF_BOT_GROUP_ID)
     return false
+  console.debug('call listener.reply')
+  let userExpr = /\s*user:(.*)/gi
+  let userMatch = userExpr.exec(event.message.text)
+  let messageExpr = /\s*message:(.*)/gi
+  let messageMatch = messageExpr.exec(event.message.text)
   // check User and Message
   let hasUser = false
   let hasMessage = false
   if (event.message.text) {
-    try {
-      if (
-        event.message.text.split('\n')[0].split(':')[0].trim().toLowerCase() ===
-          'user' &&
-        event.message.text.split('\n')[0].split(':')[1].trim().length > 0
-      ) {
-        hasUser = true
-      }
-    } catch (error) {}
-    try {
-      if (
-        event.message.text.split('\n')[2].split(':')[0].trim().toLowerCase() ===
-          'message' &&
-        event.message.text.split('\n')[2].split(':')[1].trim().length > 0
-      ) {
-        hasMessage = true
-      }
-    } catch (error) {}
+    if (userMatch && userMatch[1].trim().length > 0) {
+      hasUser = true
+    }
+    if (messageMatch && messageMatch[1].trim().length > 0) {
+      hasMessage = true
+    }
   }
   if (hasUser && hasMessage) {
-    user = await line.getProfileByName(
-      event.message.text.split('\n')[0].split(':')[1].trim(),
-    )
+    user = await line.getProfileByName(userMatch[1].trim())
     if (user) {
       await line.pushMessage(user.friendId, [
         {
           type: 'text',
-          text: event.message.text.split('\n')[2].split(':')[1].trim(),
+          text: messageMatch[1].trim(),
         },
       ])
       await line.replyMessage(event.replyToken, [
@@ -58,9 +49,7 @@ const listener = async (event) => {
       ])
     }
   } else if (hasUser) {
-    user = await line.getProfileByName(
-      event.message.text.split('\n')[0].split(':')[1].trim(),
-    )
+    user = await line.getProfileByName(userMatch[1].trim())
     await line.replyMessage(event.replyToken, [
       {
         type: 'text',
