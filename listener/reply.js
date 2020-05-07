@@ -1,6 +1,6 @@
 const line = require('../line')
 const s3 = require('../s3')
-const TextType = require('../Type/TextType')
+const TextType = require('../Type/Text')
 
 var user = null
 

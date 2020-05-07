@@ -1,9 +1,9 @@
 const moment = require('moment')
 const database = require('../database')
 const line = require('../line')
-const CommandType = require('../Type/CommandType')
-const TextType = require('../Type/TextType')
-const UserType = require('../Type/UserType')
+const CommandType = require('../Type/Command')
+const TextType = require('../Type/Text')
+const UserType = require('../Type/User')
 
 moment.locale('th')
 

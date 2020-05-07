@@ -1,6 +1,6 @@
 const line = require('../line')
 const s3 = require('../s3')
-const TextType = require('../Type/TextType')
+const TextType = require('../Type/Text')
 
 const listener = async (event) => {
   // no echo message in master of bot group

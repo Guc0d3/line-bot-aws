@@ -1,7 +1,7 @@
 const lineBotSdk = require('@line/bot-sdk')
 const lodash = require('lodash')
 const database = require('../database')
-const UserType = require('../Type/UserType')
+const UserType = require('../Type/User')
 
 const myBehaviors = (self) => ({
   getProfileById: async (userId) => {

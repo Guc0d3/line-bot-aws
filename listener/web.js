@@ -1,7 +1,7 @@
 const database = require('../database')
 const line = require('../line')
-const CommandType = require('../Type/CommandType')
-const TextType = require('../Type/TextType')
+const CommandType = require('../Type/Command')
+const TextType = require('../Type/Text')
 
 const listener = async (event) => {
   if (!event.message) return false
