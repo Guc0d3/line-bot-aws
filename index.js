@@ -39,20 +39,6 @@ exports.handler = async (event) => {
   console.debug('botEvent =', JSON.stringify(botEvent, null, 2))
   const user = await line.getProfileById(botEvent.source.userId)
   console.debug('user =', JSON.stringify(user, null, 2))
-  // check bot off
-  let rows = await database('setting').where({
-    option: 'BOT_STATUS',
-    value: '1',
-  })
-  if (rows.length != 1) {
-    await line.replyMessage(botEvent.replyToken, [
-      {
-        type: 'text',
-        text: TextType.botIsClosed,
-      },
-    ])
-    return
-  }
   // listener
   let noEvent = false
   if (
@@ -74,6 +60,20 @@ exports.handler = async (event) => {
       return result || work
     }, false)
   } else {
+    // check bot off
+    let rows = await database('setting').where({
+      option: 'BOT_STATUS',
+      value: '1',
+    })
+    if (rows.length != 1) {
+      await line.replyMessage(botEvent.replyToken, [
+        {
+          type: 'text',
+          text: TextType.botIsClosed,
+        },
+      ])
+      return
+    }
     // public listener
     const publicWorks = [
       await listener.price(botEvent),
