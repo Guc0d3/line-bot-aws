@@ -41,7 +41,7 @@ exports.handler = async (event) => {
   let noEvent = false
   if (
     botEvent.source.groupId &&
-    botEvent.source.groupId !== process.env.LINE_MASTER_OF_BOT_GROUP_ID
+    botEvent.source.groupId === process.env.LINE_MASTER_OF_BOT_GROUP_ID
   ) {
     // private listener
     const privateWorks = [
