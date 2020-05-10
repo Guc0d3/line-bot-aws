@@ -9,7 +9,10 @@ const listener = async (event) => {
   if (event.message.text !== CommandType.on) return false
   console.debug('call listener.on')
   await database('setting').where('option', 'BOT_STATUS').update({ value: '1' })
-  await line.replyMessage(event.replyToken, TextType.botIsOn)
+  await line.replyMessage(event.replyToken, {
+    type: 'text',
+    text: TextType.botIsOn,
+  })
   return true
 }
 
