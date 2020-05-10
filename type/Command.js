@@ -5,6 +5,8 @@ module.exports = {
   help: 'คู่มือ',
   holiday: 'วันหยุด',
   location: 'ที่อยู่',
+  off: '/off',
+  on: '/on',
   price: 'ราคา',
   register: {
     getCode: '/c',

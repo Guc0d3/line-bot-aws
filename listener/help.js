@@ -10,7 +10,11 @@ const listener = async (event) => {
     CommandType.register.randomCode +
     '\tสุ่มรหัสสมาชิก\n' +
     CommandType.register.getCode +
-    '\tแสดงรหัสสมาชิก\n'
+    '\tแสดงรหัสสมาชิก\n' +
+    CommandType.on +
+    '\tเปิดบอท\n' +
+    CommandType.off +
+    '\tปิดบอท\n'
   await line.replyMessage(event.replyToken, [
     {
       type: 'text',

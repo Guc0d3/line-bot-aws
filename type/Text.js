@@ -1,4 +1,7 @@
 module.exports = {
+  botIsClosed: 'ระบบปิดอยู่ กรุณาติดต่อใหม่อีกครั้งในเวลาทำการ',
+  botIsOff: 'บอทปิดแล้ว',
+  botIsOn: 'บอทเปิดแล้ว',
   botSendMessage: 'ระบบอัตโนมัติ ส่งข้อความ',
   friend: 'เพื่อน',
   history: 'ประวัติการสนทนา',

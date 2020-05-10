@@ -52,6 +52,31 @@ const listener = async (event) => {
                   style: 'primary',
                   action: {
                     type: 'message',
+                    label: 'เปิดบอท',
+                    text: CommandType.on,
+                  },
+                },
+                {
+                  type: 'button',
+                  style: 'primary',
+                  action: {
+                    type: 'message',
+                    label: 'ปิดบอท',
+                    text: CommandType.off,
+                  },
+                },
+              ],
+            },
+            {
+              type: 'box',
+              layout: 'horizontal',
+              spacing: 'md',
+              contents: [
+                {
+                  type: 'button',
+                  style: 'primary',
+                  action: {
+                    type: 'message',
                     label: 'เวป',
                     text: CommandType.web,
                   },

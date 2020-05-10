@@ -1,5 +1,7 @@
 const line = require('./line')
+const database = require('./database')
 const listener = require('./listener')
+const TextType = require('./Type/Text')
 
 if (process.env.APP_ENV === 'production') {
   // production no log
@@ -37,6 +39,20 @@ exports.handler = async (event) => {
   console.debug('botEvent =', JSON.stringify(botEvent, null, 2))
   const user = await line.getProfileById(botEvent.source.userId)
   console.debug('user =', JSON.stringify(user, null, 2))
+  // check bot off
+  let rows = await database('setting').where({
+    option: 'BOT_STATUS',
+    value: '1',
+  })
+  if (rows.length != 1) {
+    await line.replyMessage(botEvent.replyToken, [
+      {
+        type: 'text',
+        text: TextType.botIsClosed,
+      },
+    ])
+    return
+  }
   // listener
   let noEvent = false
   if (
