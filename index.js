@@ -39,7 +39,10 @@ exports.handler = async (event) => {
   console.debug('user =', JSON.stringify(user, null, 2))
   // listener
   let noEvent = false
-  if (event.source.groupId !== process.env.LINE_MASTER_OF_BOT_GROUP_ID) {
+  if (
+    event.source.groupId &&
+    event.source.groupId !== process.env.LINE_MASTER_OF_BOT_GROUP_ID
+  ) {
     // private listener
     const privateWorks = [
       await listener.price(botEvent),
