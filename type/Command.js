@@ -1,8 +1,8 @@
 module.exports = {
-  command: 'คำสั่ง',
+  command: '/list',
   contact: 'ติดต่อพนักงาน',
   guide: 'แนะนำการใช้งาน',
-  help: 'คู่มือ',
+  help: '/help',
   holiday: 'วันหยุด',
   location: 'ที่อยู่',
   off: '/off',
