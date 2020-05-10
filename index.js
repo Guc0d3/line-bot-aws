@@ -63,6 +63,8 @@ exports.handler = async (event) => {
     const privateWorks = [
       await listener.command(botEvent),
       await listener.help(botEvent),
+      await listener.off(botEvent),
+      await listener.on(botEvent),
       await listener.register.getCode(botEvent),
       await listener.register.randomCode(botEvent),
       await listener.reply(botEvent),
