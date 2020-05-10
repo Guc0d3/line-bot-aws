@@ -71,8 +71,6 @@ const getCode = async (event) => {
   if (!event.message) return false
   if (event.message.type !== 'text') return false
   if (event.message.text !== CommandType.register.getCode) return false
-  if (event.source.groupId !== process.env.LINE_MASTER_OF_BOT_GROUP_ID)
-    return false
   console.debug('call listener.register.getCode')
   let rows = await database('setting').where({ option: 'REGISTER_CODE' })
   if (rows.length != 1) return false
@@ -155,8 +153,6 @@ const randomCode = async (event) => {
   if (!event.message) return false
   if (event.message.type !== 'text') return false
   if (event.message.text !== CommandType.register.randomCode) return false
-  if (event.source.groupId !== process.env.LINE_MASTER_OF_BOT_GROUP_ID)
-    return false
   console.debug('call listener.register.randomCode')
   const code = Math.floor(100000 + Math.random() * 900000).toString()
   await database('setting')

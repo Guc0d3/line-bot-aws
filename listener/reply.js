@@ -6,8 +6,6 @@ var user = null
 
 const listener = async (event) => {
   if (!event.message) return false
-  if (event.source.groupId !== process.env.LINE_MASTER_OF_BOT_GROUP_ID)
-    return false
   console.debug('call listener.reply')
   let userExpr = /\s*user:(.*)/gi
   let userMatch = userExpr.exec(event.message.text)

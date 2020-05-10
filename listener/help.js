@@ -5,8 +5,6 @@ const listener = async (event) => {
   if (!event.message) return false
   if (event.message.type !== 'text') return false
   if (event.message.text !== CommandType.help) return false
-  if (event.source.groupId !== process.env.LINE_MASTER_OF_BOT_GROUP_ID)
-    return false
   console.debug('call listener.help')
   const text =
     CommandType.register.randomCode +

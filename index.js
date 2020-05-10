@@ -40,18 +40,17 @@ exports.handler = async (event) => {
   // listener
   let noEvent = false
   if (
-    event.source.groupId &&
-    event.source.groupId !== process.env.LINE_MASTER_OF_BOT_GROUP_ID
+    botEvent.source.groupId &&
+    botEvent.source.groupId !== process.env.LINE_MASTER_OF_BOT_GROUP_ID
   ) {
     // private listener
     const privateWorks = [
-      await listener.price(botEvent),
-      await listener.holiday(botEvent),
-      await listener.location(botEvent),
-      await listener.guide(botEvent),
-      await listener.register.getPrompt(botEvent),
-      await listener.register.activate(botEvent),
-      await listener.contact(botEvent),
+      await listener.command(botEvent),
+      await listener.help(botEvent),
+      await listener.register.getCode(botEvent),
+      await listener.register.randomCode(botEvent),
+      await listener.reply(botEvent),
+      await listener.web(botEvent),
     ]
     noEvent = !privateWorks.reduce((result, work) => {
       return result || work
