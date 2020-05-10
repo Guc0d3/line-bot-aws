@@ -5,6 +5,8 @@ const guide = require('./guide')
 const help = require('./help')
 const holiday = require('./holiday')
 const location = require('./location')
+const off = require('./off')
+const on = require('./on')
 const price = require('./price')
 const register = require('./register')
 const reply = require('./reply')
@@ -18,6 +20,8 @@ module.exports = {
   help,
   holiday,
   location,
+  off,
+  on,
   price,
   register,
   reply,
