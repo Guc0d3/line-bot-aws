@@ -45,7 +45,13 @@ const listener = async (event) => {
           type: 'text',
           text,
         },
-        event.message,
+        {
+          type: 'location',
+          title: event.message.title ? event.message.title : 'Location',
+          address: event.message.address,
+          latitude: event.message.latitude,
+          longitude: event.message.longitude,
+        },
       ]
       break
     default:
