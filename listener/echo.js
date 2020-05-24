@@ -19,31 +19,34 @@ const listener = async (event) => {
     '\nDisplay: ' +
     user.pictureUrl +
     '\nMessage: '
-  let messages = []
+  let messages = null
   switch (event.message.type) {
     case 'text':
-      messages.push({
-        type: 'text',
-        text: text + event.message.text,
-      })
+      messages = [
+        {
+          type: 'text',
+          text: text + event.message.text,
+        },
+      ]
       break
     case 'image':
       const buffer = await line.getMessageContent(event.message.id)
       const url = await s3.upload(buffer)
-      messages.push({
-        type: 'text',
-        text: text + url,
-      })
+      messages = [
+        {
+          type: 'text',
+          text: text + url,
+        },
+      ]
       break
     case 'location':
-      text += event.message.text
-      messages.push([
+      messages = [
         {
           type: 'text',
           text,
         },
         event.message,
-      ])
+      ]
       break
     default:
       text += TextType.undefined
