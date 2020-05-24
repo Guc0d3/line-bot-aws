@@ -18,24 +18,36 @@ const listener = async (event) => {
     '\nDisplay: ' +
     user.pictureUrl +
     '\nMessage: '
+  let messages = []
   switch (event.message.type) {
     case 'text':
-      text += event.message.text
+      messages.push({
+        type: 'text',
+        text: text + event.message.text,
+      })
       break
     case 'image':
       const buffer = await line.getMessageContent(event.message.id)
       const url = await s3.upload(buffer)
-      text += url
+      messages.push({
+        type: 'text',
+        text: text + url,
+      })
+      break
+    case 'location':
+      text += event.message.text
+      messages.push([
+        {
+          type: 'text',
+          text,
+        },
+        event.message,
+      ])
       break
     default:
       text += TextType.undefined
   }
-  await line.pushMessage(process.env.LINE_MASTER_OF_BOT_GROUP_ID, [
-    {
-      type: 'text',
-      text,
-    },
-  ])
+  await line.pushMessage(process.env.LINE_MASTER_OF_BOT_GROUP_ID, messages)
 
   return true
 }
