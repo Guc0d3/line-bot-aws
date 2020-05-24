@@ -7,7 +7,7 @@ if (process.env.APP_ENV === 'production') {
   // production no log
   console.log = () => {}
   console.debug = () => {}
-} else if (process.env.APP_ENV === 'debug') {
+} else if (process.env.APP_ENV === 'develop') {
   // no redirect console.log && console.debug
 } else {
   // 'test'
