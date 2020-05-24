@@ -7,7 +7,8 @@ const listener = async (event) => {
   if (event.source.groupId === process.env.LINE_MASTER_OF_BOT_GROUP_ID)
     return false
   // echo support 'text' and 'image' only
-  if (['text', 'image'].indexOf(event.message.type) === -1) return false
+  if (['text', 'image', 'location'].indexOf(event.message.type) === -1)
+    return false
   console.debug('call listener.echo')
   // get user
   const user = await line.getProfileById(event.source.userId)
