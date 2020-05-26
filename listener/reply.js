@@ -87,6 +87,23 @@ const listener = async (event) => {
           },
         ])
         break
+      case 'location':
+        await line.pushMessage(user.friendId, [
+          {
+            type: 'location',
+            title: event.message.title ? event.message.title : 'Location',
+            address: event.message.address,
+            latitude: event.message.latitude,
+            longitude: event.message.longitude,
+          },
+        ])
+        await line.replyMessage(event.replyToken, [
+          {
+            type: 'text',
+            text: TextType.replyIsSuccessed,
+          },
+        ])
+        break
       default:
         await line.replyMessage(event.replyToken, [
           {
